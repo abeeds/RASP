@@ -1,6 +1,6 @@
 LINTER = flake8
 API_DIR = server
-DB_DIR = data
+DB_DIR = db
 REQ_DIR = .
 
 PKG = $(API_DIR)
@@ -18,7 +18,6 @@ tests: lint unit
 
 unit: FORCE
 	cd $(API_DIR); pytest $(PYTESTFLAGS) --cov=$(PKG)
-	cd $(DB_DIR); pytest $(PYTESTFLAGS) --cov=$(PKG)
 
 lint: FORCE
 	$(LINTER) $(API_DIR)/*.py
