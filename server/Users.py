@@ -4,10 +4,10 @@ from server.globals import USERS_EP, TYPE, DATA, TITLE, MENU
 from server.globals import USER_MENU_EP, RETURN, MAIN_MENU_EP
 
 
-usersRoute = Blueprint('USERS', __name__)
+USER_ROUTE = Blueprint('USERS_EP', __name__)
 
 
-@usersRoute.route(f'{USERS_EP}')
+@USER_ROUTE.route(f'{USERS_EP}')
 class Users(Resource):
     """
     This class supports fetching a list of all users.

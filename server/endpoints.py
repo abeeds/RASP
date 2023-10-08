@@ -5,16 +5,18 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
-from server.Users import usersRoute
 from server.globals import DEFAULT, MAIN_MENU_EP, MAIN_MENU_NM, HELLO_EP
 from server.globals import HELLO_RESP, USERS_EP, USER_MENU_EP, TITLE
 from server.globals import USER_MENU_NM
+from server.Users import USER_ROUTE
+from server.User_menu import USER_MENU_ROUTE
 
 # import db.db as db
 
 app = Flask(__name__)
 api = Api(app)
-app.register_blueprint(usersRoute)
+app.register_blueprint(USER_ROUTE)
+app.register_blueprint(USER_MENU_ROUTE)
 
 
 @api.route(HELLO_EP)
