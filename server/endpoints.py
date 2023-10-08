@@ -5,25 +5,16 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
+from server.Users import usersRoute
+from server.globals import DEFAULT, MAIN_MENU_EP, MAIN_MENU_NM, HELLO_EP
+from server.globals import HELLO_RESP, USERS_EP, USER_MENU_EP, TITLE
+from server.globals import USER_MENU_NM
+
 # import db.db as db
 
 app = Flask(__name__)
 api = Api(app)
-
-DEFAULT = 'Default'
-MENU = 'menu'
-MAIN_MENU_EP = '/MainMenu'
-MAIN_MENU_NM = "Welcome to Text Game!"
-HELLO_EP = '/hello'
-HELLO_RESP = 'hello'
-# USERS = 'users'
-USERS_EP = '/users'
-USER_MENU_EP = '/user_menu'
-USER_MENU_NM = 'User Menu'
-TYPE = 'Type'
-DATA = 'Data'
-TITLE = 'Title'
-RETURN = 'Return'
+app.register_blueprint(usersRoute)
 
 
 @api.route(HELLO_EP)
@@ -101,30 +92,3 @@ class UserMenu(Resource):
                        },
                    },
                }
-
-
-@api.route(f'{USERS_EP}')
-class Users(Resource):
-    """
-    This class supports fetching a list of all users.
-    """
-    def get(self):
-        """
-        This method returns all users.
-        """
-        return {
-            TYPE: DATA,
-            TITLE: 'Current Users',
-            DATA: {
-                "Callahan":
-                {
-                    "level": 0, "joined": '01/01/2019',
-                },
-                "Reddy":
-                {
-                    "level": 2, "joined": '02/02/2022',
-                },
-            },
-            MENU: USER_MENU_EP,
-            RETURN: MAIN_MENU_EP,
-        }
