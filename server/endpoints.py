@@ -6,8 +6,7 @@ The endpoint called `endpoints` will return all available endpoints.
 from flask import Flask
 from flask_restx import Resource, Api
 from server.globals import DEFAULT, MAIN_MENU_EP, MAIN_MENU_NM, HELLO_EP
-from server.globals import HELLO_RESP, USERS_EP, USER_MENU_EP, TITLE
-from server.globals import USER_MENU_NM
+from server.globals import HELLO_RESP, USERS_EP, TITLE
 from server.Users import USER_ROUTE
 from server.User_menu import USER_MENU_ROUTE
 
@@ -69,28 +68,3 @@ class MainMenu(Resource):
                           'method': 'get', 'text': 'Illustrating a Point!'},
                     'X': {'text': 'Exit'},
                 }}
-
-
-@api.route(f'{USER_MENU_EP}')
-class UserMenu(Resource):
-    """
-    This will deliver our user menu.
-    """
-    def get(self):
-        """
-        Gets the user menu.
-        """
-        return {
-                   TITLE: USER_MENU_NM,
-                   DEFAULT: '0',
-                   'Choices': {
-                       '1': {
-                                'url': '/',
-                                'method': 'get',
-                                'text': 'Get User Details',
-                       },
-                       '0': {
-                                'text': 'Return',
-                       },
-                   },
-               }
