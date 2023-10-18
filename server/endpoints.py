@@ -5,17 +5,27 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
-from server.globals import DEFAULT, MAIN_MENU_EP, MAIN_MENU_NM, HELLO_EP
-from server.globals import HELLO_RESP, USERS_EP, TITLE
-from server.Users import USER_ROUTE
-from server.User_menu import USER_MENU_ROUTE
 
 # import db.db as db
 
 app = Flask(__name__)
 api = Api(app)
-app.register_blueprint(USER_ROUTE)
-app.register_blueprint(USER_MENU_ROUTE)
+
+
+DEFAULT = 'Default'
+MENU = 'menu'
+MAIN_MENU_EP = '/MainMenu'
+MAIN_MENU_NM = "Welcome to Text Game!"
+HELLO_EP = '/hello'
+HELLO_RESP = 'hello'
+# USERS = 'users'
+USERS_EP = '/users'
+USER_MENU_EP = '/user_menu'
+USER_MENU_NM = 'User Menu'
+TYPE = 'Type'
+DATA = 'Data'
+TITLE = 'Title'
+RETURN = 'Return'
 
 
 @api.route(HELLO_EP)
@@ -68,3 +78,55 @@ class MainMenu(Resource):
                           'method': 'get', 'text': 'Illustrating a Point!'},
                     'X': {'text': 'Exit'},
                 }}
+
+
+@api.route(f'{USERS_EP}')
+class Users(Resource):
+    """
+    This class supports fetching a list of all users.
+    """
+    def get(self):
+        """
+        This method returns all users.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current Users',
+            DATA: {
+                "Callahan":
+                {
+                    "level": 0, "joined": '01/01/2019',
+                },
+                "Reddy":
+                {
+                    "level": 2, "joined": '02/02/2022',
+                },
+            },
+            MENU: USER_MENU_EP,
+            RETURN: MAIN_MENU_EP,
+        }
+
+
+@api.route(f'{USER_MENU_EP}')
+class UserMenu(Resource):
+    """
+    This will deliver our user menu.
+    """
+    def get(self):
+        """
+        Gets the user menu.
+        """
+        return {
+                   TITLE: USER_MENU_NM,
+                   DEFAULT: '0',
+                   'Choices': {
+                       '1': {
+                                'url': '/',
+                                'method': 'get',
+                                'text': 'Get User Details',
+                       },
+                       '0': {
+                                'text': 'Return',
+                       },
+                   },
+               }
