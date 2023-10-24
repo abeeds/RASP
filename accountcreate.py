@@ -1,5 +1,6 @@
 import csv
 
+
 def register_user():
     username = input("Username: ")
     password = input("Password: ")
@@ -13,6 +14,7 @@ def register_user():
         writer.writerow([username, password])
         print("Account created.")
 
+
 def username_exists(username):
     with open("users.csv", mode="r") as file:
         reader = csv.reader(file)
@@ -20,6 +22,7 @@ def username_exists(username):
             if row[0] == username:
                 return True
     return False
+
 
 if __name__ == "__main__":
     print("Sign Up!")

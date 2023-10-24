@@ -1,5 +1,6 @@
 import csv
 
+
 def login_user():
     username = input("Username: ")
     password = input("Password: ")
@@ -8,7 +9,8 @@ def login_user():
     else:
         print("Invalid username or password. Please try again.")
 
-#Will implement dictionary for all account usernames and passwords
+
+# Will implement dictionary for all account usernames and passwords
 def check_credentials(username, password):
     with open("users.csv", mode="r") as file:
         reader = csv.reader(file)
@@ -16,6 +18,7 @@ def check_credentials(username, password):
             if row[0] == username and row[1] == password:
                 return True
     return False
+
 
 if __name__ == "__main__":
     print("Welcome!")
