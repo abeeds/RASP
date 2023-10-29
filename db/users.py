@@ -3,6 +3,8 @@ users.py: accessing "messages" from other added users
 """
 
 UNREAD_MSGS = 'unreadMessages'
+OLD_MSGS = 'readMessages'
+TEST_USER = 'Jamie Theuser'
 
 users = {
     'John Messagesender': {
@@ -13,8 +15,11 @@ users = {
             '2023-10-15T12:24:36': 'Hello world!',
             '2023-10-16T00:00:12': 'You up?',
         },
+        OLD_MSGS: {
+            '2020-07-19T12:24:36': 'This message has already been read.',
+        },
     },
-    'Jamie Theuser': {
+    TEST_USER: {
         UNREAD_MSGS: {
             '2023-10-15T12:24:36': 'Lorem ipsum dolor',
             '2023-10-16T00:00:12': 'Sit amet, consectetur adipiscing elit.',
@@ -25,3 +30,7 @@ users = {
 
 def get_users() -> dict:
     return users
+
+
+def get_unread_from(senderName):
+    return users[senderName][UNREAD_MSGS]
