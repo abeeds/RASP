@@ -76,6 +76,8 @@ class MainMenu(Resource):
                           'method': 'get', 'text': 'List Users'},
                     '4': {'url': '/',
                           'method': 'get', 'text': 'Illustrating a Point!'},
+                    # '5': {'url': '/',
+                    #       'method': 'get', 'text': 'Test'},
                     'X': {'text': 'Exit'},
                 }}
 
