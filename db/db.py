@@ -1,15 +1,12 @@
-from pymongo import MongoClient
+"""
+This file will manage interactions with our data store.
+At first, it will just contain stubs that return fake data.
+Gradually, we will fill in actual calls to our datastore.
+"""
 
-DB_HOST = "localhost"
-DB_PORT = 27017
-DB_NAME = "RASP"
 
-
-def ConnectToDB():
-    try:
-        client = MongoClient(DB_HOST, DB_PORT)
-        db = client[DB_NAME]
-        return db
-    except Exception:
-        print("Failed to connect to the database.")
-        return None
+def fetch_pets():
+    """
+    A function to return all pets in the data store.
+    """
+    return {"tigers": 2, "lions": 3, "zebras": 1}
