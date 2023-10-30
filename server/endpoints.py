@@ -5,6 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
+from db.db_test import ConnectToDB
 
 # import db.db as db
 
@@ -76,8 +77,8 @@ class MainMenu(Resource):
                           'method': 'get', 'text': 'List Users'},
                     '4': {'url': '/',
                           'method': 'get', 'text': 'Illustrating a Point!'},
-                    # '5': {'url': '/',
-                    #       'method': 'get', 'text': 'Test'},
+                    '5': {'url': '/test',
+                          'method': 'get', 'text': 'Testing DB Connection'},
                     'X': {'text': 'Exit'},
                 }}
 
@@ -132,3 +133,23 @@ class UserMenu(Resource):
                        },
                    },
                }
+
+
+# only for testing purpose
+@api.route('/test')
+class Test(Resource):
+    def get(self):
+        test = ConnectToDB()
+        out = "Success"
+        if (test is None):
+            out = "Fail"
+        return {
+            TYPE: DATA,
+            TITLE: 'TEST',
+            DATA: {
+                "Route":
+                {
+                    "Connection": out,
+                }
+            },
+        }

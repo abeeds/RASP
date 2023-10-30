@@ -11,5 +11,4 @@ def ConnectToDB():
         db = client[DB_NAME]
         return db
     except Exception:
-        print("Failed to connect to the database.")
         return None
