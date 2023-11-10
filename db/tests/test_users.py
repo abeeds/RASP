@@ -24,6 +24,10 @@ def test_gen_id():
     assert len(_id) == usrs.ID_LEN
 
 
+def test_get_test_user():
+    assert isinstance(usrs.get_test_game(), dict)
+
+
 def test_get_users(temp_user):
     users = usrs.get_users()
     assert isinstance(users, dict)
@@ -55,3 +59,9 @@ def test_del_user(temp_user):
     name = temp_user
     usrs.del_user(name)
     assert not usrs.exists(name)
+
+
+def test_del_nonexistent_user():
+    name = usrs._get_test_user()
+    with pytest.raises(ValueError):
+        usrs.del_user(name)
