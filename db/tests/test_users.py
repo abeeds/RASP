@@ -6,6 +6,7 @@ import db.users as usrs
 @pytest.fixture(scope='function')
 def temp_user():
     name = usrs._get_test_name()
+    usrs.add_user(name)
     yield name
     if usrs.exists(name):
         usrs.del_user(name)
