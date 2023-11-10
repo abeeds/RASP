@@ -25,7 +25,7 @@ def test_gen_id():
 
 
 def test_get_test_user():
-    assert isinstance(usrs.get_test_game(), dict)
+    assert isinstance(usrs.get_test_user(), dict)
 
 
 def test_get_users(temp_user):
