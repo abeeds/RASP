@@ -27,6 +27,13 @@ def test_list_users():
     assert ep.DATA in resp_json
 
 
+@patch('db.users.add_user', side_effect=ValueError(), autospec=True)
+def test_users_bad_add(mock_add):
+    resp = TEST_CLIENT.post(ep.USERS_EP, json=usrs.get_test_user())
+    assert resp.status_code == NOT_ACCEPTABLE
+
+
+@patch('db.users.add_user', return_value=usrs.MOCK_ID, autospec=True)
 def test_users_add():
     resp = TEST_CLIENT.post(ep.USERS_EP, json=usrs.get_test_user())
     assert resp.status_code == OK
