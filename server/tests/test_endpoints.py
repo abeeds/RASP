@@ -1,3 +1,8 @@
+from http.client import OK, NOT_FOUND, FORBIDDEN, NOT_ACCEPTABLE, BAD_REQUEST
+
+from unittest.mock import patch
+
+import db.users as usrs
 
 import server.endpoints as ep
 
@@ -14,6 +19,7 @@ def test_hello():
 
 def test_list_users():
     resp = TEST_CLIENT.get(ep.USERS_EP)
+    assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
     assert ep.TITLE in resp_json
