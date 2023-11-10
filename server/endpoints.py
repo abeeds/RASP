@@ -89,7 +89,7 @@ class MainMenu(Resource):
 
 
 user_fields = api.model('NewUser', {
-    usrs.NAME: fields.Dictionary,
+    usrs.NAME: fields.String,
     })
 
 
