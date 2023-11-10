@@ -119,7 +119,7 @@ class Users(Resource):
         """
         name = request.json[usrs.NAME]
         try:
-            new_id = usrs.add_game(name)
+            new_id = usrs.add_user(name)
             return {USER_ID: new_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
