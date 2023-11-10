@@ -1,5 +1,3 @@
-import pytest
-
 import db.users as usrs
 
 
