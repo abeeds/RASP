@@ -24,6 +24,8 @@ users = {
             '2023-10-15T12:24:36': 'Lorem ipsum dolor',
             '2023-10-16T00:00:12': 'Sit amet, consectetur adipiscing elit.',
         },
+        OLD_MSGS: {
+        },
     },
 }
 
@@ -34,3 +36,9 @@ def get_users() -> dict:
 
 def get_unread_from(senderName):
     return users[senderName][UNREAD_MSGS]
+
+
+def add_user(name: str):
+    if not name:
+        raise ValueError('A name must be input')
+    users[name] = {UNREAD_MSGS: {}, OLD_MSGS: {}}
