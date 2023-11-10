@@ -1,6 +1,6 @@
 import pytest
 
-import data.db_connect as dbc
+import db.db_connect as dbc
 
 TEST_DB = dbc.USER_DB
 TEST_COLLECT = 'test_collect'
