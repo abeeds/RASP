@@ -3,11 +3,15 @@ This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
 """
 
-from flask import Flask
-from flask_restx import Resource, Api
+from http import HTTPStatus
+
+from flask import Flask, request
+from flask_restx import Resource, Api, fields
 from db.db_test import ConnectToDB
 
-# import db.db as db
+import werkzeug.exceptions as wz
+
+import db.users as usrs
 
 app = Flask(__name__)
 api = Api(app)
@@ -95,16 +99,7 @@ class Users(Resource):
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            DATA: {
-                "Callahan":
-                {
-                    "level": 0, "joined": '01/01/2019',
-                },
-                "Reddy":
-                {
-                    "level": 2, "joined": '02/02/2022',
-                },
-            },
+            DATA: usrs.get_users(),
             MENU: USER_MENU_EP,
             RETURN: MAIN_MENU_EP,
         }
