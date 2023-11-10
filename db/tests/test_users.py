@@ -3,6 +3,14 @@ import pytest
 import db.users as usrs
 
 
+@pytest.fixture(scope='function')
+def temp_user():
+    name = usrs._get_test_name()
+    yield name
+    if usrs.exists(name):
+        usrs.del_user(name)
+
+
 def test_get_test_name():
     name = usrs._get_test_name()
     assert isinstance(name, str)
@@ -15,12 +23,13 @@ def test_gen_id():
     assert len(_id) == usrs.ID_LEN
 
 
-def test_get_users():
+def test_get_users(temp_user):
     users = usrs.get_users()
     assert isinstance(users, dict)
     assert len(users) > 0
     for user in users:
         assert isinstance(user, str)
+    assert usrs.exists(temp_user)
 
 
 def test_get_unread_from():
@@ -39,3 +48,9 @@ ADD_NAME = "First Last"
 def test_add_user():
     usrs.add_user(ADD_NAME)
     assert usrs.exists(ADD_NAME)
+
+
+def test_del_user(temp_user):
+    name = temp_user
+    usrs.del_user(name)
+    assert not usrs.exists(name)

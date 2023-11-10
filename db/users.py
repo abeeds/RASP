@@ -72,5 +72,12 @@ def add_user(name: str) -> str:
     return _gen_id()
 
 
+def del_user(name: str):
+    if name in users:
+        del users[name]
+    else:
+        raise ValueError(f'Delete failure: {name} not in database.')
+
+
 def exists(name: str) -> bool:
     return name in get_users()
