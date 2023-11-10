@@ -25,3 +25,8 @@ def test_list_users():
     assert ep.TITLE in resp_json
     assert ep.TYPE in resp_json
     assert ep.DATA in resp_json
+
+
+def test_games_add():
+    resp = TEST_CLIENT.post(ep.USERS_EP, json=usrs.get_test_user())
+    assert resp.status_code == OK

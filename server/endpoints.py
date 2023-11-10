@@ -3,13 +3,13 @@ This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
 """
 
-# from http import HTTPStatus
+from http import HTTPStatus
 
-from flask import Flask  # , request
-from flask_restx import Resource, Api  # , fields
+from flask import Flask, request
+from flask_restx import Resource, Api, fields
 from db.db import ConnectToDB
 
-# import werkzeug.exceptions as wz
+import werkzeug.exceptions as wz
 
 import db.users as usrs
 
@@ -27,6 +27,7 @@ HELLO_RESP = 'hello'
 USERS_EP = '/users'
 USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
+USER_ID = 'User ID'
 TYPE = 'Type'
 DATA = 'Data'
 TITLE = 'Title'
@@ -87,6 +88,11 @@ class MainMenu(Resource):
                 }}
 
 
+user_fields = api.model('NewUser', {
+    usrs.NAME: fields.Dictionary,
+    })
+
+
 @api.route(f'{USERS_EP}')
 class Users(Resource):
     """
@@ -103,6 +109,20 @@ class Users(Resource):
             MENU: USER_MENU_EP,
             RETURN: MAIN_MENU_EP,
         }
+
+    @api.expect(user_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Add a user.
+        """
+        name = request.json[usrs.NAME]
+        try:
+            new_id = usrs.add_game(name)
+            return {USER_ID: new_id}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
 
 
 @api.route(f'{USER_MENU_EP}')

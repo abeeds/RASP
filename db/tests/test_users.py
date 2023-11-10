@@ -3,6 +3,18 @@ import pytest
 import db.users as usrs
 
 
+def test_get_test_name():
+    name = usrs._get_test_name()
+    assert isinstance(name, str)
+    assert len(name) > 0
+
+
+def test_gen_id():
+    _id = usrs._gen_id()
+    assert isinstance(_id, str)
+    assert len(_id) == usrs.ID_LEN
+
+
 def test_get_users():
     users = usrs.get_users()
     assert isinstance(users, dict)
@@ -26,4 +38,4 @@ ADD_NAME = "First Last"
 
 def test_add_user():
     usrs.add_user(ADD_NAME)
-    assert ADD_NAME in usrs.get_users()
+    assert usrs.exists(ADD_NAME)
