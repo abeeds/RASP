@@ -62,6 +62,6 @@ def test_del_user(temp_user):
 
 
 def test_del_nonexistent_user():
-    name = usrs._get_test_user()
+    name = usrs.get_test_user()
     with pytest.raises(ValueError):
         usrs.del_user(name)
