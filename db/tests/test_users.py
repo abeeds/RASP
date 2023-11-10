@@ -8,7 +8,7 @@ def test_get_users():
     assert isinstance(users, dict)
     assert len(users) > 0
     for user in users:
-        assert isinstance(user, dict)
+        assert isinstance(user, str)
 
 
 def test_get_unread_from():
