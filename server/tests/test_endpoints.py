@@ -34,6 +34,6 @@ def test_users_bad_add(mock_add):
 
 
 @patch('db.users.add_user', return_value=usrs.MOCK_ID, autospec=True)
-def test_users_add():
+def test_users_add(mock_add):
     resp = TEST_CLIENT.post(ep.USERS_EP, json=usrs.get_test_user())
     assert resp.status_code == OK
