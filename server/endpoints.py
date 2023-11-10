@@ -7,7 +7,7 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask  # , request
 from flask_restx import Resource, Api  # , fields
-from db.db_test import ConnectToDB
+from db.db import ConnectToDB
 
 # import werkzeug.exceptions as wz
 
