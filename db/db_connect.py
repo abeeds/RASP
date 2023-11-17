@@ -5,11 +5,14 @@ import pymongo as pm
 LOCAL = "0"
 CLOUD = "1"
 
-USER_DB = 'userDB'
+USER_DB = "RASP"
 
 client = None
 
 MONGO_ID = '_id'
+
+LOCAL_HOST = "localhost"
+LOCAL_PORT = 27017
 
 
 def connect_db():
@@ -40,7 +43,7 @@ def connect_db():
             # but they don't seem necessary
         else:
             print("Connecting to Mongo locally.")
-            client = pm.MongoClient()
+            client = pm.MongoClient(LOCAL_HOST, LOCAL_PORT)
 
 
 def insert_one(collection, doc, db=USER_DB):
