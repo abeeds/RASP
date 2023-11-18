@@ -1,4 +1,5 @@
 import csv
+import os
 
 
 def register_user():
@@ -16,6 +17,9 @@ def register_user():
 
 
 def username_exists(username):
+    if not os.path.exists("users.csv"):
+        return False
+
     with open("users.csv", mode="r") as file:
         reader = csv.reader(file)
         for row in reader:
@@ -27,7 +31,7 @@ def username_exists(username):
 if __name__ == "__main__":
     print("Sign Up!")
     while True:
-        choice = input("Would you like to sign up?").strip().lower()
+        choice = input("Would you like to sign up? ").strip().lower()
         if choice == "yes":
             register_user()
         elif choice == "no":
