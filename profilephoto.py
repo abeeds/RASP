@@ -1,6 +1,8 @@
 import os
 import shutil
+
 PROFILE_PICS_DIR = "profile_pics"
+
 
 def upload_profile_photo(username):
     user_profile_dir = os.path.join(PROFILE_PICS_DIR, username)
@@ -13,13 +15,14 @@ def upload_profile_photo(username):
     else:
         print("File is incompatible")
 
+
 if __name__ == "__main__":
     while True:
-        choice = input("Would you like to upload a profile photo?").strip().lower()
-        if choice == "yes" or choice == "Yes":
+        choice = input("Would you like to upload a profile photo? ").lower()
+        if choice == "yes":
             username = input("Enter your username: ")
             upload_profile_photo(username)
-        elif choice == "no" or choice == "No":
+        elif choice == "no":
             break
         else:
             print("Error. Try again.")
