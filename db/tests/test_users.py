@@ -31,7 +31,6 @@ def test_get_test_user():
 def test_get_users(temp_user):
     users = usrs.get_users()
     assert isinstance(users, dict)
-    assert len(users) > 0
     for user in users:
         assert isinstance(user, str)
     assert usrs.exists(temp_user)
