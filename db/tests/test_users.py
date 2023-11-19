@@ -61,8 +61,7 @@ def test_del_user(temp_user):
     assert not usrs.exists(name)
 
 
-@pytest.mark.skip('Unsure how to fix error unhashable type.')
 def test_del_nonexistent_user():
-    name = usrs.get_test_user()
+    name = frozenset(usrs.get_test_user())
     with pytest.raises(ValueError):
         usrs.del_user(name)
