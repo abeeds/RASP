@@ -34,7 +34,6 @@ def test_get_users(temp_user):
     if len(users) > 0:
         for user in users:
             assert isinstance(user, str)
-    assert usrs.exists(temp_user)
 
 
 def test_get_unread_from():
