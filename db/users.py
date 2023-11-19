@@ -3,9 +3,13 @@ users.py: accessing "messages" from other added users
 """
 import random
 
+import db.db_connect as dbc
+
 UNREAD_MSGS = 'unreadMessages'
 OLD_MSGS = 'readMessages'
 TEST_USER = 'Jamie Theuser'
+
+USERS_COLLECT = 'users'
 
 ID_LEN = 24
 BIG_NUM = 100_000_000_000_000_000_000
@@ -58,7 +62,8 @@ def _gen_id() -> str:
 
 
 def get_users() -> dict:
-    return users
+    dbc.connect_db()
+    return dbc.fetch_all_as_dict(NAME, USERS_COLLECT)
 
 
 def get_unread_from(senderName):
