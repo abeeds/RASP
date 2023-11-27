@@ -198,7 +198,7 @@ class Register(Resource):
             TYPE: DATA,
             TITLE: 'Mode Change',
             DATA: {
-                "Route":
+                "Mode":
                 {
                     "Mode": MODE,
                 }
