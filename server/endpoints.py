@@ -93,6 +93,8 @@ class HelloWorld(Resource):
                             'X': {'text': 'Exit'},
                         }}
             if MODE == REG:
+                # THIS IS JUST A PLACEHOLDER
+                # I WILL ADD A FORM LATER - Shahria
                 return {TITLE: MAIN_MENU_NM,
                         DEFAULT: 1,
                         'Choices': {
