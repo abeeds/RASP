@@ -21,7 +21,8 @@ def add_contact(username, new_contact):
     if username in user_contacts:
         if new_contact not in user_contacts[username]:
             user_contacts[username].append(new_contact)
-            print(f"{new_contact} has been added to {username}'s friend list!.")
+            print(f"{new_contact} has been added to "
+                  f"{username}'s friend list!")
         else:
             print(f"{new_contact} is already in {username}'s friend list!.")
     else:
@@ -30,8 +31,9 @@ def add_contact(username, new_contact):
 
 if __name__ == "__main__":
     while True:
-        choice = input("Would you like to view your friends, add a new friend or exit? ").lower()
-        
+        choice = input("Would you like to view your friends, "
+                       "add a new friend, or exit? ").lower()
+
         if choice == "view":
             username = input("Please enter username: ")
             display_contacts(username)

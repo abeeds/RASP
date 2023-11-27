@@ -25,7 +25,10 @@ def test_send_message_with_emoji():
     expected_message = "You are 😍 and 🔥 👍 🚀"
 
     result = send_message_with_emoji(sender, receiver, message)
-    assert result == expected_message, f"Expected: {expected_message}, but got: {result}"
+    assert result == expected_message, (
+        f"Expected: {expected_message}, "
+        f"but got: {result}"
+    )
 
 
 if __name__ == "__main__":
