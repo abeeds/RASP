@@ -33,6 +33,13 @@ DATA = 'Data'
 TITLE = 'Title'
 RETURN = 'Return'
 
+# using to pick main menu mode
+OUT = "OUT"
+IN = "IN"
+LOGIN = "LOGIN"
+REG = "REGISTERING"
+MODE = OUT
+
 
 @api.route(HELLO_EP)
 class HelloWorld(Resource):
@@ -47,45 +54,54 @@ class HelloWorld(Resource):
         """
         return {HELLO_RESP: 'world'}
 
+    @api.route('/endpoints')
+    class Endpoints(Resource):
+        """
+        This class will serve as live, fetchable documentation of what
+        endpoints
+        are available in the system.
+        """
+        def get(self):
+            """
+            The `get()` method will return a list of available endpoints.
+            """
+            endpoints = sorted(rule.rule for rule
+                               in api.app.url_map.iter_rules())
+            return {"Available endpoints": endpoints}
 
-@api.route('/endpoints')
-class Endpoints(Resource):
-    """
-    This class will serve as live, fetchable documentation of what endpoints
-    are available in the system.
-    """
-    def get(self):
+    @api.route(f'{MAIN_MENU_EP}')
+    class MainMenu(Resource):
         """
-        The `get()` method will return a list of available endpoints.
+        This will deliver our main menu.
         """
-        endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
-        return {"Available endpoints": endpoints}
-
-
-@api.route(f'{MAIN_MENU_EP}')
-class MainMenu(Resource):
-    """
-    This will deliver our main menu.
-    """
-    def get(self):
-        """
-        Gets the main game menu.
-        """
-        return {TITLE: MAIN_MENU_NM,
-                DEFAULT: 2,
-                'Choices': {
-                    '1': {'url': '/', 'method': 'get',
-                          'text': 'List Available Characters'},
-                    '2': {'url': '/',
-                          'method': 'get', 'text': 'List Active Games'},
-                    '3': {'url': f'{USERS_EP}',
-                          'method': 'get', 'text': 'List Users'},
-                    '4': {'url': '/',
-                          'method': 'get', 'text': 'Illustrating a Point!'},
-                    '5': {'url': '/test',
-                          'method': 'get', 'text': 'Testing DB Connection'},
-                    'X': {'text': 'Exit'},
-                }}
+        def get(self):
+            """
+            Gets the main game menu.
+            """
+            global MODE
+            if MODE == OUT:
+                return {TITLE: MAIN_MENU_NM,
+                        DEFAULT: 1,
+                        'Choices': {
+                            '1': {'url': '/', 'method': 'get',
+                                  'text': 'Log In'},
+                            '2': {'url': '/register', 'method': 'get',
+                                  'text': 'Register'},
+                            '3': {'url': '/test',
+                                  'method': 'get',
+                                  'text': 'Testing DB Connection'},
+                            'X': {'text': 'Exit'},
+                        }}
+            if MODE == REG:
+                return {TITLE: MAIN_MENU_NM,
+                        DEFAULT: 1,
+                        'Choices': {
+                            '1': {'url': '/', 'method': 'get',
+                                  'text': 'Log In'},
+                            '2': {'url': '/register', 'method': 'get',
+                                  'text': 'Register'},
+                            'X': {'text': 'Exit'},
+                        }}
 
 
 user_fields = api.model('NewUser', {
@@ -165,6 +181,26 @@ class Test(Resource):
                 "Route":
                 {
                     "Connection": out,
+                }
+            },
+        }
+
+
+@api.route('/register')
+class Register(Resource):
+    """
+    Endpoint for handling the registration process.
+    """
+    def get(self):
+        global MODE
+        MODE = REG
+        return {
+            TYPE: DATA,
+            TITLE: 'Mode Change',
+            DATA: {
+                "Route":
+                {
+                    "Mode": MODE,
                 }
             },
         }
