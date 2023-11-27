@@ -7,7 +7,7 @@ from http import HTTPStatus
 
 from flask import Flask, request
 from flask_restx import Resource, Api, fields
-import db.db_connect
+import db.db_connect as dbc
 
 import werkzeug.exceptions as wz
 
@@ -154,9 +154,9 @@ class UserMenu(Resource):
 @api.route('/test')
 class Test(Resource):
     def get(self):
-        test = db.db_connect.connect_db()
+        dbc.connect_db()
         out = "Success"
-        if (test is None):
+        if (dbc.client is None):
             out = "Fail"
         return {
             TYPE: DATA,
