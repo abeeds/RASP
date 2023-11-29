@@ -13,6 +13,8 @@ import werkzeug.exceptions as wz
 
 import db.users as usrs
 
+from .forms import LOGIN, REGISTRATION
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -29,14 +31,20 @@ USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
 USER_ID = 'User ID'
 TYPE = 'Type'
+FORM = "Form"
 DATA = 'Data'
 TITLE = 'Title'
 RETURN = 'Return'
 
+
+URL = "url"
+METHOD = "method"
+TEXT = "text"
+SUBMIT = "Submit"
+
 # using to pick main menu mode
 OUT = "OUT"
 IN = "IN"
-LOGIN = "LOGIN"
 REG = "REGISTERING"
 MODE = OUT
 
@@ -83,27 +91,26 @@ class HelloWorld(Resource):
                 return {TITLE: MAIN_MENU_NM,
                         DEFAULT: 1,
                         'Choices': {
-                            '1': {'url': '/', 'method': 'get',
+                            '1': {'url': '/login', 'method': 'get',
                                   'text': 'Log In'},
                             '2': {'url': '/register', 'method': 'get',
                                   'text': 'Register'},
                             '3': {'url': '/test',
                                   'method': 'get',
                                   'text': 'Testing DB Connection'},
+                            '4': {'url': '/test_form',
+                                  'method': 'get',
+                                  'text': 'Test Form'},
                             'X': {'text': 'Exit'},
                         }}
-            if MODE == REG:
-                # THIS IS JUST A PLACEHOLDER
-                # I WILL ADD A FORM LATER - Shahria
-                return {TITLE: MAIN_MENU_NM,
-                        DEFAULT: 1,
-                        'Choices': {
-                            '1': {'url': '/', 'method': 'get',
-                                  'text': 'Log In'},
-                            '2': {'url': '/register', 'method': 'get',
-                                  'text': 'Register'},
-                            'X': {'text': 'Exit'},
-                        }}
+            if MODE == IN:
+                {TITLE: MAIN_MENU_NM,
+                    DEFAULT: 1,
+                    'Choices': {
+                        '1': {'url': '/', 'method': 'get',
+                              'text': 'PLACEHOLDER'},
+                        'X': {'text': 'Exit'},
+                    }}
 
 
 user_fields = api.model('NewUser', {
@@ -194,15 +201,21 @@ class Register(Resource):
     Endpoint for handling the registration process.
     """
     def get(self):
-        global MODE
-        MODE = REG
-        return {
-            TYPE: DATA,
-            TITLE: 'Mode Change',
-            DATA: {
-                "Mode":
-                {
-                    "Mode": MODE,
-                }
-            },
-        }
+        dbc.connect_db()
+        return REGISTRATION
+
+
+@api.route('/login')
+class LogIn(Resource):
+    """
+    Endpoint for handling the login process.
+    """
+    def get(self):
+        dbc.connect_db()
+        return LOGIN
+
+
+@api.route('/test_form')
+class TestForm(Resource):
+    def get(self):
+        return REGISTRATION
