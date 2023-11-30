@@ -1,5 +1,5 @@
 from .db_connect import insert_one, connect_db
-from .db_connect import fetch_one
+from .db_connect import fetch_one, del_one
 
 USER_COLLECT = "users"
 
@@ -22,3 +22,10 @@ def insert_user(username: str, password: str):
     connect_db()
     _id = insert_one(USER_COLLECT, user)
     return _id is not None
+
+
+def deactivate(username: str):
+    if user_exists(username):
+        return del_one(USER_COLLECT, {"Username": username})
+    else:
+        raise ValueError(f'Deactivation failed: {username} does not exist')
