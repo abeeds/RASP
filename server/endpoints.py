@@ -107,9 +107,6 @@ class HelloWorld(Resource):
                             '3': {'url': '/test',
                                   'method': 'get',
                                   'text': 'Testing DB Connection'},
-                            '5': {'url': f'{USERS_EP}',
-                                  'method': 'post',
-                                  'text': 'trial'},
                             'X': {'text': 'Exit'},
                         }}
             if MODE == IN:
@@ -199,9 +196,7 @@ class UserMenu(Resource):
 @api.route('/test')
 class Test(Resource):
     def get(self):
-        dbc.connect_db()
-        print("REDIRECT SUCCESS")
-        return redirect(MAIN_MENU_EP)
+        return USERNAME_FORM
 
 
 @api.route(f'{REGISTER_URL}')

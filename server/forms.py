@@ -27,7 +27,7 @@ TEXT = "text"
 
 USERNAME_FORM = {
     TITLE: "Username",
-    SUBMIT: {URL: '/register', METHOD: 'post', TEXT: 'Submit'},
+    SUBMIT: {URL: '/test', METHOD: 'post', TEXT: 'Submit'},
     TYPE: FORM,
     FLDS: {
         USERNAME: {
