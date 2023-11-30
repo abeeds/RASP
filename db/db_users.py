@@ -29,6 +29,7 @@ def insert_user(username: str, password: str):
 
 
 def deactivate(username: str):
+    connect_db()
     if user_exists(username):
         return del_one(USER_COLLECT, {USERNAME: username})
     else:
@@ -39,6 +40,7 @@ def update_username(old_name, new_name):
     filter = {USERNAME: old_name}
     new_vals = {"$set": {'Username': new_name}}
 
+    connect_db()
     result = update_one(USER_COLLECT, filter, new_vals)
 
     if result > 0:
@@ -51,6 +53,7 @@ def update_password(username, new_pw):
     filter = {USERNAME: username}
     new_vals = {"$set": {PASSWORD: new_pw}}
 
+    connect_db()
     result = update_one(USER_COLLECT, filter, new_vals)
 
     if result > 0:
