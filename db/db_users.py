@@ -4,10 +4,13 @@ from .db_connect import update_one
 
 USER_COLLECT = "users"
 
+USERNAME = "Username"
+PASSWORD = "Password"
+
 
 def user_exists(username: str):
     connect_db()
-    return fetch_one(USER_COLLECT, {"Username": username})
+    return fetch_one(USER_COLLECT, {USERNAME: username})
 
 
 def insert_user(username: str, password: str):
@@ -17,8 +20,8 @@ def insert_user(username: str, password: str):
         raise ValueError('Username cannot be blank')
 
     user = {}
-    user["Username"] = username
-    user["password"] = password
+    user[USERNAME] = username
+    user[PASSWORD] = password
 
     connect_db()
     _id = insert_one(USER_COLLECT, user)
@@ -27,13 +30,13 @@ def insert_user(username: str, password: str):
 
 def deactivate(username: str):
     if user_exists(username):
-        return del_one(USER_COLLECT, {"Username": username})
+        return del_one(USER_COLLECT, {USERNAME: username})
     else:
         raise ValueError(f'Deactivation failed: {username} does not exist')
 
 
 def update_username(old_name, new_name):
-    filter = {"Username": old_name}
+    filter = {USERNAME: old_name}
     new_vals = {"$set": {'Username': new_name}}
 
     result = update_one(USER_COLLECT, filter, new_vals)
@@ -42,3 +45,15 @@ def update_username(old_name, new_name):
         print(f"Username updated successfully: {old_name} -> {new_name}")
     else:
         print(f"Username '{old_name}' not found.")
+
+
+def update_password(username, new_pw):
+    filter = {USERNAME: username}
+    new_vals = {"$set": {PASSWORD: new_pw}}
+
+    result = update_one(USER_COLLECT, filter, new_vals)
+
+    if result > 0:
+        print("Password updated successfully.")
+    else:
+        print(f"Username '{username}' not found.")
