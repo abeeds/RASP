@@ -49,7 +49,7 @@ IN = "IN"
 MODE = OUT
 VERIFYING = "Verify"
 
-V_MODE = "Verification Mode" 
+V_MODE = "Verification Mode"
 V_LOGIN = "VERIFYING LOGIN"
 V_REGISTER = "VERIFYING REGISTER"
 
