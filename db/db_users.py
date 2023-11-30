@@ -1,5 +1,6 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
+from .db_connect import update_one
 
 USER_COLLECT = "users"
 
@@ -29,3 +30,10 @@ def deactivate(username: str):
         return del_one(USER_COLLECT, {"Username": username})
     else:
         raise ValueError(f'Deactivation failed: {username} does not exist')
+
+
+def update_username(old_name, new_name):
+    filter = {"Username": old_name}
+    new_vals = {"$set": {'Username': new_name}}
+
+    update_one(USER_COLLECT, filter, new_vals)
