@@ -85,3 +85,7 @@ def fetch_all_as_dict(key, collection, db=USER_DB):
         del doc[MONGO_ID]
         ret[doc[key]] = doc
     return ret
+
+
+def update_one(collection, filter, doc, db=USER_DB):
+    return client[db][collection].update_one(filter, doc)
