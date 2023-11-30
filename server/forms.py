@@ -17,37 +17,31 @@ STR = "STR"
 USERNAME = "username"
 PASSWORD = "password"
 
+RETURN = 'Return'
+MENU = 'menu'
 
-REGISTRATION = {
-    TITLE: "Registration",
-    TYPE: FORM,
-    FLDS: {
-        USERNAME: {
-            VALUE: "",
-            PROMPT: "Please enter a username",
-            TYPE: STR
-        },
-        PASSWORD: {
-            VALUE: "",
-            PROMPT: "Please enter a password",
-            TYPE: STR
-        },
-    }
-}
 
-LOGIN = {
-    TITLE: "Log In",
+USERNAME_FORM = {
+    TITLE: "Username",
     TYPE: FORM,
     FLDS: {
         USERNAME: {
             VALUE: "",
             PROMPT: "Please enter your username",
             TYPE: STR
-        },
+        }
+    },
+}
+
+
+PASSWORD_FORM = {
+    TITLE: "Password",
+    TYPE: FORM,
+    FLDS: {
         PASSWORD: {
             VALUE: "",
             PROMPT: "Please enter your password",
             TYPE: STR
-        },
-    }
+        }
+    },
 }

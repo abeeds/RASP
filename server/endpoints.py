@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from http import HTTPStatus
 
-from flask import Flask, request
+from flask import Flask, request, redirect
 from flask_restx import Resource, Api, fields
 import db.db_connect as dbc
 
@@ -13,7 +13,7 @@ import werkzeug.exceptions as wz
 
 import db.users as usrs
 
-from .forms import LOGIN, REGISTRATION
+from .forms import USERNAME_FORM
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,13 +22,14 @@ api = Api(app)
 DEFAULT = 'Default'
 MENU = 'menu'
 MAIN_MENU_EP = '/MainMenu'
-MAIN_MENU_NM = "Welcome to Text Game!"
+MAIN_MENU_NM = "RASP"
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 # USERS = 'users'
 USERS_EP = '/users'
 USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
+REGISTER_URL = "/register"
 USER_ID = 'User ID'
 TYPE = 'Type'
 FORM = "Form"
@@ -45,8 +46,12 @@ SUBMIT = "Submit"
 # using to pick main menu mode
 OUT = "OUT"
 IN = "IN"
-REG = "REGISTERING"
 MODE = OUT
+VERIFYING = "Verify"
+
+V_MODE = "Verification Mode" 
+V_LOGIN = "VERIFYING LOGIN"
+V_REGISTER = "VERIFYING REGISTER"
 
 
 @api.route(HELLO_EP)
@@ -93,7 +98,7 @@ class HelloWorld(Resource):
                         'Choices': {
                             '1': {'url': '/login', 'method': 'get',
                                   'text': 'Log In'},
-                            '2': {'url': '/register', 'method': 'get',
+                            '2': {'url': f'{REGISTER_URL}', 'method': 'get',
                                   'text': 'Register'},
                             '3': {'url': '/test',
                                   'method': 'get',
@@ -111,6 +116,16 @@ class HelloWorld(Resource):
                               'text': 'PLACEHOLDER'},
                         'X': {'text': 'Exit'},
                     }}
+
+            if MODE == VERIFYING:
+                print("Login: VERIFYING USERNAME")
+
+                print("A")
+                print(USERNAME_FORM["Fields"]["username"])
+                print("B")
+
+                MODE = OUT
+                return redirect(f'{MAIN_MENU_EP}')
 
 
 user_fields = api.model('NewUser', {
@@ -180,29 +195,22 @@ class UserMenu(Resource):
 class Test(Resource):
     def get(self):
         dbc.connect_db()
-        out = "Success"
-        if (dbc.client is None):
-            out = "Fail"
-        return {
-            TYPE: DATA,
-            TITLE: 'TEST',
-            DATA: {
-                "Route":
-                {
-                    "Connection": out,
-                }
-            },
-        }
+        print("REDIRECT SUCCESS")
+        return redirect(MAIN_MENU_EP)
 
 
-@api.route('/register')
+@api.route(f'{REGISTER_URL}')
 class Register(Resource):
     """
     Endpoint for handling the registration process.
     """
     def get(self):
+        global MODE, V_MODE
+
         dbc.connect_db()
-        return REGISTRATION
+        MODE = VERIFYING
+        V_MODE = V_REGISTER
+        return USERNAME_FORM
 
 
 @api.route('/login')
@@ -212,10 +220,12 @@ class LogIn(Resource):
     """
     def get(self):
         dbc.connect_db()
-        return LOGIN
+        # return LOGIN_FORM
 
 
 @api.route('/test_form')
 class TestForm(Resource):
     def get(self):
-        return REGISTRATION
+        global MODE
+        MODE = VERIFYING
+        return USERNAME_FORM
