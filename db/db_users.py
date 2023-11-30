@@ -36,4 +36,9 @@ def update_username(old_name, new_name):
     filter = {"Username": old_name}
     new_vals = {"$set": {'Username': new_name}}
 
-    update_one(USER_COLLECT, filter, new_vals)
+    result = update_one(USER_COLLECT, filter, new_vals)
+
+    if result > 0:
+        print(f"Username updated successfully: {old_name} -> {new_name}")
+    else:
+        print(f"Username '{old_name}' not found.")
