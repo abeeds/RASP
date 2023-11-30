@@ -13,7 +13,7 @@ import werkzeug.exceptions as wz
 
 import db.users as usrs
 
-from .forms import USERNAME_FORM
+from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
 
 app = Flask(__name__)
 api = Api(app)
@@ -91,21 +91,25 @@ class HelloWorld(Resource):
             """
             Gets the main game menu.
             """
-            global MODE
+            global MODE, USERNAME_FORM
             if MODE == OUT:
+                print("C")
+                updated_username = USERNAME_FORM[FLDS][USERNAME][VALUE]
+                print(f"Updated username: {updated_username}")
+                print("D")
                 return {TITLE: MAIN_MENU_NM,
                         DEFAULT: 1,
                         'Choices': {
                             '1': {'url': '/login', 'method': 'get',
                                   'text': 'Log In'},
-                            '2': {'url': f'{REGISTER_URL}', 'method': 'get',
+                            '2': {'url': f'{REGISTER_URL}', 'method': 'post',
                                   'text': 'Register'},
                             '3': {'url': '/test',
                                   'method': 'get',
                                   'text': 'Testing DB Connection'},
-                            '4': {'url': '/test_form',
-                                  'method': 'get',
-                                  'text': 'Test Form'},
+                            '5': {'url': f'{USERS_EP}',
+                                  'method': 'post',
+                                  'text': 'trial'},
                             'X': {'text': 'Exit'},
                         }}
             if MODE == IN:
@@ -121,7 +125,8 @@ class HelloWorld(Resource):
                 print("Login: VERIFYING USERNAME")
 
                 print("A")
-                print(USERNAME_FORM["Fields"]["username"])
+                updated_username = USERNAME_FORM[FLDS][USERNAME][VALUE]
+                print(f"Updated username: {updated_username}")
                 print("B")
 
                 MODE = OUT
@@ -205,11 +210,7 @@ class Register(Resource):
     Endpoint for handling the registration process.
     """
     def get(self):
-        global MODE, V_MODE
-
         dbc.connect_db()
-        MODE = VERIFYING
-        V_MODE = V_REGISTER
         return USERNAME_FORM
 
 
@@ -221,11 +222,3 @@ class LogIn(Resource):
     def get(self):
         dbc.connect_db()
         # return LOGIN_FORM
-
-
-@api.route('/test_form')
-class TestForm(Resource):
-    def get(self):
-        global MODE
-        MODE = VERIFYING
-        return USERNAME_FORM

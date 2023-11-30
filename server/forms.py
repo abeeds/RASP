@@ -19,10 +19,15 @@ PASSWORD = "password"
 
 RETURN = 'Return'
 MENU = 'menu'
+SUBMIT = "Submit"
+URL = "url"
+METHOD = "method"
+TEXT = "text"
 
 
 USERNAME_FORM = {
     TITLE: "Username",
+    SUBMIT: {URL: '/register', METHOD: 'post', TEXT: 'Submit'},
     TYPE: FORM,
     FLDS: {
         USERNAME: {
