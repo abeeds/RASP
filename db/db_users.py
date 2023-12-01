@@ -42,12 +42,7 @@ def update_username(old_name, new_name):
     new_vals = {"$set": {'Username': new_name}}
 
     connect_db()
-    result = update_one(USER_COLLECT, filter, new_vals)
-
-    if result > 0:
-        print(f"Username updated successfully: {old_name} -> {new_name}")
-    else:
-        print(f"Username '{old_name}' not found.")
+    update_one(USER_COLLECT, filter, new_vals)
 
 
 def update_password(username, new_pw):
