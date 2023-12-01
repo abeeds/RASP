@@ -32,8 +32,8 @@ def connect_db():
                 raise ValueError('You must set your password '
                                  + 'to use Mongo in the cloud.')
             print("Connecting to Mongo in the cloud.")
-            client = pm.MongoClient(f'mongodb+srv://gcallah:{password}'
-                                    + '@cluster0.eqxbbqd.mongodb.net/'
+            client = pm.MongoClient(f'mongodb+srv://sa5680:{password}'
+                                    + '@rasp.tc1w7vb.mongodb.net/'
                                     + '?retryWrites=true&w=majority')
             # PA recommends these settings:
             # + 'connectTimeoutMS=30000&'
