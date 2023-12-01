@@ -224,8 +224,8 @@ class Test(Resource):
             TYPE: DATA,
             TITLE: 'User List',
             DATA: users_data,
-            MENU: USER_MENU_EP,  # You need to define USER_MENU_EP
-            RETURN: MAIN_MENU_EP,  # You need to define MAIN_MENU_EP
+            MENU: USER_MENU_EP,
+            RETURN: MAIN_MENU_EP,
         }
 
 
