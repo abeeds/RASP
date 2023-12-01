@@ -26,8 +26,8 @@ def test_update_password():
     user = dbu.user_exists(TEST_USERNAME)
 
     assert user is not None
-    assert user["Password"] != TEST_PASSWORD
-    assert user["Password"] == TEST_NEWPW
+    assert user[dbu.PASSWORD] != TEST_PASSWORD
+    assert user[dbu.PASSWORD] == TEST_NEWPW
 
 
 def test_deactivate():
