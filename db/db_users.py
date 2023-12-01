@@ -61,12 +61,7 @@ def update_password(username, new_pw):
     new_vals = {"$set": {PASSWORD: new_pw}}
 
     connect_db()
-    result = update_one(USER_COLLECT, filter, new_vals)
-
-    if result > 0:
-        print("Password updated successfully.")
-    else:
-        print(f"Username '{username}' not found.")
+    update_one(USER_COLLECT, filter, new_vals)
 
 
 def get_users():
