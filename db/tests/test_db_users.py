@@ -37,7 +37,7 @@ def test_update_username():
 
     assert user is not None
     assert user[dbu.USERNAME] != TEST_USERNAME
-    assert user[dbu.USERNAME] == NEW_PASSWORD
+    assert user[dbu.USERNAME] == NEW_USERNAME
 
 
 def test_deactivate():
