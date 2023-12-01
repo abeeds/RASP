@@ -39,7 +39,7 @@ def deactivate(username: str):
 
 def update_username(old_name, new_name):
     filter = {USERNAME: old_name}
-    new_vals = {"$set": {'Username': new_name}}
+    new_vals = {"$set": {USERNAME: new_name}}
 
     connect_db()
     update_one(USER_COLLECT, filter, new_vals)
