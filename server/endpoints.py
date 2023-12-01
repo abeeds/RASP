@@ -12,6 +12,7 @@ import db.db_connect as dbc
 import werkzeug.exceptions as wz
 
 import db.users as usrs
+from db.db_users import get_users
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
 
@@ -104,7 +105,10 @@ class HelloWorld(Resource):
                                   'text': 'Log In'},
                             '2': {'url': f'{REGISTER_URL}', 'method': 'post',
                                   'text': 'Register'},
-                            '3': {'url': '/test',
+                            '3': {'url': '/get_users',
+                                  'method': 'get',
+                                  'text': 'Display Users'},
+                            '4': {'url': '/test',
                                   'method': 'get',
                                   'text': 'Testing DB Connection'},
                             'X': {'text': 'Exit'},
@@ -192,11 +196,37 @@ class UserMenu(Resource):
                }
 
 
+@api.route('/get_users')
+class GetUsers(Resource):
+    def get(self):
+        """
+        This method returns all users.
+        """
+        users_data = get_users()
+
+        return {
+            TYPE: DATA,
+            TITLE: 'User List',
+            DATA: users_data,
+        }
+
+
 # only for testing purpose
 @api.route('/test')
 class Test(Resource):
     def get(self):
-        return USERNAME_FORM
+        """
+        This method returns all users.
+        """
+        users_data = get_users()
+
+        return {
+            TYPE: DATA,
+            TITLE: 'User List',
+            DATA: users_data,
+            MENU: USER_MENU_EP,  # You need to define USER_MENU_EP
+            RETURN: MAIN_MENU_EP,  # You need to define MAIN_MENU_EP
+        }
 
 
 @api.route(f'{REGISTER_URL}')

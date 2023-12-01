@@ -1,11 +1,18 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
-from .db_connect import update_one
+from .db_connect import update_one, fetch_all
 
 USER_COLLECT = "users"
 
 USERNAME = "Username"
 PASSWORD = "Password"
+
+
+def convert_object_id(user):
+    """Convert ObjectId to string in user dictionary."""
+    if '_id' in user:
+        user['_id'] = str(user['_id'])
+    return user
 
 
 def user_exists(username: str):
@@ -60,3 +67,14 @@ def update_password(username, new_pw):
         print("Password updated successfully.")
     else:
         print(f"Username '{username}' not found.")
+
+
+def get_users():
+    connect_db()
+    users_data = fetch_all(USER_COLLECT)
+
+    # Create a dictionary with usernames as keys and user details as values
+    users_dict = {user[USERNAME]: {"_id": str(user["_id"])}
+                  for user in users_data}
+
+    return users_dict

@@ -44,6 +44,8 @@ def connect_db():
         else:
             print("Connecting to Mongo locally.")
             client = pm.MongoClient(LOCAL_HOST, LOCAL_PORT)
+            if client is not None:
+                print("Connection successful")
 
 
 def insert_one(collection, doc, db=USER_DB):
