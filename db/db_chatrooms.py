@@ -13,7 +13,7 @@ def room_exists(name):
     return fetch_one(CHATROOM_COLLECT, {NAME: name})
 
 
-def create_chatroom(name: str, desc: str = ""):
+def insert_chatroom(name: str, desc: str = ""):
     if room_exists(name):
         raise ValueError(f'Chat room with that already exists: {name}')
     if not name:
@@ -28,7 +28,7 @@ def create_chatroom(name: str, desc: str = ""):
     return _id is not None
 
 
-def delete_room(name: str):
+def delete_chatroom(name: str):
     connect_db()
     if room_exists(name):
         return del_one(CHATROOM_COLLECT, {NAME: name})
