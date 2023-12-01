@@ -14,7 +14,7 @@ CONTENT = "content"
 
 
 # assumes the username and room name are already verified
-def write_message(username, room, content):
+def insert_message(username, room, content):
     new_msg = {}
     new_msg[USERNAME] = username
     new_msg[CHATROOM] = room
