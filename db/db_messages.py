@@ -3,7 +3,12 @@ from .db_connect import insert_one, connect_db
 
 # TODO - edit, delete msg - need to figure out
 #        user friendly way to select msgs
+#
 #        get 15 recent msgs from specific room
+#
+#        function that deletes all msgs associated
+#        with a specific room - used when that room
+#        is deleted
 
 MESSAGE_COLLECT = "messages"
 
