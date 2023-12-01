@@ -4,7 +4,7 @@ from .db_connect import update_one, fetch_all
 
 
 CHATROOM_COLLECT = "chat rooms"
-NAME = "name"
+NAME = "chatroom_name"
 DESC = "description"
 
 

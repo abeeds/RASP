@@ -4,15 +4,9 @@ from .db_connect import update_one, fetch_all
 
 USER_COLLECT = "users"
 
-USERNAME = "Username"
-PASSWORD = "Password"
-
-
-def convert_object_id(user):
-    """Convert ObjectId to string in user dictionary."""
-    if '_id' in user:
-        user['_id'] = str(user['_id'])
-    return user
+# User fields
+USERNAME = "username"
+PASSWORD = "password"
 
 
 def user_exists(username: str):
