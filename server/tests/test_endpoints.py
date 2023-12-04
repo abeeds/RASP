@@ -33,7 +33,7 @@ def test_list_users():
 @patch('db.db_users.insert_user', side_effect=ValueError(), autospec=True)
 def test_users_bad_add(mock_add):
     resp = TEST_CLIENT.post(ep.USERS_EP, json=
-        {"user": "test user", "pass":  "test pass"})
+        {"username": "test username", "password": "test password"})
     assert resp.status_code == NOT_ACCEPTABLE
 
 
