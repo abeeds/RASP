@@ -12,6 +12,7 @@ import db.db_connect as dbc
 import werkzeug.exceptions as wz
 
 import db.users as usrs
+import db.db_users as dbu
 from db.db_users import get_users
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
@@ -163,10 +164,12 @@ class Users(Resource):
         """
         Add a user.
         """
-        name = request.json[usrs.NAME]
+        requser = request.json
         try:
-            new_id = usrs.add_user(name)
-            return {USER_ID: new_id}
+            username = requser["username"]
+            userpass = requser["password"]
+            dbu.insert_user(username, userpass)
+            return
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
