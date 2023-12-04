@@ -2,6 +2,8 @@ from http.client import OK, NOT_FOUND, FORBIDDEN, NOT_ACCEPTABLE, BAD_REQUEST
 
 from unittest.mock import patch
 
+import pytest
+
 import db.users as usrs
 import db.db_users as dbu
 
