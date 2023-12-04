@@ -169,7 +169,7 @@ class Users(Resource):
             username = requser["username"]
             userpass = requser["password"]
             dbu.insert_user(username, userpass)
-            return
+            return 200
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
