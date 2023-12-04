@@ -12,7 +12,9 @@ import db.db_connect as dbc
 import werkzeug.exceptions as wz
 
 import db.users as usrs
-from db.db_users import get_users, insert_user, deactivate
+import db.db_users as dbu
+from db.db_users import get_users
+
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
 
@@ -157,7 +159,7 @@ class Users(Resource):
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            DATA: usrs.get_users(),
+            DATA: dbu.get_users(),
             MENU: USER_MENU_EP,
             RETURN: MAIN_MENU_EP,
         }
@@ -169,10 +171,12 @@ class Users(Resource):
         """
         Add a user.
         """
-        name = request.json[usrs.NAME]
+        requser = request.json
         try:
-            new_id = usrs.add_user(name)
-            return {USER_ID: new_id}
+            username = requser["username"]
+            userpass = requser["password"]
+            dbu.insert_user(username, userpass)
+            return 200
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
@@ -263,8 +267,8 @@ USERNAME3 = "luis"
 @api.route('/test_insert')
 class TestInsert(Resource):
     def get(self):
-        insert_user(USERNAME1, "password")
-        insert_user("ajsbdkasd", "password")
+        dbu.giinsert_user(USERNAME1, "password")
+        dbu.giinsert_user("ajsbdkasd", "password")
         msg = {"Users": "Inserted"}
 
         return {
@@ -277,7 +281,7 @@ class TestInsert(Resource):
 @api.route('/test_delete')
 class TestDelete(Resource):
     def get(self):
-        deactivate("ajsbdkasd")
+        dbu.gideactivate("ajsbdkasd")
         msg = {"Users": "Deleted"}
 
         return {
