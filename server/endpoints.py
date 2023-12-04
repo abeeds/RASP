@@ -152,7 +152,7 @@ class Users(Resource):
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            DATA: usrs.get_users(),
+            DATA: dbu.get_users(),
             MENU: USER_MENU_EP,
             RETURN: MAIN_MENU_EP,
         }
