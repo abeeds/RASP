@@ -13,7 +13,6 @@ import werkzeug.exceptions as wz
 
 import db.users as usrs
 import db.db_users as dbu
-from db.db_users import get_users
 
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
@@ -212,7 +211,7 @@ class GetUsers(Resource):
         """
         This method returns all users.
         """
-        users_data = get_users()
+        users_data = dbu.get_users()
 
         return {
             TYPE: DATA,
@@ -228,7 +227,7 @@ class Test(Resource):
         """
         This method returns all users.
         """
-        users_data = get_users()
+        users_data = dbu.get_users()
 
         return {
             TYPE: DATA,
