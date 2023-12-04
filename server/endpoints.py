@@ -267,8 +267,8 @@ USERNAME3 = "luis"
 @api.route('/test_insert')
 class TestInsert(Resource):
     def get(self):
-        dbu.giinsert_user(USERNAME1, "password")
-        dbu.giinsert_user("ajsbdkasd", "password")
+        dbu.insert_user(USERNAME1, "password")
+        dbu.insert_user("ajsbdkasd", "password")
         msg = {"Users": "Inserted"}
 
         return {
@@ -281,7 +281,7 @@ class TestInsert(Resource):
 @api.route('/test_delete')
 class TestDelete(Resource):
     def get(self):
-        dbu.gideactivate("ajsbdkasd")
+        dbu.deactivate("ajsbdkasd")
         msg = {"Users": "Deleted"}
 
         return {
