@@ -12,7 +12,7 @@ import db.db_connect as dbc
 import werkzeug.exceptions as wz
 
 import db.users as usrs
-from db.db_users import get_users
+from db.db_users import get_users, insert_user, deactivate
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
 
@@ -111,6 +111,12 @@ class HelloWorld(Resource):
                             '4': {'url': '/test',
                                   'method': 'get',
                                   'text': 'Testing DB Connection'},
+                            '5': {'url': '/test_insert',
+                                  'method': 'get',
+                                  'text': 'Insert Some Users'},
+                            '6': {'url': '/test_delete',
+                                  'method': 'get',
+                                  'text': 'Delete Test Users'},
                             'X': {'text': 'Exit'},
                         }}
             if MODE == IN:
@@ -231,19 +237,51 @@ class Test(Resource):
 
 @api.route(f'{REGISTER_URL}')
 class Register(Resource):
-    """
-    Endpoint for handling the registration process.
-    """
     def get(self):
+        """
+        Endpoint for handling the registration process.
+        """
         dbc.connect_db()
         return USERNAME_FORM
 
 
 @api.route('/login')
 class LogIn(Resource):
-    """
-    Endpoint for handling the login process.
-    """
     def get(self):
+        """
+        Endpoint for handling the login process.
+        """
         dbc.connect_db()
         # return LOGIN_FORM
+
+
+USERNAME1 = "john"
+USERNAME2 = "sal"
+USERNAME3 = "luis"
+
+
+@api.route('/test_insert')
+class TestInsert(Resource):
+    def get(self):
+        insert_user(USERNAME1, "password")
+        insert_user("ajsbdkasd", "password")
+        msg = {"Users": "Inserted"}
+
+        return {
+            TYPE: DATA,
+            TITLE: 'Inserting Users',
+            DATA: msg,
+        }
+
+
+@api.route('/test_delete')
+class TestDelete(Resource):
+    def get(self):
+        deactivate("ajsbdkasd")
+        msg = {"Users": "Deleted"}
+
+        return {
+            TYPE: DATA,
+            TITLE: 'Inserting Users',
+            DATA: msg,
+        }

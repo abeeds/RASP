@@ -32,9 +32,7 @@ def insert_user(username: str, password: str):
 def deactivate(username: str):
     connect_db()
     if user_exists(username):
-        return del_one(USER_COLLECT, {USERNAME: username})
-    else:
-        raise ValueError(f'Deactivation failed: {username} does not exist')
+        del_one(USER_COLLECT, {USERNAME: username})
 
 
 def update_username(old_name, new_name):
