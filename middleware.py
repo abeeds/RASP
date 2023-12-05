@@ -1,6 +1,7 @@
 import unittest
 from authentication_middleware import AuthenticationMiddleware
 
+
 class TestAuthenticationMiddleware(unittest.TestCase):
     def test_authentication(self):
         auth_middleware = AuthenticationMiddleware()
@@ -19,6 +20,7 @@ class TestAuthenticationMiddleware(unittest.TestCase):
         self.assertTrue(auth_middleware.is_authenticated("Alice"))
         auth_middleware.deauthenticate("Alice")
         self.assertFalse(auth_middleware.is_authenticated("Alice"))
+
 
 if __name__ == "__main__":
     unittest.main()
