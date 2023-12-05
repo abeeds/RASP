@@ -1,4 +1,4 @@
-from .db_connect import insert_one, connect_db
+from .db_connect import insert_one, connect_db, fetch_one
 
 
 # TODO - edit, delete msg - need to figure out
@@ -28,3 +28,8 @@ def insert_message(username, room, content):
     connect_db()
     _id = insert_one(MESSAGE_COLLECT, new_msg)
     return _id
+
+
+def message_exists(content: str):
+    connect_db()
+    return fetch_one(MESSAGE_COLLECT, {CONTENT: content})

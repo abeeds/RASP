@@ -13,6 +13,7 @@ import werkzeug.exceptions as wz
 
 import db.users as usrs
 import db.db_users as dbu
+import db.db_messages as dbm
 
 
 from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
@@ -33,6 +34,7 @@ USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
 REGISTER_URL = "/register"
 USER_ID = 'User ID'
+MSGS_EP = '/messages'
 TYPE = 'Type'
 FORM = "Form"
 DATA = 'Data'
@@ -288,3 +290,45 @@ class TestDelete(Resource):
             TITLE: 'Inserting Users',
             DATA: msg,
         }
+
+
+message_fields = api.model('NewMessage', {
+    dbm.USERNAME: fields.String,
+    dbm.CHATROOM: fields.String,
+    dbm.CONTENT: fields.String,
+    })
+
+
+@api.route(f'{MSGS_EP}')
+class Messages(Resource):
+    """
+    This class supports fetching a list of all messages.
+    """
+    def get(self):
+        """
+        This method returns all messages.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current Messages',
+            DATA: dbm.get_messages(),
+            MENU: USER_MENU_EP,  # fix this later!
+            RETURN: MAIN_MENU_EP,
+        }
+
+    @api.expect(message_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Add a messages.
+        """
+        reqmsg = request.json
+        try:
+            msgname = reqmsg[dbm.USERNAME]
+            msgroom = reqmsg[dbm.CHATROOM]
+            msgcontent = reqmsg[dbm.CONTENT]
+            dbm.insert_message(msgname, msgroom, msgcontent)
+            return 200
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
