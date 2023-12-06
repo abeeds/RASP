@@ -30,9 +30,9 @@ def insert_message(username, room, content):
 
     connect_db()
     _id = insert_one(MESSAGE_COLLECT, new_msg)
-    return _id
+    return _id, new_msg[TIMESTAMP]
 
 
-def message_exists(content: str):
+def message_exists(timestamp: float):
     connect_db()
-    return fetch_one(MESSAGE_COLLECT, {CONTENT: content})
+    return fetch_one(MESSAGE_COLLECT, {TIMESTAMP: timestamp})
