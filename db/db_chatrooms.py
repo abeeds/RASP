@@ -25,7 +25,7 @@ def insert_chatroom(name: str, desc: str = ""):
 
     connect_db()
     _id = insert_one(CHATROOM_COLLECT, room)
-    return _id is not None
+    return _id
 
 
 def delete_chatroom(name: str):

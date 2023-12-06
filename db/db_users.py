@@ -26,7 +26,7 @@ def insert_user(username: str, password: str):
 
     connect_db()
     _id = insert_one(USER_COLLECT, user)
-    return _id is not None
+    return _id
 
 
 def deactivate(username: str):
