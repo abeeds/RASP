@@ -332,3 +332,21 @@ class Messages(Resource):
             return 200
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+
+@api.route(f'{MSGS_EP}/<string:roomname>')
+class RoomMessages(Resource):
+    """
+    This class supports fetching a list of all messages from a chatroom.
+    """
+    def get(self, roomname):
+        """
+        This method returns all messages.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current Messages',
+            DATA: dbm.get_chatroom_messages(roomname),
+            MENU: USER_MENU_EP,  # fix this later!
+            RETURN: MAIN_MENU_EP,
+        }

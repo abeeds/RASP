@@ -67,6 +67,19 @@ def fetch_one(collection, filt, db=USER_DB):
         return doc
 
 
+def fetch_many(collection, filt, db=USER_DB):
+    """
+    Find with a filter and return all.
+    """
+    ret = []
+    for doc in client[db][collection].find(filt):
+        if MONGO_ID in doc:
+            # Convert mongo ID to a string so it works as JSON
+            doc[MONGO_ID] = str(doc[MONGO_ID])
+        ret.append(doc)
+    return ret
+
+
 def del_one(collection, filt, db=USER_DB):
     """
     Find with a filter and return on the first doc found.

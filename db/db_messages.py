@@ -1,4 +1,5 @@
-from .db_connect import insert_one, connect_db, fetch_one, fetch_all_as_dict
+from .db_connect import insert_one, connect_db
+from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
 from datetime import datetime
 
 
@@ -36,6 +37,11 @@ def insert_message(username, room, content):
 def get_all_messages():
     connect_db()
     return fetch_all_as_dict(TIMESTAMP, MESSAGE_COLLECT)
+
+
+def get_chatroom_messages(chatroom: str):
+    connect_db()
+    return fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
 
 
 def message_exists(timestamp: float):
