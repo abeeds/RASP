@@ -294,7 +294,6 @@ class TestDelete(Resource):
 
 message_fields = api.model('NewMessage', {
     dbm.USERNAME: fields.String,
-    dbm.TIMESTAMP: fields.Float,
     dbm.CHATROOM: fields.String,
     dbm.CONTENT: fields.String,
     })
