@@ -10,7 +10,6 @@ from flask_restx import Resource, Api, fields
 import db.db_connect as dbc
 
 import werkzeug.exceptions as wz
-from datetime import datetime
 
 import db.users as usrs
 import db.db_users as dbu
