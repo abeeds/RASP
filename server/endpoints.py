@@ -10,6 +10,7 @@ from flask_restx import Resource, Api, fields
 import db.db_connect as dbc
 
 import werkzeug.exceptions as wz
+from datetime import datetime
 
 import db.users as usrs
 import db.db_users as dbu
@@ -294,6 +295,7 @@ class TestDelete(Resource):
 
 message_fields = api.model('NewMessage', {
     dbm.USERNAME: fields.String,
+    dbm.TIMESTAMP: fields.Float,
     dbm.CHATROOM: fields.String,
     dbm.CONTENT: fields.String,
     })

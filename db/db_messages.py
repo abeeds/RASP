@@ -1,4 +1,5 @@
 from .db_connect import insert_one, connect_db, fetch_one
+from datetime import datetime
 
 
 # TODO - edit, delete msg - need to figure out
@@ -14,6 +15,7 @@ MESSAGE_COLLECT = "messages"
 
 # message db fields
 USERNAME = "username"
+TIMESTAMP = "timestamp"
 CHATROOM = "chatroom_name"
 CONTENT = "content"
 
@@ -22,6 +24,7 @@ CONTENT = "content"
 def insert_message(username, room, content):
     new_msg = {}
     new_msg[USERNAME] = username
+    new_msg[TIMESTAMP] = datetime.now().timestamp()
     new_msg[CHATROOM] = room
     new_msg[CONTENT] = content
 
