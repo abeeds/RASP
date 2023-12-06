@@ -311,7 +311,7 @@ class Messages(Resource):
         return {
             TYPE: DATA,
             TITLE: 'Current Messages',
-            DATA: dbm.get_messages(),
+            DATA: dbm.get_all_messages(),
             MENU: USER_MENU_EP,  # fix this later!
             RETURN: MAIN_MENU_EP,
         }
