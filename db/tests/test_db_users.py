@@ -27,7 +27,6 @@ def test_update_password():
     user = dbu.user_exists(TEST_USERNAME)
 
     assert user is not None
-    assert user[dbu.PASSWORD] != TEST_PASSWORD
     assert user[dbu.PASSWORD] == NEW_PASSWORD
 
 
@@ -36,7 +35,6 @@ def test_update_username():
     user = dbu.user_exists(NEW_USERNAME)
 
     assert user is not None
-    assert user[dbu.USERNAME] != TEST_USERNAME
     assert user[dbu.USERNAME] == NEW_USERNAME
 
 
