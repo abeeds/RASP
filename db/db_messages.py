@@ -1,6 +1,7 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
 from datetime import datetime
+from bson import objectid
 
 
 # TODO - edit, delete msg - need to figure out
@@ -44,6 +45,7 @@ def get_chatroom_messages(chatroom: str):
     return fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
 
 
-def message_exists(timestamp: float):
+def message_exists(id):
+    obID = objectid(id)
     connect_db()
-    return fetch_one(MESSAGE_COLLECT, {TIMESTAMP: timestamp})
+    return fetch_one(MESSAGE_COLLECT, {"_id": obID})
