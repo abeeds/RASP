@@ -4,8 +4,6 @@
 # contains getDbString
 source common.sh
 
-TIMESTAMP=$(date +%Y%m%d%H%M%S)
-
 # get connection string then create dump
 getDbString
 mongodump --uri "$CONNECTION_STRING" --db "$DB_NAME" --out "$BACKUP_DIR"
