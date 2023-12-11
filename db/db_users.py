@@ -35,7 +35,7 @@ def deactivate(username: str):
         del_one(USER_COLLECT, {USERNAME: username})
 
 
-def update_username(old_name, new_name):
+def update_username(old_name: str, new_name: str):
     filter = {USERNAME: old_name}
     new_vals = {"$set": {USERNAME: new_name}}
 
@@ -43,7 +43,7 @@ def update_username(old_name, new_name):
     update_one(USER_COLLECT, filter, new_vals)
 
 
-def update_password(username, new_pw):
+def update_password(username: str, new_pw: str):
     filter = {USERNAME: username}
     new_vals = {"$set": {PASSWORD: new_pw}}
 
