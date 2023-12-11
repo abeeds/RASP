@@ -8,7 +8,7 @@ NAME = "chatroom_name"
 DESC = "description"
 
 
-def room_exists(name):
+def room_exists(name: str):
     connect_db()
     return fetch_one(CHATROOM_COLLECT, {NAME: name})
 
