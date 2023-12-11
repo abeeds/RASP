@@ -1,15 +1,15 @@
 #!/bin/bash
-# creates a backup of the db
+# Script to backup production database to JSON files.
 
-# contains getDbString
-source common.sh
+. ./common.sh
 
-# get connection string then create dump
-getDbString
-mongodump --uri "$CONNECTION_STRING" --db "$DB_NAME" --out "$BACKUP_DIR"
+for collection in "${Collections[@]}"; do
+    echo "Backing up $collection"
+    $EXP --collection=$collection --db=$DB --out=$BKUP_DIR/$collection.json $CONNECT_STR --username $USER --password $GAME_MONGO_PW
+done
 
-if [ $? -eq 0 ]; then
-  echo "Backup successful. Backup stored in: $BACKUP_DIR"
-else
-  echo "Backup failed."
-fi
+git add $BKUP_DIR/*.json
+git add $BKUP_DIR/*.json
+git commit $BKUP_DIR/*.json -m "Mongo DB backup"
+git pull origin master
+git push origin master

@@ -1,15 +1,26 @@
-#!/bin/bash
-# common code for bkup.sh and restore.sh
+#!/bin/sh
+# Some common shell stuff.
 
-BACKUP_DIR="$PWD/backups"
-DB_NAME="RASP"
+echo "Importing from common.sh"
 
-# sets connection string based on CLOUD_MONGO var
-# set to cloud with export CLOUD_MONGO=1
-getDbString() {
-    if [ "$CLOUD_MONGO" = "1" ]; then
-        CONNECTION_STRING="mongodb+srv://sa5680:$GAME_MONGO_PW@rasp.tc1w7vb.mongodb.net/?retryWrites=true&w=majority"
-    else
-        CONNECTION_STRING="mongodb://localhost:27017"
-    fi
-}
+DB=RASP
+USER=sa5680
+CONNECT_STR="mongodb+srv://rasp.tc1w7vb.mongodb.net/"
+if [ -z $DATA_DIR ]
+then
+    DATA_DIR="$PWD/db"
+fi
+BKUP_DIR=$DATA_DIR/bkup
+
+# may cause errors if mongodb database tools are not installed
+# once installed, run which mongoexport for the path
+EXP=/usr/bin/mongoexport
+IMP=/usr/bin/mongoimport
+
+if [ -z $GAME_MONGO_PW ]
+then
+    echo "You must set GAME_MONGO_PW in your env before running this script."
+    exit 1
+fi
+
+declare -a Collections=("users" "chatrooms" "messages")
