@@ -13,6 +13,9 @@ def temp_message():
 
     yield msgres[0]  # yields id
 
+    if dbm.message_exists(msgres[0]):
+        dbm.delete_message(msgres[0])
+
 
 def test_insert_message():
     global TEST_ID
