@@ -182,12 +182,6 @@ class GetUsers(Resource):
         }
 
 
-registration_response_model = api.model('RegistrationResponse', {
-    'inserted_id': fields.String,
-    'message': fields.String,
-})
-
-
 @api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
 class Register(Resource):
     def post(self, username, password):
@@ -205,13 +199,6 @@ class Register(Resource):
         }
 
         return response
-
-
-deactivate_response_model = api.model('DeactivateResponse', {
-    'deleted_id': fields.String,
-    'deleted_username': fields.String,
-    'message': fields.String,
-})
 
 
 @api.route(f'{deactivate_url}/<string:username>')
