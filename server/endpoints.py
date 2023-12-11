@@ -186,7 +186,7 @@ registration_response_model = api.model('RegistrationResponse', {
 
 @api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
 class Register(Resource):
-    def get(self, username, password):
+    def post(self, username, password):
         """
         Endpoint for handling the registration process.
         """
