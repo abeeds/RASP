@@ -30,6 +30,7 @@ USERS_EP = '/users'
 USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
 REGISTER_URL = "/register"
+deactivate_url = "/deactivate"
 USER_ID = 'User ID'
 MSGS_EP = '/messages'
 TYPE = 'Type'
@@ -163,6 +164,9 @@ class UserMenu(Resource):
                }
 
 
+# ----------- USER RELATED ENDPOINTS -----------
+
+
 @api.route('/get_users')
 class GetUsers(Resource):
     def get(self):
@@ -201,6 +205,38 @@ class Register(Resource):
         }
 
         return response
+
+
+deactivate_response_model = api.model('DeactivateResponse', {
+    'deleted_id': fields.String,
+    'deleted_username': fields.String,
+    'message': fields.String,
+})
+
+
+@api.route(f'{deactivate_url}/<string:username>')
+class DeactivateUser(Resource):
+    def post(self, username):
+        """
+        Endpoint for deleting users.
+        """
+        deleted_id = ""
+        user_doc = dbu.user_exists(username)
+        if user_doc and '_id' in user_doc:
+            deleted_id = str(user_doc['_id'])
+            dbu.deactivate(username)
+
+        response = {
+            'deleted_id': deleted_id if deleted_id
+            else None,
+            'deleted_username': username if deleted_id
+            else None,
+            'message': 'Delete Successful' if deleted_id
+            else "Delete Failed.",
+        }
+
+        return response
+# -------- END OF USER RELATED ENDPOINTS --------
 
 
 message_fields = api.model('NewMessage', {
