@@ -23,7 +23,7 @@ CONTENT = "content"
 
 
 # assumes the username and room name are already verified
-def insert_message(username, room, content):
+def insert_message(username: str, room: str, content: str):
     new_msg = {}
     new_msg[USERNAME] = username
     new_msg[TIMESTAMP] = datetime.now().timestamp()
@@ -45,7 +45,7 @@ def get_chatroom_messages(chatroom: str):
     return fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
 
 
-def message_exists(id):
+def message_exists(id: int):
     obID = ObjectId(id)
     connect_db()
     return fetch_one(MESSAGE_COLLECT, {"_id": obID})
