@@ -5,18 +5,15 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from http import HTTPStatus
 
-from flask import Flask, request, redirect
+from flask import Flask, request
 from flask_restx import Resource, Api, fields
 import db.db_connect as dbc
 
 import werkzeug.exceptions as wz
 
-import db.users as usrs
 import db.db_users as dbu
 import db.db_messages as dbm
 
-
-from .forms import USERNAME_FORM, FLDS, USERNAME, VALUE
 
 app = Flask(__name__)
 api = Api(app)
@@ -46,16 +43,6 @@ URL = "url"
 METHOD = "method"
 TEXT = "text"
 SUBMIT = "Submit"
-
-# using to pick main menu mode
-OUT = "OUT"
-IN = "IN"
-MODE = OUT
-VERIFYING = "Verify"
-
-V_MODE = "Verification Mode"
-V_LOGIN = "VERIFYING LOGIN"
-V_REGISTER = "VERIFYING REGISTER"
 
 
 @api.route(HELLO_EP)
@@ -96,55 +83,33 @@ class HelloWorld(Resource):
             Gets the main game menu.
             """
             global MODE, USERNAME_FORM
-            if MODE == OUT:
-                print("C")
-                updated_username = USERNAME_FORM[FLDS][USERNAME][VALUE]
-                print(f"Updated username: {updated_username}")
-                print("D")
-                return {TITLE: MAIN_MENU_NM,
-                        DEFAULT: 1,
-                        'Choices': {
-                            '1': {'url': '/login', 'method': 'get',
-                                  'text': 'Log In'},
-                            '2': {'url': f'{REGISTER_URL}', 'method': 'post',
-                                  'text': 'Register'},
-                            '3': {'url': '/get_users',
-                                  'method': 'get',
-                                  'text': 'Display Users'},
-                            '4': {'url': '/test',
-                                  'method': 'get',
-                                  'text': 'Testing DB Connection'},
-                            '5': {'url': '/test_insert',
-                                  'method': 'get',
-                                  'text': 'Insert Some Users'},
-                            '6': {'url': '/test_delete',
-                                  'method': 'get',
-                                  'text': 'Delete Test Users'},
-                            'X': {'text': 'Exit'},
-                        }}
-            if MODE == IN:
-                {TITLE: MAIN_MENU_NM,
+
+            return {TITLE: MAIN_MENU_NM,
                     DEFAULT: 1,
                     'Choices': {
-                        '1': {'url': '/', 'method': 'get',
-                              'text': 'PLACEHOLDER'},
+                        '1': {'url': '/login', 'method': 'get',
+                              'text': 'Log In'},
+                        '2': {'url': f'{REGISTER_URL}', 'method': 'post',
+                              'text': 'Register'},
+                        '3': {'url': '/get_users',
+                              'method': 'get',
+                              'text': 'Display Users'},
+                        '4': {'url': '/test',
+                              'method': 'get',
+                              'text': 'Testing DB Connection'},
+                        '5': {'url': '/test_insert',
+                              'method': 'get',
+                              'text': 'Insert Some Users'},
+                        '6': {'url': '/test_delete',
+                              'method': 'get',
+                              'text': 'Delete Test Users'},
                         'X': {'text': 'Exit'},
                     }}
 
-            if MODE == VERIFYING:
-                print("Login: VERIFYING USERNAME")
-
-                print("A")
-                updated_username = USERNAME_FORM[FLDS][USERNAME][VALUE]
-                print(f"Updated username: {updated_username}")
-                print("B")
-
-                MODE = OUT
-                return redirect(f'{MAIN_MENU_EP}')
-
 
 user_fields = api.model('NewUser', {
-    usrs.NAME: fields.String,
+    dbu.USERNAME: fields.String,
+    dbu.PASSWORD: fields.String
     })
 
 
@@ -174,8 +139,8 @@ class Users(Resource):
         """
         requser = request.json
         try:
-            username = requser["username"]
-            userpass = requser["password"]
+            username = requser[dbu.USERNAME]
+            userpass = requser[dbu.PASSWORD]
             dbu.insert_user(username, userpass)
             return 200
         except ValueError as e:
@@ -240,14 +205,29 @@ class Test(Resource):
         }
 
 
-@api.route(f'{REGISTER_URL}')
+registration_response_model = api.model('RegistrationResponse', {
+    'inserted_id': fields.String,
+    'message': fields.String,
+})
+
+
+@api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
 class Register(Resource):
-    def get(self):
+    def get(self, username, password):
         """
         Endpoint for handling the registration process.
         """
-        dbc.connect_db()
-        return USERNAME_FORM
+        new_id = dbu.insert_user(username, password)
+        response = {
+            'inserted_id': str(new_id.inserted_id)
+            if new_id.inserted_id else None,
+
+            'message': 'Registration Successful.'
+            if new_id.inserted_id
+            else "Registration Failed."
+        }
+
+        return response
 
 
 @api.route('/login')
