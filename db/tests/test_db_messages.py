@@ -17,8 +17,7 @@ def temp_message():
 def test_insert_message():
     global TEST_ID
 
-    msgres = dbm.insert_message(TEST_USERNAME, TEST_CHATROOM, TEST_CONTENT)
-    TEST_ID = msgres[0]
+    TEST_ID = dbm.insert_message(TEST_USERNAME, TEST_CHATROOM, TEST_CONTENT)[0]
     assert dbm.message_exists(TEST_ID)
 
 
