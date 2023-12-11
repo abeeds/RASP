@@ -7,7 +7,7 @@ from http import HTTPStatus
 
 from flask import Flask, request
 from flask_restx import Resource, Api, fields
-import db.db_connect as dbc
+# import db.db_connect as dbc
 
 import werkzeug.exceptions as wz
 
@@ -89,20 +89,11 @@ class HelloWorld(Resource):
                     'Choices': {
                         '1': {'url': '/login', 'method': 'get',
                               'text': 'Log In'},
-                        '2': {'url': f'{REGISTER_URL}', 'method': 'post',
+                        '2': {'url': f'{REGISTER_URL}', 'method': 'get',
                               'text': 'Register'},
                         '3': {'url': '/get_users',
                               'method': 'get',
                               'text': 'Display Users'},
-                        '4': {'url': '/test',
-                              'method': 'get',
-                              'text': 'Testing DB Connection'},
-                        '5': {'url': '/test_insert',
-                              'method': 'get',
-                              'text': 'Insert Some Users'},
-                        '6': {'url': '/test_delete',
-                              'method': 'get',
-                              'text': 'Delete Test Users'},
                         'X': {'text': 'Exit'},
                     }}
 
@@ -187,24 +178,6 @@ class GetUsers(Resource):
         }
 
 
-# only for testing purpose
-@api.route('/test')
-class Test(Resource):
-    def get(self):
-        """
-        This method returns all users.
-        """
-        users_data = dbu.get_users()
-
-        return {
-            TYPE: DATA,
-            TITLE: 'User List',
-            DATA: users_data,
-            MENU: USER_MENU_EP,
-            RETURN: MAIN_MENU_EP,
-        }
-
-
 registration_response_model = api.model('RegistrationResponse', {
     'inserted_id': fields.String,
     'message': fields.String,
@@ -230,53 +203,11 @@ class Register(Resource):
         return response
 
 
-@api.route('/login')
-class LogIn(Resource):
-    def get(self):
-        """
-        Endpoint for handling the login process.
-        """
-        dbc.connect_db()
-        # return LOGIN_FORM
-
-
-USERNAME1 = "john"
-USERNAME2 = "sal"
-USERNAME3 = "luis"
-
-
-@api.route('/test_insert')
-class TestInsert(Resource):
-    def get(self):
-        dbu.insert_user(USERNAME1, "password")
-        dbu.insert_user("ajsbdkasd", "password")
-        msg = {"Users": "Inserted"}
-
-        return {
-            TYPE: DATA,
-            TITLE: 'Inserting Users',
-            DATA: msg,
-        }
-
-
-@api.route('/test_delete')
-class TestDelete(Resource):
-    def get(self):
-        dbu.deactivate("ajsbdkasd")
-        msg = {"Users": "Deleted"}
-
-        return {
-            TYPE: DATA,
-            TITLE: 'Inserting Users',
-            DATA: msg,
-        }
-
-
 message_fields = api.model('NewMessage', {
     dbm.USERNAME: fields.String,
     dbm.CHATROOM: fields.String,
     dbm.CONTENT: fields.String,
-    })
+})
 
 
 @api.route(f'{MSGS_EP}')
