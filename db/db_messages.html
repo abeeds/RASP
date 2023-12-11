@@ -19,7 +19,7 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     <tr>
         <td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-        <td width="100%"><dl><dt><a name="-message_exists"><strong>message_exists</strong></a>(id: int)</dt><dd><tt>
+        <td width="100%"><dl><dt><a name="-message_exists"><strong>message_exists</strong></a>(id: str)</dt><dd><tt>
             Searches messages collection for a specific id (_id).
         </tt></dd></dl>
         </td>
@@ -28,6 +28,13 @@
         <td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
         <td width="100%"><dl><dt><a name="-insert_message"><strong>insert_message</strong></a>(username: str, room: str, content: str)</dt><dd><tt>
             Creates a message. 
+        </tt></dd></dl>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+        <td width="100%"><dl><dt><a name="-delete_message"><strong>delete_message</strong></a>(id: str)</dt><dd><tt>
+            Deletes a message by its id (_id).
         </tt></dd></dl>
         </td>
     </tr>

@@ -1,4 +1,4 @@
-from .db_connect import insert_one, connect_db
+from .db_connect import insert_one, connect_db, del_one
 from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
 from datetime import datetime
 from bson import ObjectId
@@ -45,7 +45,15 @@ def get_chatroom_messages(chatroom: str):
     return fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
 
 
-def message_exists(id: int):
+def message_exists(id: str):
     obID = ObjectId(id)
     connect_db()
     return fetch_one(MESSAGE_COLLECT, {"_id": obID})
+
+
+def delete_message(id: str):
+    obID = ObjectId(id)
+
+    connect_db()
+    if message_exists(id):
+        del_one(MESSAGE_COLLECT, {"_id": obID})
