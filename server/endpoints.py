@@ -26,12 +26,12 @@ MAIN_MENU_NM = "RASP"
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 # USERS = 'users'
-USERS_EP = '/users'
 USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
 REGISTER_URL = "/register"
 DEACTIVATE_URL = "/deactivate"
-UPDATE_USER_URL = "/update_user"
+UPDATE_USER_URL = "/update_username"
+UPDATE_PASS_URL = "/update_password"
 USER_ID = 'User ID'
 MSGS_EP = '/messages'
 TYPE = 'Type'
@@ -98,71 +98,6 @@ class HelloWorld(Resource):
                               'text': 'Display Users'},
                         'X': {'text': 'Exit'},
                     }}
-
-
-user_fields = api.model('NewUser', {
-    dbu.USERNAME: fields.String,
-    dbu.PASSWORD: fields.String
-    })
-
-
-@api.route(f'{USERS_EP}')
-class Users(Resource):
-    """
-    This class supports fetching a list of all users.
-    """
-    def get(self):
-        """
-        This method returns all users.
-        """
-        return {
-            TYPE: DATA,
-            TITLE: 'Current Users',
-            DATA: dbu.get_users(),
-            MENU: USER_MENU_EP,
-            RETURN: MAIN_MENU_EP,
-        }
-
-    @api.expect(user_fields)
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def post(self):
-        """
-        Add a user.
-        """
-        requser = request.json
-        try:
-            username = requser[dbu.USERNAME]
-            userpass = requser[dbu.PASSWORD]
-            dbu.insert_user(username, userpass)
-            return 200
-        except ValueError as e:
-            raise wz.NotAcceptable(f'{str(e)}')
-
-
-@api.route(f'{USER_MENU_EP}')
-class UserMenu(Resource):
-    """
-    This will deliver our user menu.
-    """
-    def get(self):
-        """
-        Gets the user menu.
-        """
-        return {
-                   TITLE: USER_MENU_NM,
-                   DEFAULT: '0',
-                   'Choices': {
-                       '1': {
-                                'url': '/',
-                                'method': 'get',
-                                'text': 'Get User Details',
-                       },
-                       '0': {
-                                'text': 'Return',
-                       },
-                   },
-               }
 
 
 # ----------- USER RELATED ENDPOINTS -----------
@@ -246,6 +181,26 @@ class UpdateUser(Resource):
         }
         return response
 
+
+@api.route(f'{UPDATE_PASS_URL}/<string:username>/<string:new_password>')
+class UpdatePw(Resource):
+    def put(Resource, username, new_password):
+        """
+            Updates a username from old_username to new_username.
+            First checks that the old name exists, and the new one
+            does not.
+        """
+        updateStatus = False
+
+        if dbu.user_exists(username):
+            updateStatus = True
+            dbu.update_password(username, new_password)
+
+        response = {
+            'Status': "Updated Successfully" if updateStatus
+            else "Update Failed"
+        }
+        return response
 # -------- END OF USER RELATED ENDPOINTS --------
 
 
