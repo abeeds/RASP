@@ -169,25 +169,26 @@ class DeactivateUser(Resource):
         return response
 
 
-@api.route(f'{UPDATE_USER_URL}/<string:old_username>/<string:new_username>')
+@api.route(f'{UPDATE_USER_URL}/<string:curr_username>/<string:new_username>')
 class UpdateUser(Resource):
-    def put(Resource, old_username, new_username):
+    def put(Resource, curr_username, new_username):
         """
-            Updates a username from old_username to new_username.
-            First checks that the old name exists, and the new one
+            Updates a username from curr_username to new_username.
+            First checks that the curr_username exists, and the new one
             does not.
         """
-        updateStatus = False
-
-        # ensure old username is valid and new one is not
-        if dbu.user_exists(old_username) and not dbu.user_exists(new_username):
-            updateStatus = True
-            dbu.update_username(old_username, new_username)
-
         response = {
-            'Status': "Updated Successfully" if updateStatus
-            else "Update Failed"
+            "Status": ""
         }
+        if not dbu.user_exists(curr_username):
+            response["Status"] = "The current username doesn't exist."
+
+        elif dbu.user_exists(new_username):
+            response["Status"] = "The new username is already taken."
+
+        else:
+            dbu.update_username(curr_username, new_username)
+            response['Status'] = "Updated Successfully"
         return response
 
 
@@ -195,9 +196,8 @@ class UpdateUser(Resource):
 class UpdatePw(Resource):
     def put(Resource, username, new_password):
         """
-            Updates a username from old_username to new_username.
-            First checks that the old name exists, and the new one
-            does not.
+            Updates the password of the account with the provided
+            username.
         """
         updateStatus = False
 
@@ -207,7 +207,7 @@ class UpdatePw(Resource):
 
         response = {
             'Status': "Updated Successfully" if updateStatus
-            else "Update Failed"
+            else "The provided username does not exist."
         }
         return response
 # -------- END OF USER RELATED ENDPOINTS --------
