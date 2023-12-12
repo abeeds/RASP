@@ -8,9 +8,6 @@ USER_COLLECT = "users"
 USERNAME = "username"
 PASSWORD = "password"
 
-# Returns
-USERNAME_TAKEN = "This username is already taken."
-
 
 def user_exists(username: str):
     connect_db()
