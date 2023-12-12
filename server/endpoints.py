@@ -123,16 +123,25 @@ class Register(Resource):
         Endpoint for handling the registration process
         (Inserting Users)
         """
-        new_id = dbu.insert_user(username, password)
-        response = {
-            'inserted_id': str(new_id.inserted_id)
-            if new_id.inserted_id else None,
 
-            'message': 'Registration Successful.'
-            if new_id.inserted_id
-            else "Registration Failed."
+        response = {
+            'inserted_id': None,
+
+            'message': ""
         }
 
+        # ensure the username is not taken
+        if dbu.user_exists(username):
+            response['message'] = 'Username is already taken.'
+
+        # make sure there aren't spaces in the username
+        elif " " in username:
+            response['message'] = "Username cannot have a space"
+
+        else:
+            new_id = dbu.insert_user(username, password)
+            response['inserted_id'] = str(new_id.inserted_id)
+            response['message'] = 'Registration Successful.'
         return response
 
 

@@ -8,6 +8,9 @@ USER_COLLECT = "users"
 USERNAME = "username"
 PASSWORD = "password"
 
+# Returns
+USERNAME_TAKEN = "This username is already taken."
+
 
 def user_exists(username: str):
     connect_db()
@@ -15,11 +18,6 @@ def user_exists(username: str):
 
 
 def insert_user(username: str, password: str):
-    if user_exists(username):
-        raise ValueError(f'Username already exists: {username}')
-    if not username:
-        raise ValueError('Username cannot be blank')
-
     user = {}
     user[USERNAME] = username
     user[PASSWORD] = password
