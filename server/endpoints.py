@@ -30,7 +30,8 @@ USERS_EP = '/users'
 USER_MENU_EP = '/user_menu'
 USER_MENU_NM = 'User Menu'
 REGISTER_URL = "/register"
-deactivate_url = "/deactivate"
+DEACTIVATE_URL = "/deactivate"
+UPDATE_USER_URL = "/update_user"
 USER_ID = 'User ID'
 MSGS_EP = '/messages'
 TYPE = 'Type'
@@ -165,8 +166,6 @@ class UserMenu(Resource):
 
 
 # ----------- USER RELATED ENDPOINTS -----------
-
-
 @api.route('/get_users')
 class GetUsers(Resource):
     def get(self):
@@ -186,7 +185,8 @@ class GetUsers(Resource):
 class Register(Resource):
     def post(self, username, password):
         """
-        Endpoint for handling the registration process.
+        Endpoint for handling the registration process
+        (Inserting Users)
         """
         new_id = dbu.insert_user(username, password)
         response = {
@@ -201,7 +201,7 @@ class Register(Resource):
         return response
 
 
-@api.route(f'{deactivate_url}/<string:username>')
+@api.route(f'{DEACTIVATE_URL}/<string:username>')
 class DeactivateUser(Resource):
     def post(self, username):
         """
@@ -223,6 +223,29 @@ class DeactivateUser(Resource):
         }
 
         return response
+
+
+@api.route(f'{UPDATE_USER_URL}/<string:old_username>/<string:new_username>')
+class UpdateUser(Resource):
+    def put(Resource, old_username, new_username):
+        """
+            Updates a username from old_username to new_username.
+            First checks that the old name exists, and the new one
+            does not.
+        """
+        updateStatus = False
+
+        # ensure old username is valid and new one is not
+        if dbu.user_exists(old_username) and not dbu.user_exists(new_username):
+            updateStatus = True
+            dbu.update_username(old_username, new_username)
+
+        response = {
+            'Status': "Updated Successfully" if updateStatus
+            else "Update Failed"
+        }
+        return response
+
 # -------- END OF USER RELATED ENDPOINTS --------
 
 
