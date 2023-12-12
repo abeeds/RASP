@@ -163,7 +163,7 @@ class DeactivateUser(Resource):
             'deleted_username': username if deleted_id
             else None,
             'message': 'Delete Successful' if deleted_id
-            else "Delete Failed.",
+            else "Username does not exist.",
         }
 
         return response
