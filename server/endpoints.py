@@ -13,6 +13,7 @@ import werkzeug.exceptions as wz
 
 import db.db_users as dbu
 import db.db_messages as dbm
+import db.db_chatrooms as dbch
 
 
 app = Flask(__name__)
@@ -33,6 +34,7 @@ DEACTIVATE_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
 USER_ID = 'User ID'
+GET_CHATROOMS_URL = '/get_chatrooms'
 MSGS_EP = '/messages'
 TYPE = 'Type'
 FORM = "Form"
@@ -213,6 +215,7 @@ class UpdatePw(Resource):
 # -------- END OF USER RELATED ENDPOINTS --------
 
 
+# -------- MESSAGE RELATED ENDPOINTS --------
 message_fields = api.model('NewMessage', {
     dbm.USERNAME: fields.String,
     dbm.CHATROOM: fields.String,
@@ -229,13 +232,7 @@ class Messages(Resource):
         """
         This method returns all messages.
         """
-        return {
-            TYPE: DATA,
-            TITLE: 'Current Messages',
-            DATA: dbm.get_all_messages(),
-            MENU: USER_MENU_EP,  # fix this later!
-            RETURN: MAIN_MENU_EP,
-        }
+        return dbm.get_all_messages()
 
     @api.expect(message_fields)
     @api.response(HTTPStatus.OK, 'Success')
@@ -264,10 +261,14 @@ class RoomMessages(Resource):
         """
         This method returns all messages.
         """
-        return {
-            TYPE: DATA,
-            TITLE: 'Current Messages',
-            DATA: dbm.get_chatroom_messages(roomname),
-            MENU: USER_MENU_EP,  # fix this later!
-            RETURN: MAIN_MENU_EP,
-        }
+        return dbm.get_chatroom_messages(roomname),
+
+
+# CHATROOM RELATED ENDPOINTS
+@api.route(f'{GET_CHATROOMS_URL}')
+class GetChatrooms(Resource):
+    def get(self):
+        """
+        Displays all available chatrooms.
+        """
+        return dbch.get_chatrooms()
