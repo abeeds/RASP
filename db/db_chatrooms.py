@@ -12,11 +12,6 @@ def room_exists(name: str):
 
 
 def insert_chatroom(name: str, desc: str = ""):
-    if room_exists(name):
-        raise ValueError(f'Chat room with that already exists: {name}')
-    if not name:
-        raise ValueError('Chatroom must have a name')
-
     room = {}
     room[NAME] = name
     room[DESC] = desc
@@ -44,4 +39,8 @@ def update_description(name: str, new_desc: str = ""):
 
 def get_chatrooms():
     dbc.connect_db()
-    return dbc.fetch_all_as_dict(NAME, CHATROOM_COLLECT)
+    chatrooms = dbc.fetch_all(CHATROOM_COLLECT)
+
+    chatrooms_dict = {chatroom[NAME]: {DESC: str(chatroom[DESC])}
+                      for chatroom in chatrooms}
+    return chatrooms_dict

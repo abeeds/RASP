@@ -35,6 +35,7 @@ UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
 USER_ID = 'User ID'
 GET_CHATROOMS_URL = '/get_chatrooms'
+INSERT_CHATROOM_URL = '/insert_chatroom'
 MSGS_EP = '/messages'
 TYPE = 'Type'
 FORM = "Form"
@@ -272,3 +273,21 @@ class GetChatrooms(Resource):
         Displays all available chatrooms.
         """
         return dbch.get_chatrooms()
+
+
+@api.route(f'{INSERT_CHATROOM_URL}/<string:room_name>/<string:room_desc>')
+class InsertChatroom(Resource):
+    def post(self, room_name, room_desc=""):
+        """
+        Inserts a chatroom
+        """
+        response = {
+            "status": ""
+        }
+        if dbch.room_exists(room_name):
+            response["status"] = "A chatroom with this name already exists"
+        else:
+            dbch.insert_chatroom(room_name, room_desc)
+            response["status"] = "Chatroom created successfully."
+
+        return response
