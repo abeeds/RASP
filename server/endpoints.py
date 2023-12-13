@@ -286,8 +286,9 @@ class InsertChatroom(Resource):
         }
         if dbch.room_exists(room_name):
             response["status"] = "A chatroom with this name already exists"
-        else:
-            dbch.insert_chatroom(room_name, room_desc)
+        elif dbch.insert_chatroom(room_name, room_desc) is not None:
             response["status"] = "Chatroom created successfully."
+        else:
+            response["status"] = "Chatroom creation failed."
 
         return response
