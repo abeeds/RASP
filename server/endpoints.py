@@ -36,6 +36,7 @@ UPDATE_PASS_URL = "/update_password"
 USER_ID = 'User ID'
 GET_CHATROOMS_URL = '/get_chatrooms'
 INSERT_CHATROOM_URL = '/insert_chatroom'
+DELETE_CHATROOM_URL = '/delete_chatroom'
 MSGS_EP = '/messages'
 TYPE = 'Type'
 FORM = "Form"
@@ -150,7 +151,7 @@ class Register(Resource):
 
 @api.route(f'{DEACTIVATE_URL}/<string:username>')
 class DeactivateUser(Resource):
-    def post(self, username):
+    def delete(self, username):
         """
         Endpoint for deleting users.
         """
@@ -265,7 +266,7 @@ class RoomMessages(Resource):
         return dbm.get_chatroom_messages(roomname),
 
 
-# CHATROOM RELATED ENDPOINTS
+# --------- CHATROOM RELATED ENDPOINTS ---------
 @api.route(f'{GET_CHATROOMS_URL}')
 class GetChatrooms(Resource):
     def get(self):
