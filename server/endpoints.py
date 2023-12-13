@@ -1,6 +1,11 @@
 """
 This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
+
+CTRL + F to jump to these sections:
+    USER RELATED ENDPOINTS
+    MESSAGE RELATED ENDPOINTS
+    CHATROOM RELATED ENDPOINTS
 """
 
 from http import HTTPStatus
@@ -22,22 +27,23 @@ api = Api(app)
 
 DEFAULT = 'Default'
 MENU = 'menu'
-MAIN_MENU_EP = '/MainMenu'
-MAIN_MENU_NM = "RASP"
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
-# USERS = 'users'
-USER_MENU_EP = '/user_menu'
-USER_MENU_NM = 'User Menu'
+
+# user endpoint urls
 REGISTER_URL = "/register"
 DEACTIVATE_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
-USER_ID = 'User ID'
+
+# chatroom endpoint urls
 GET_CHATROOMS_URL = '/get_chatrooms'
 INSERT_CHATROOM_URL = '/insert_chatroom'
 DELETE_CHATROOM_URL = '/delete_chatroom'
+
+# message endpoint urls
 MSGS_EP = '/messages'
+
 TYPE = 'Type'
 FORM = "Form"
 DATA = 'Data'
@@ -68,8 +74,7 @@ class HelloWorld(Resource):
     class Endpoints(Resource):
         """
         This class will serve as live, fetchable documentation of what
-        endpoints
-        are available in the system.
+        endpoints are available in the system.
         """
         def get(self):
             """
@@ -79,30 +84,6 @@ class HelloWorld(Resource):
                                in api.app.url_map.iter_rules())
             return {"Available endpoints": endpoints}
 
-    @api.route(f'{MAIN_MENU_EP}')
-    class MainMenu(Resource):
-        """
-        This will deliver our main menu.
-        """
-        def get(self):
-            """
-            Gets the main game menu.
-            """
-            global MODE, USERNAME_FORM
-
-            return {TITLE: MAIN_MENU_NM,
-                    DEFAULT: 1,
-                    'Choices': {
-                        '1': {'url': '/login', 'method': 'get',
-                              'text': 'Log In'},
-                        '2': {'url': f'{REGISTER_URL}', 'method': 'get',
-                              'text': 'Register'},
-                        '3': {'url': '/get_users',
-                              'method': 'get',
-                              'text': 'Display Users'},
-                        'X': {'text': 'Exit'},
-                    }}
-
 
 # ----------- USER RELATED ENDPOINTS -----------
 @api.route('/get_users')
@@ -110,14 +91,12 @@ class GetUsers(Resource):
     def get(self):
         """
         This method returns all users.
+        Returned in this format:
+        {"Username": {"_id": id}}
         """
         users_data = dbu.get_users()
 
-        return {
-            TYPE: DATA,
-            TITLE: 'User List',
-            DATA: users_data,
-        }
+        return users_data
 
 
 @api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
@@ -130,7 +109,6 @@ class Register(Resource):
 
         response = {
             'inserted_id': None,
-
             'message': ""
         }
 
@@ -200,8 +178,9 @@ class UpdateUser(Resource):
 class UpdatePw(Resource):
     def put(Resource, username, new_password):
         """
-            Updates the password of the account with the provided
-            username.
+            Updates the password of account with specific username.
+            This endpoint will return a failure if an account with
+            username does not exist.
         """
         updateStatus = False
 
@@ -214,7 +193,6 @@ class UpdatePw(Resource):
             else "The provided username does not exist."
         }
         return response
-# -------- END OF USER RELATED ENDPOINTS --------
 
 
 # -------- MESSAGE RELATED ENDPOINTS --------
@@ -280,7 +258,7 @@ class GetChatrooms(Resource):
 class InsertChatroom(Resource):
     def post(self, room_name, room_desc=""):
         """
-        Inserts a chatroom
+        Inserts a chatroom.
         """
         response = {
             "status": ""
