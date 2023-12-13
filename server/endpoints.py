@@ -293,3 +293,23 @@ class InsertChatroom(Resource):
             response["status"] = "Chatroom creation failed."
 
         return response
+
+
+@api.route(f'{DELETE_CHATROOM_URL}/<string:room_name>')
+class DeleteChatroom(Resource):
+    def delete(self, room_name):
+        """
+        Endpoint for deleting chatrooms identified by room_name.
+        """
+        response = {
+            "Chatroom Deleted": "",
+            "Status": ""
+        }
+        if not dbch.room_exists(room_name):
+            response["Status"] = "Chatroom with that name doesn't exist"
+        else:
+            dbch.delete_chatroom(room_name)
+            response["Chatroom Deleted"]: room_name
+            response["Status"] = "Chatroom deleted successfuly"
+
+        return response
