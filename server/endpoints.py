@@ -26,11 +26,11 @@ api = Api(app)
 
 
 DEFAULT = 'Default'
-MENU = 'menu'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 
 # user endpoint urls
+GET_USERS_URL = '/get_users'
 REGISTER_URL = "/register"
 DEACTIVATE_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
@@ -43,22 +43,10 @@ DELETE_CHATROOM_URL = '/delete_chatroom'
 UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
-MSGS_EP = '/messages'
 GET_MSGS_URL = '/get_msgs'
+GET_MSGS_TEST_URL = '/get_msgs_test_version'
 WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
-
-TYPE = 'Type'
-FORM = "Form"
-DATA = 'Data'
-TITLE = 'Title'
-RETURN = 'Return'
-
-
-URL = "url"
-METHOD = "method"
-TEXT = "text"
-SUBMIT = "Submit"
 
 
 @api.route(HELLO_EP)
@@ -90,7 +78,7 @@ class HelloWorld(Resource):
 
 
 # ----------- USER RELATED ENDPOINTS -----------
-@api.route('/get_users')
+@api.route(f'{GET_USERS_URL}')
 class GetUsers(Resource):
     def get(self):
         """
@@ -110,7 +98,6 @@ class Register(Resource):
         Endpoint for handling the registration process
         (Inserting Users)
         """
-
         response = {
             'inserted_id': None,
             'message': ""
@@ -136,6 +123,7 @@ class DeactivateUser(Resource):
     def delete(self, username):
         """
         Endpoint for deleting users.
+        The user is identified by the username.
         """
         deleted_id = ""
         user_doc = dbu.user_exists(username)
@@ -215,8 +203,30 @@ class GetMsgs(Resource):
         """
         if not dbch.room_exists(room_name):
             return {
-                "Status": "A room with that name does not exist."
+                "Status": "Room does not exist."
             }
+
+        messages = dbm.get_chatroom_messages(room_name)
+        return messages
+
+
+@api.route(f'{GET_MSGS_TEST_URL}/<string:room_name>')
+class GetMsgsTestVer(Resource):
+    def get(self, room_name):
+        """
+        This endpoint returns all messages from a specified room.
+        The format of each returned message is:
+        id: {
+            "Chatroom": ______,
+            "User": ______,
+            "Timestamp: ______,
+            "Content": ______
+        }
+
+        This endpoint does not check if the room is valid.
+        This is to allow for checking whether messages
+        associated with a deleted room still exist.
+        """
 
         messages = dbm.get_chatroom_messages(room_name)
         return messages
@@ -274,6 +284,10 @@ class GetChatrooms(Resource):
     def get(self):
         """
         Displays all available chatrooms.
+        Rooms are displayed in this format:
+        Room_name: {
+            description: ________
+        }
         """
         return dbch.get_chatrooms()
 
@@ -325,6 +339,7 @@ class UpdateCrDesc(Resource):
         The chatroom is specified with the room_name parameter.
         The new description is entered in the new_desc parameter.
         """
+
         response = {
             "Status": ""
         }

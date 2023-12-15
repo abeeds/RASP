@@ -1,4 +1,5 @@
 import db.db_connect as dbc
+import db.db_messages as dbm
 
 
 CHATROOM_COLLECT = "chat rooms"
@@ -24,6 +25,8 @@ def insert_chatroom(name: str, desc: str = ""):
 def delete_chatroom(name: str):
     dbc.connect_db()
     if room_exists(name):
+        msgs = dbc.client[dbc.USER_DB][dbm.MESSAGE_COLLECT]
+        msgs.delete_many({dbm.CHATROOM: name})
         return dbc.del_one(CHATROOM_COLLECT, {NAME: name})
     else:
         raise ValueError(f'Could not find a room named {name}.')
