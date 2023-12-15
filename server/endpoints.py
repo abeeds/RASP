@@ -44,7 +44,8 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
 MSGS_EP = '/messages'
-GET_MSGS_URL = '/get_messages'
+GET_MSGS_URL = '/get_msgs'
+WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 
 TYPE = 'Type'
 FORM = "Form"
@@ -225,6 +226,31 @@ class GetMsgs(Resource):
 
         messages = dbm.get_chatroom_messages(room_name)
         return messages
+
+
+@api.route(f'{WRITE_MSG_URL}')
+class WriteMessage(Resource):
+    def post(self, room, username, content):
+        """
+        Writes a message to the specified room from the specified user.
+        room specifies the chatroom
+        username specifies the user
+        content specifies the content of the message
+        """
+        if not dbch.room_exists(room):
+            return {
+                "Status": "A room with that name does not exist."
+            }
+
+        if not dbu.user_exists(username):
+            return {
+                "Status": "User with that username does not exist."
+            }
+
+        dbm.insert_message(username, room, content)
+        return {
+            "Status": "message written successfully."
+        }
 
 
 @api.route(f'{MSGS_EP}')

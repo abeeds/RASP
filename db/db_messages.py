@@ -4,10 +4,8 @@ from datetime import datetime
 from bson import ObjectId
 
 
-# TODO - edit, delete msg - need to figure out
+# TODO - delete msg - need to figure out
 #        user friendly way to select msgs
-#
-#        get 15 recent msgs from specific room
 #
 #        function that deletes all msgs associated
 #        with a specific room - used when that room
@@ -44,11 +42,12 @@ def get_chatroom_messages(chatroom: str):
     connect_db()
     messages = fetch_all(MESSAGE_COLLECT)
 
-    message_dict = {msg["_id"]:
+    message_dict = {str(msg["_id"]):
                     {
                         "Chatroom": msg[CHATROOM],
                         "User": msg[USERNAME],
-                        "Timestamp": msg[TIMESTAMP],
+                        "Timestamp": str(datetime.utcfromtimestamp(
+                            msg[TIMESTAMP])),
                         "Content": msg[CONTENT]
                     }
                     for msg in messages}
