@@ -8,13 +8,13 @@ CTRL + F to jump to these sections:
     CHATROOM RELATED ENDPOINTS
 """
 
-from http import HTTPStatus
+# from http import HTTPStatus
 
-from flask import Flask, request
+from flask import Flask  # , request
 from flask_restx import Resource, Api, fields
 # import db.db_connect as dbc
 
-import werkzeug.exceptions as wz
+# import werkzeug.exceptions as wz
 
 import db.db_users as dbu
 import db.db_messages as dbm
@@ -273,47 +273,6 @@ class DeleteMsg(Resource):
         return {
             "Status": "Message deleted successfully."
         }
-
-
-@api.route(f'{MSGS_EP}')
-class Messages(Resource):
-    """
-    This class supports fetching a list of all messages.
-    """
-    def get(self):
-        """
-        This method returns all messages.
-        """
-        return dbm.get_all_messages()
-
-    @api.expect(message_fields)
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def post(self):
-        """
-        Add a messages.
-        """
-        reqmsg = request.json
-        try:
-            msgname = reqmsg[dbm.USERNAME]
-            msgroom = reqmsg[dbm.CHATROOM]
-            msgcontent = reqmsg[dbm.CONTENT]
-            dbm.insert_message(msgname, msgroom, msgcontent)
-            return 200
-        except ValueError as e:
-            raise wz.NotAcceptable(f'{str(e)}')
-
-
-@api.route(f'{MSGS_EP}/<string:roomname>')
-class RoomMessages(Resource):
-    """
-    This class supports fetching a list of all messages from a chatroom.
-    """
-    def get(self, roomname):
-        """
-        This method returns all messages.
-        """
-        return dbm.get_chatroom_messages(roomname),
 
 
 # --------- CHATROOM RELATED ENDPOINTS ---------
