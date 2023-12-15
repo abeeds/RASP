@@ -46,6 +46,7 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 MSGS_EP = '/messages'
 GET_MSGS_URL = '/get_msgs'
 WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
+DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 
 TYPE = 'Type'
 FORM = "Form"
@@ -250,6 +251,27 @@ class WriteMessage(Resource):
         dbm.insert_message(username, room, content)
         return {
             "Status": "message written successfully."
+        }
+
+
+@api.route(f'{DEL_MSG_URL}')
+class DeleteMsg(Resource):
+    def delete(self, msg_id):
+        """
+        This endpoint deletes messages.
+        Messages are identified with their id (_id in mongodb)
+        because this is the only way to completely identify them.
+        Message ids can be found using the get_msgs endpoint.
+        They are the keys in the response to that endpoint.
+        """
+        if not dbm.message_exists(msg_id):
+            return {
+                "Status": "A message with that ID does not exist."
+            }
+
+        dbm.delete_message(msg_id)
+        return {
+            "Status": "Message deleted successfully."
         }
 
 
