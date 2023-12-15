@@ -11,7 +11,7 @@ CTRL + F to jump to these sections:
 # from http import HTTPStatus
 
 from flask import Flask  # , request
-from flask_restx import Resource, Api, fields
+from flask_restx import Resource, Api  # , fields
 # import db.db_connect as dbc
 
 # import werkzeug.exceptions as wz
@@ -200,13 +200,6 @@ class UpdatePw(Resource):
 
 
 # -------- MESSAGE RELATED ENDPOINTS --------
-message_fields = api.model('NewMessage', {
-    dbm.USERNAME: fields.String,
-    dbm.CHATROOM: fields.String,
-    dbm.CONTENT: fields.String,
-})
-
-
 @api.route(f'{GET_MSGS_URL}/<string:room_name>')
 class GetMsgs(Resource):
     def get(self, room_name):
