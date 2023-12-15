@@ -40,6 +40,7 @@ UPDATE_PASS_URL = "/update_password"
 GET_CHATROOMS_URL = '/get_chatrooms'
 INSERT_CHATROOM_URL = '/insert_chatroom'
 DELETE_CHATROOM_URL = '/delete_chatroom'
+UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
 MSGS_EP = '/messages'
@@ -290,4 +291,24 @@ class DeleteChatroom(Resource):
             response["Chatroom Deleted"]: room_name
             response["Status"] = "Chatroom deleted successfuly"
 
+        return response
+
+
+@api.route(f'{UPDATE_CR_DESC_URL}/<string:room_name>/<string:new_desc>')
+class UpdateCrDesc(Resource):
+    def put(Resource, room_name, new_desc):
+        """
+        This endpoint updates the chatroom's description.
+        The chatroom is specified with the room_name parameter.
+        The new description is entered in the new_desc parameter.
+        """
+        response = {
+            "Status": ""
+        }
+
+        if not dbch.room_exists(room_name):
+            response["Status"] = "A room with that name does not exist."
+        else:
+            dbch.update_description(room_name, new_desc)
+            response["Status"] = "Chatroom description updated successfully."
         return response
