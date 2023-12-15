@@ -44,6 +44,7 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
 MSGS_EP = '/messages'
+GET_MSGS_URL = '/get_messages'
 
 TYPE = 'Type'
 FORM = "Form"
@@ -202,6 +203,28 @@ message_fields = api.model('NewMessage', {
     dbm.CHATROOM: fields.String,
     dbm.CONTENT: fields.String,
 })
+
+
+@api.route(f'{GET_MSGS_URL}/<string:room_name>')
+class GetMsgs(Resource):
+    def get(self, room_name):
+        """
+        This endpoint returns all messages from a specified room.
+        The format of each returned message is:
+        id: {
+            "Chatroom": ______,
+            "User": ______,
+            "Timestamp: ______,
+            "Content": ______
+        }
+        """
+        if not dbch.room_exists(room_name):
+            return {
+                "Status": "A room with that name does not exist."
+            }
+
+        messages = dbm.get_chatroom_messages(room_name)
+        return messages
 
 
 @api.route(f'{MSGS_EP}')

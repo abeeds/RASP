@@ -1,5 +1,5 @@
 from .db_connect import insert_one, connect_db, del_one
-from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
+from .db_connect import fetch_one, fetch_all_as_dict, fetch_all
 from datetime import datetime
 from bson import ObjectId
 
@@ -42,7 +42,18 @@ def get_all_messages():
 
 def get_chatroom_messages(chatroom: str):
     connect_db()
-    return fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
+    messages = fetch_all(MESSAGE_COLLECT)
+
+    message_dict = {msg["_id"]:
+                    {
+                        "Chatroom": msg[CHATROOM],
+                        "User": msg[USERNAME],
+                        "Timestamp": msg[TIMESTAMP],
+                        "Content": msg[CONTENT]
+                    }
+                    for msg in messages}
+
+    return message_dict
 
 
 def message_exists(id: str):
