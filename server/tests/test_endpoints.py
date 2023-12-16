@@ -84,7 +84,9 @@ def test_get_messages(temp_chatroom, temp_user, temp_msg):
 def test_deactivate(mock_del):
     resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
     assert resp.status_code == OK
-    assert 'message' in resp.get_json()
+    resp_json = resp.get_json()
+    assert 'message' in resp_json
+    assert dbu.user_exists('tstusrname')['_id'] == resp_json['deleted_id']
 
 
 @patch('db.db_chatrooms.insert_chatroom', autospec=True)
