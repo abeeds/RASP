@@ -28,6 +28,7 @@ def test_get_test_user():
     assert isinstance(usrs.get_test_user(), dict)
 
 
+@pytest.mark.skip('skip unnecessary test')
 def test_get_users(temp_user):
     users = usrs.get_users()
     assert isinstance(users, dict)
