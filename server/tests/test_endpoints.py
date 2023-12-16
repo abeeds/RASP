@@ -25,9 +25,10 @@ TESTPASS = 'password'
 def temp_chatroom():
     dbch.insert_chatroom(TESTROOM)
     dbu.insert_user(TESTUSER, TESTPASS)
-    yield TESTROOM, TESTUSER
-    dbch.delete_chatroom(TESTROOM)
-    dbu.deactivate(TESTUSER)
+    return TESTROOM, TESTUSER
+    # yield TESTROOM, TESTUSER
+    # dbch.delete_chatroom(TESTROOM)
+    #dbu.deactivate(TESTUSER)
 
 def test_hello():
     resp = TEST_CLIENT.get(ep.HELLO_EP)
