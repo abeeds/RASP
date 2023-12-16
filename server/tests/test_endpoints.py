@@ -42,8 +42,9 @@ def test_get_chatrooms():
     assert isinstance(resp_json, dict)
 
 
-@pytest.mark.skip('Add fixture later')
 def test_get_messages():
+    resp = TEST_CLIENT.post(f'{INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
@@ -87,3 +88,11 @@ def test_delete_chatroom():
     resp_json = resp.get_json()
     assert "Chatroom Deleted" in resp_json
 
+
+"""
+DEL_MSG_URL = '/delete_msg/<string:msg_id>'
+def test_delete_msg():
+    resp = TEST_CLIENT.post(f'{INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
+
+"""
