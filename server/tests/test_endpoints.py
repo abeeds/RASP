@@ -56,3 +56,17 @@ def test_insert_chatroom():
     assert isinstance(resp_json, dict)
     assert "status" in resp_json
 
+
+def test_register():
+    resp = TEST_CLIENT.post(f'{ep.REGISTER_URL}/tstusrname/tstpass')
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+
+
+def test_insert_chatroom():
+    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+    assert "Status" in resp_json
