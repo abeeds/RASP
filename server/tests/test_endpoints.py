@@ -6,6 +6,7 @@ import pytest
 
 import db.users as usrs
 import db.db_users as dbu
+import db.db_chatrooms as dbch
 
 import server.endpoints as ep
 
