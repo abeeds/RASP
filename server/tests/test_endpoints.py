@@ -80,10 +80,9 @@ def test_deactivate(mock_del):
     assert 'message' in resp.get_json()
 
 
-def test_insert_chatroom():
-    resp = TEST_CLIENT.post(
-        f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc'
-    )
+@patch('db.db_chatrooms.insert_chatroom', autospec=True)
+def test_insert_chatroom(mock_add):
+    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/tstroom/tstdesc')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
