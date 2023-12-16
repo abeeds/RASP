@@ -97,8 +97,9 @@ class GetUsers(Resource):
 class Register(Resource):
     def post(self, username, password):
         """
-        Endpoint for handling the registration process
-        (Inserting Users)
+        Endpoint for inserting users.
+        username can't have spaces in it.
+        usernames must also be unique.
         """
         response = {
             'inserted_id': None,
@@ -150,8 +151,8 @@ class UpdateUser(Resource):
     def put(Resource, curr_username, new_username):
         """
             Updates a username from curr_username to new_username.
-            First checks that the curr_username exists, and the new one
-            does not.
+            First checks that the curr_username exists, and the new
+            username is not taken.
         """
         response = {
             "Status": ""
@@ -299,6 +300,8 @@ class InsertChatroom(Resource):
     def post(self, room_name, room_desc=""):
         """
         Inserts a chatroom.
+        room_name specifies the name.
+        room_desc specifies the description.
         """
         response = {
             "status": ""
@@ -318,6 +321,7 @@ class DeleteChatroom(Resource):
     def delete(self, room_name):
         """
         Endpoint for deleting chatrooms identified by room_name.
+        This endpoint also deletes all messages associated with it.
         """
         response = {
             "Chatroom Deleted": "",
