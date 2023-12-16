@@ -77,6 +77,7 @@ def test_get_messages(temp_chatroom):
 def test_deactivate(mock_del):
     resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
     assert resp.status_code == OK
+    assert 'message' in resp.get_json()
 
 
 def test_insert_chatroom():
