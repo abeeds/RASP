@@ -55,11 +55,12 @@ def test_get_users(temp_user):
     assert TESTUSER in resp_json
 
 
-def test_get_chatrooms():
+def test_get_chatrooms(temp_chatroom):
     resp = TEST_CLIENT.get(ep.GET_CHATROOMS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
+    assert TESTROOM in resp_json
 
 
 @pytest.mark.skip('to be debugged')
