@@ -72,3 +72,10 @@ def test_write_msg():
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
     assert "Status" in resp_json
+
+
+def test_deactivate():
+    resp = TEST_CLIENT.post(f'{ep.REGISTER_URL}/tstusrname/tstpass')
+    resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
+    resp_json = resp.get_json()
+    assert 'deleted' in resp_json
