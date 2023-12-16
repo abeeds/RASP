@@ -91,8 +91,10 @@ def test_delete_chatroom():
 
 @patch('db.db_messages.delete_message', autospec=True)
 def test_delete_msg(mock_del):
-    resp = TEST_CLIENT.delete('/delete_msg/test_id')
+    resp = TEST_CLIENT.delete('/delete_msg/656ff6eaae48ed73d9d56020')
     assert resp.status_code == OK
+
+
 
 
 """
