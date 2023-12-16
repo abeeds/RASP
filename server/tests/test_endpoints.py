@@ -3,6 +3,7 @@ from http.client import OK, NOT_FOUND, FORBIDDEN, NOT_ACCEPTABLE, BAD_REQUEST
 from unittest.mock import patch
 
 import pytest
+import random
 
 import db.users as usrs
 import db.db_users as dbu
@@ -11,6 +12,9 @@ import db.db_chatrooms as dbch
 import server.endpoints as ep
 
 TEST_CLIENT = ep.app.test_client()
+
+ID_LEN = 24
+MOCK_ID = '0' * ID_LEN
 
 
 def test_hello():
@@ -91,24 +95,6 @@ def test_delete_chatroom():
 
 @patch('db.db_messages.delete_message', autospec=True)
 def test_delete_msg(mock_del):
-    resp = TEST_CLIENT.delete('/delete_msg/656ff6eaae48ed73d9d56020')
+    resp = TEST_CLIENT.delete(f'/delete_msg/{MOCK_ID}')
     assert resp.status_code == OK
 
-
-
-
-"""
-DEL_MSG_URL = '/delete_msg/<string:msg_id>'
-def test_delete_msg():
-    resp = TEST_CLIENT.post(f'{INSERT_CHATROOM_URL}/testroomname/testroomdesc')
-    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
-
-
-def test_delete_msg():
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
-    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
-    resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
-    assert resp.status_code == OK
-    resp_json = resp.get_json()
-    assert isinstance(resp_json, dict)
-"""
