@@ -86,7 +86,8 @@ def test_deactivate(mock_del):
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert 'message' in resp_json
-    assert dbu.user_exists('tstusrname')['_id'] == resp_json['deleted_id']
+    # assert dbu.user_exists('tstusrname')['_id'] == resp_json['deleted_id']
+    assert dbu.user_exists('tstusrname') is None
 
 
 @patch('db.db_chatrooms.insert_chatroom', autospec=True)
@@ -121,6 +122,7 @@ def test_delete_chatroom(mock_del):
     resp_json = resp.get_json()
     assert "Chatroom Deleted" in resp_json
     assert resp.status_code == OK
+    assert dbch.room_exists(TESTROOM) is None
 
 
 @patch('db.db_messages.delete_message', autospec=True)
