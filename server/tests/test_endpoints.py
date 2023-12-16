@@ -129,6 +129,7 @@ def test_delete_chatroom(mock_del):
 def test_delete_msg(mock_del):
     resp = TEST_CLIENT.delete(f'/delete_msg/{MOCK_ID}')
     assert resp.status_code == OK
+    assert dbm.message_exists(MOCK_ID) is None
 
 
 @patch('db.db_chatrooms.update_description', autospec=True)
