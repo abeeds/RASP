@@ -3,7 +3,6 @@ from http.client import OK
 from unittest.mock import patch
 
 import pytest
-# import random
 
 import db.db_users as dbu
 import db.db_chatrooms as dbch
@@ -22,11 +21,15 @@ TESTPASS = 'password'
 @pytest.fixture(scope='function')
 def temp_chatroom():
     dbch.insert_chatroom(TESTROOM)
+    yield TESTROOM
+    dbch.delete_chatroom(TESTROOM)
+
+
+@pytest.fixture(scope='function')
+def temp_user():
     dbu.insert_user(TESTUSER, TESTPASS)
-    return TESTROOM, TESTUSER
-    # yield TESTROOM, TESTUSER
-    # dbch.delete_chatroom(TESTROOM)
-    # dbu.deactivate(TESTUSER)
+    yield TESTUSER
+    dbu.deactivate(TESTUSER)
 
 
 def test_hello():
@@ -44,11 +47,12 @@ def test_get_endpoints():
     assert isinstance(resp_json, dict)
 
 
-def test_get_users():
+def test_get_users(temp_user):
     resp = TEST_CLIENT.get(ep.GET_USERS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
+    assert TESTUSER in resp_json
 
 
 def test_get_chatrooms():
