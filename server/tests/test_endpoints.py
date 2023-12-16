@@ -65,7 +65,7 @@ def test_register():
     assert isinstance(resp_json, dict)
 
 
-def test_insert_chatroom():
+def test_write_msg():
     dbch.insert_chatroom('testroomname', 'testdescription')
     resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
     assert resp.status_code == OK
