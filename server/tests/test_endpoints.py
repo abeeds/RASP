@@ -15,6 +15,15 @@ TEST_CLIENT = ep.app.test_client()
 
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
+TESTR00M = 'dev chatroom'
+
+
+
+@pytest.fixture(scope='function')
+def temp_chatroom():
+    dbch.insert_chatroom(TESTROOM)
+    yield TESTROOM
+    dbch.delete_chatroom(TESTROOM)
 
 
 def test_hello():
@@ -46,10 +55,8 @@ def test_get_chatrooms():
     assert isinstance(resp_json, dict)
 
 
-@pytest.mark.skip('get back to this')
-def test_get_messages():
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
-    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
+def test_get_messages(temp_chatroom):
+    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/tstusrname/tstcontent')
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
