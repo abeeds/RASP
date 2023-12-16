@@ -82,19 +82,17 @@ def test_write_msg():
     assert "Status" in resp_json
 
 
-@pytest.mark.skip('get back to this')
-def test_deactivate2():
-    resp = TEST_CLIENT.post(f'{ep.REGISTER_URL}/tstusrname/tstpass')
-    resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
-    resp_json = resp.get_json()
-    assert 'deleted_id' in resp_json
-
-
 def test_delete_chatroom():
     resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
     resp = TEST_CLIENT.delete(f'{ep.DELETE_CHATROOM_URL}/testroomname')
     resp_json = resp.get_json()
     assert "Chatroom Deleted" in resp_json
+
+
+@patch('db.db_messages.delete_message', autospec=True)
+def test_delete_msg(mock_del):
+    resp = TEST_CLIENT.delete('/delete_msg/test_id')
+    assert resp.status_code == OK
 
 
 """
