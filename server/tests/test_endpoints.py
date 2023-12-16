@@ -41,9 +41,18 @@ def test_get_chatrooms():
     assert isinstance(resp_json, dict)
 
 
+@pytest.mark.skip('Add fixture later')
 def test_get_messages():
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
+
+
+def test_insert_chatroom():
+    resp = TEST_CLIENT.get(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+    assert "status" in resp_json
 
