@@ -86,7 +86,6 @@ def test_deactivate(mock_del):
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert 'message' in resp_json
-    # assert dbu.user_exists('tstusrname')['_id'] == resp_json['deleted_id']
     assert dbu.user_exists('tstusrname') is None
 
 
@@ -148,3 +147,4 @@ def test_update_password(mock_update):
 def test_update_username(mock_update):
     resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/anyuser/anynewuser')
     assert resp.status_code == OK
+    assert dbu.user_exists('anyuser') is None
