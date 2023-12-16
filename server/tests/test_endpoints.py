@@ -89,11 +89,13 @@ def test_insert_chatroom(mock_add):
     assert "status" in resp_json
 
 
-def test_register():
+@patch('db.db_users.insert_user', autospec=True)
+def test_register(mock_add):
     resp = TEST_CLIENT.post(f'{ep.REGISTER_URL}/tstusrname/tstpass')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
+    assert "message" in resp_json
 
 
 def test_write_msg():
