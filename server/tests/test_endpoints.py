@@ -24,8 +24,10 @@ TESTPASS = 'password'
 @pytest.fixture(scope='function')
 def temp_chatroom():
     dbch.insert_chatroom(TESTROOM)
-    yield TESTROOM
+    dbu.insert_user(TESTUSER, TESTPASS)
+    yield TESTROOM, TESTUSER
     dbch.delete_chatroom(TESTROOM)
+    dbu.deactivate(TESTUSER)
 
 
 @pytest.fixture(scope='function')
@@ -64,7 +66,7 @@ def test_get_chatrooms():
     assert isinstance(resp_json, dict)
 
 
-def test_get_messages(temp_chatroom, temp_user):
+def test_get_messages(temp_chatroom):
     resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
