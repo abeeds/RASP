@@ -29,14 +29,6 @@ def temp_chatroom():
     dbch.delete_chatroom(TESTROOM)
     dbu.deactivate(TESTUSER)
 
-
-@pytest.fixture(scope='function')
-def temp_user():
-    dbu.insert_user(TESTUSER, TESTPASS)
-    yield TESTUSER, TESTPASS
-    dbu.deactivate(TESTUSER)
-
-
 def test_hello():
     resp = TEST_CLIENT.get(ep.HELLO_EP)
     print(f'{resp=}')
@@ -67,7 +59,8 @@ def test_get_chatrooms():
 
 
 def test_get_messages(temp_chatroom):
-    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
+    testroom, testuser = temp_chatroom
+    resp = TEST_CLIENT.post(f'/write_msg/{testroom}/{testuser}/tstcontent')
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
