@@ -81,3 +81,9 @@ def test_deactivate():
     assert 'deleted_id' in resp_json
 
 
+def test_delete_chatroom():
+    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.delete(f'{ep.DELETE_CHATROOM_URL}/testroomname')
+    resp_json = resp.get_json()
+    assert "Chatroom Deleted" in resp_json
+
