@@ -18,3 +18,9 @@ def test_hello():
     resp_json = resp.get_json()
     print(f'{resp_json=}')
     assert ep.HELLO_RESP in resp_json
+
+
+def test_endpoints():
+    resp = TEST_CLIENT.get(ep.ENDPOINTS_EP)
+    resp_json = resp.get_json()
+    assert "Available endpoints" in resp_json

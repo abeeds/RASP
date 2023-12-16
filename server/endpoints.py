@@ -28,6 +28,7 @@ api = Api(app)
 DEFAULT = 'Default'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
+ENDPOINTS_EP = '/endpoints'
 
 # user endpoint urls
 GET_USERS_URL = '/get_users'
@@ -62,19 +63,20 @@ class HelloWorld(Resource):
         """
         return {HELLO_RESP: 'world'}
 
-    @api.route('/endpoints')
-    class Endpoints(Resource):
+
+@api.route(ENDPOINTS_EP)
+class Endpoints(Resource):
+    """
+    This class will serve as live, fetchable documentation of what
+    endpoints are available in the system.
+    """
+    def get(self):
         """
-        This class will serve as live, fetchable documentation of what
-        endpoints are available in the system.
+        The `get()` method will return a list of available endpoints.
         """
-        def get(self):
-            """
-            The `get()` method will return a list of available endpoints.
-            """
-            endpoints = sorted(rule.rule for rule
-                               in api.app.url_map.iter_rules())
-            return {"Available endpoints": endpoints}
+        endpoints = sorted(rule.rule for rule
+                           in api.app.url_map.iter_rules())
+        return {"Available endpoints": endpoints}
 
 
 # ----------- USER RELATED ENDPOINTS -----------
