@@ -50,7 +50,7 @@ def test_get_messages():
 
 
 def test_insert_chatroom():
-    resp = TEST_CLIENT.get(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
