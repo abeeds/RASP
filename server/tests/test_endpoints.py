@@ -1,11 +1,10 @@
-from http.client import OK, NOT_FOUND, FORBIDDEN, NOT_ACCEPTABLE, BAD_REQUEST
+from http.client import OK
 
 from unittest.mock import patch
 
 import pytest
-import random
+# import random
 
-import db.users as usrs
 import db.db_users as dbu
 import db.db_chatrooms as dbch
 
@@ -20,7 +19,6 @@ TESTUSER = 'dev user'
 TESTPASS = 'password'
 
 
-
 @pytest.fixture(scope='function')
 def temp_chatroom():
     dbch.insert_chatroom(TESTROOM)
@@ -28,7 +26,8 @@ def temp_chatroom():
     return TESTROOM, TESTUSER
     # yield TESTROOM, TESTUSER
     # dbch.delete_chatroom(TESTROOM)
-    #dbu.deactivate(TESTUSER)
+    # dbu.deactivate(TESTUSER)
+
 
 def test_hello():
     resp = TEST_CLIENT.get(ep.HELLO_EP)
@@ -76,7 +75,9 @@ def test_deactivate(mock_del):
 
 
 def test_insert_chatroom():
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.post(
+        f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc'
+    )
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
@@ -129,4 +130,3 @@ def test_update_password(mock_update):
 def test_update_username(mock_update):
     resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/anyuser/anynewuser')
     assert resp.status_code == OK
-
