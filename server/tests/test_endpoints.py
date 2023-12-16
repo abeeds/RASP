@@ -101,11 +101,18 @@ def test_delete_msg(mock_del):
 
 @patch('db.db_chatrooms.update_description', autospec=True)
 def test_update_chatroom_desc(mock_update):
-    resp = TEST_CLIENT.put(f'{UPDATE_CR_DESC_URL}/anyroom/anydesc')
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_CR_DESC_URL}/anyroom/anydesc')
     assert resp.status_code == OK
 
 
 @patch('db.db_users.update_password', autospec=True)
 def test_update_password(mock_update):
-    resp = TEST_CLIENT.put(f'{UPDATE_PASS_URL}/anyuser/anypass')
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_PASS_URL}/anyuser/anypass')
     assert resp.status_code == OK
+
+
+@patch('db.db_users.update_username', autospec=True)
+def test_update_username(mock_update):
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/anyuser/anynewuser')
+    assert resp.status_code == OK
+
