@@ -6,6 +6,7 @@ import pytest
 
 import db.db_users as dbu
 import db.db_chatrooms as dbch
+import db.db_messages as dbm
 
 import server.endpoints as ep
 
@@ -16,6 +17,7 @@ MOCK_ID = '0' * ID_LEN
 TESTROOM = 'dev chatroom'
 TESTUSER = 'dev user'
 TESTPASS = 'password'
+TESTCONTENT = 'lorem ipsum dolor sit amet'
 
 
 @pytest.fixture(scope='function')
@@ -30,6 +32,13 @@ def temp_user():
     dbu.insert_user(TESTUSER, TESTPASS)
     yield TESTUSER
     dbu.deactivate(TESTUSER)
+
+
+@pytest.fixture(scope='function')
+def temp_msg():
+    temp_id = dbm.insert_message(TESTUSER, TESTROOM, TESTCONTENT)
+    yield TESTUSER
+    dbm.delete_message(temp_id[0])
 
 
 def test_hello():
@@ -63,11 +72,9 @@ def test_get_chatrooms(temp_chatroom):
     assert TESTROOM in resp_json
 
 
-@pytest.mark.skip('to be debugged')
-def test_get_messages(temp_chatroom):
-    testroom, testuser = temp_chatroom
-    resp = TEST_CLIENT.post(f'/write_msg/{testroom}/{testuser}/tstcontent')
-    resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
+def test_get_messages(temp_chatroom, temp_user, temp_msg):
+    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
+    resp = TEST_CLIENT.get(f'{ep.GET_MSGS_URL}/{TESTROOM}')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
@@ -98,9 +105,8 @@ def test_register(mock_add):
     assert "message" in resp_json
 
 
-def test_write_msg():
-    dbch.insert_chatroom('testroomname', 'testdescription')
-    resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
+def test_write_msg(temp_chatroom, temp_user, temp_msg):
+    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
