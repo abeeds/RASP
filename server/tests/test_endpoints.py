@@ -43,7 +43,7 @@ def test_get_chatrooms():
 
 
 def test_get_messages():
-    resp = TEST_CLIENT.post(f'{INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
     resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
     resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
     assert resp.status_code == OK
