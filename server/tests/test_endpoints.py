@@ -98,3 +98,9 @@ def test_delete_msg(mock_del):
     resp = TEST_CLIENT.delete(f'/delete_msg/{MOCK_ID}')
     assert resp.status_code == OK
 
+
+@patch('db.db_chatrooms.update_description', autospec=True)
+def test_update_chatroom_desc(mock_update):
+    resp = TEST_CLIENT.put(f'/UPDATE_CR_DESC_URL/anyroom/anydesc')
+    assert resp.status_code == OK
+
