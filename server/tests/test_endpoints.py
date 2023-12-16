@@ -15,7 +15,7 @@ TEST_CLIENT = ep.app.test_client()
 
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
-TESTR00M = 'dev chatroom'
+TESTROOM = 'dev chatroom'
 
 
 
