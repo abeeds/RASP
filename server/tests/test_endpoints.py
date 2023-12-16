@@ -33,3 +33,17 @@ def test_get_users():
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
 
+
+def test_get_chatrooms():
+    resp = TEST_CLIENT.get(ep.GET_CHATROOMS_URL)
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+
+
+def test_get_messages():
+    resp = TEST_CLIENT.get(ep.GET_MSGS_URL)
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+
