@@ -20,7 +20,16 @@ def test_hello():
     assert ep.HELLO_RESP in resp_json
 
 
-def test_endpoints():
+def test_get_endpoints():
     resp = TEST_CLIENT.get(ep.ENDPOINTS_EP)
     resp_json = resp.get_json()
     assert "Available endpoints" in resp_json
+    assert isinstance(resp_json, dict)
+
+
+def test_get_users():
+    resp = TEST_CLIENT.get(ep.GET_USERS_URL)
+    assert resp.status_code == OK
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+
