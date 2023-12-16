@@ -65,6 +65,7 @@ def test_register():
 
 
 def test_insert_chatroom():
+    dbch.insert_chatroom('testroomname', 'testdescription')
     resp = TEST_CLIENT.post('/write_msg/testroomname/tstusrname/tstcontent')
     assert resp.status_code == OK
     resp_json = resp.get_json()
