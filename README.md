@@ -25,3 +25,8 @@ Install requirements with `pip install -r requirements.txt` <br>
 To build production, type `make prod`. <br>
 To create the env for a new developer, run `make dev_env`. <br>
 To run the server type `./local.sh` <br>
+
+## Backup and Restore
+To backup the cloud database type `./bkup.sh` <br>
+To restore the backup into the local datbaase type `./restore.sh` <br>
+Backups are found in db/bkup. This requires the cloud database password.
