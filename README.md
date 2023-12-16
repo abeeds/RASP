@@ -1,19 +1,27 @@
-# RASP - A Group Messaging App
-Our goal for this project is to create a group messaging app in Flask.
-We hope to create a system that allows users to create and 
-connect to groups or organizations, send messages to group
-chats within the server, and schedule events. The project
-will run entirely in a terminal through 
-[this](https://github.com/gcallah/TextGame). 
-## Required Installations
-* [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
-  * Please create a database named RASP once installed
-  * Make sure to update the environment variable. The path is ...\MongoDB\Server\7.0\bin\
+# RASP - A Messaging App Server
+Our project is a simple server for a messaging app. It uses Flask-RESTX
+to interface with a MongoDB database. The server is tested through Swagger.
 
-## Project Mockup:
-![Project Mockup](https://i.imgur.com/YHBZUQW.png)
+## Endpoints Available
+<ul>
+ <li><strong> deactivate </strong> - deletes a user account</li>
+ <li><strong> delete_chatroom </strong> - deletes a chatroom and its associated messages</li>
+ <li><strong> delete_msg </strong> - deletes a message by id</li>
+ <li><strong> get_chatrooms </strong> - displays all chatrooms</li>
+ <li><strong> get_msgs </strong> - displays all messages from a specific room</li>
+ <li><strong> get_msgs_test_version </strong> - same as above, but doesn't check for a valid room name to allow for testing</li>
+ <li><strong> get_users </strong> - displays all users and their ids</li>
+ <li><strong> insert_chatroom </strong> - creates a new chatroom</li>
+ <li><strong> register </strong> - creates a new user</li>
+ <li><strong> update_chatroom_desc </strong> - updates the chatroom's description</li>
+ <li><strong> update_password </strong> - updates a user's password</li>
+ <li><strong> update_username </strong> - updates a user's username</li>
+ <li><strong> write_message </strong> - inserts a user's message to a specific chatroom</li>
+</ul>
+
 
 ## Build
-To build production, type `make prod`.
-
-To create the env for a new developer, run `make dev_env`.
+Install requirements with `pip install -r requirements.txt` <br>
+To build production, type `make prod`. <br>
+To create the env for a new developer, run `make dev_env`. <br>
+To run the server type `./local.sh` <br>
