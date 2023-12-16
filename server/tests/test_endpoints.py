@@ -86,11 +86,12 @@ def test_write_msg():
     assert "Status" in resp_json
 
 
-def test_delete_chatroom():
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/testroomname/testroomdesc')
+@patch('db.db_chatrooms.delete_chatroom', autospec=True)
+def test_delete_chatroom(mock_del):
     resp = TEST_CLIENT.delete(f'{ep.DELETE_CHATROOM_URL}/testroomname')
     resp_json = resp.get_json()
     assert "Chatroom Deleted" in resp_json
+    assert resp.status_code == OK
 
 
 @patch('db.db_messages.delete_message', autospec=True)
