@@ -1,6 +1,7 @@
 # RASP - A Messaging App Server
-Our project is a simple server for a messaging app. It uses Flask-RESTX
-to interface with a MongoDB database. The server is tested through Swagger.
+Our project is an API server for a messaging app. It uses Flask-RESTX
+to interface with a MongoDB database. The server is tested through Swagger.<br>
+
 
 ## Endpoints Available
 <ul>

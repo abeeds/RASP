@@ -196,6 +196,8 @@ class GetMsgs(Resource):
     def get(self, room_name):
         """
         This endpoint returns all messages from a specified room.
+        This endpoint checks that the room is valid.
+        Use the get_chatrooms endpoint to see all valid rooms.
         The format of each returned message is:
         id: {
             "Chatroom": ______,
@@ -243,6 +245,9 @@ class WriteMessage(Resource):
         room specifies the chatroom
         username specifies the user
         content specifies the content of the message
+        This field checks that the user and room are valid.
+        Please use the get endpoints to see values you can
+        use.
         """
         if not dbch.room_exists(room):
             return {
