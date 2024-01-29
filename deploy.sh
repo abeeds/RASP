@@ -2,7 +2,7 @@
 # This shell script deploys a new version to a server.
 
 PROJ_DIR=RASP
-VENV=thejollyfatso
+VENV=RASPvenv
 PA_DOMAIN="thejollyfatso.pythonanywhere.com"
 PA_USER='thejollyfatso'
 echo "Project dir = $PROJ_DIR"
