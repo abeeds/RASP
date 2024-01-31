@@ -3,7 +3,7 @@ Our project is an API server for a messaging app. It uses Flask-RESTX
 to interface with a MongoDB database. The server is tested through Swagger.<br>
 
 # Progress And Goals
-See progress and goals here.
+See progress and goals [here](ProgressAndGoals.md).
 
 ## Endpoints Available
 <ul>
