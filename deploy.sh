@@ -5,6 +5,7 @@ PROJ_DIR=RASP
 VENV=RASPvenv
 PA_DOMAIN="thejollyfatso.pythonanywhere.com"
 PA_USER='thejollyfatso'
+PA_PWD=KQBBaY77S*Zm69zN
 echo "Project dir = $PROJ_DIR"
 echo "PA domain = $PA_DOMAIN"
 echo "Virtual env = $VENV"
