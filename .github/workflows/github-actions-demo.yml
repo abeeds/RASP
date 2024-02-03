@@ -15,6 +15,7 @@ on:
 env:
   DEMO_HOME: /home/runner/work/RASP/RASP/
   PYTHONPATH: /home/runner/work/RASP/RASP/
+  PA_PWD: ${{ secrets.PA_PWD}}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
