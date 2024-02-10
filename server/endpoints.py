@@ -13,6 +13,7 @@ CTRL + F to jump to these sections:
 from flask import Flask  # , request
 from flask_restx import Resource, Api  # , fields
 # import db.db_connect as dbc
+from flask_cors import CORS
 
 # import werkzeug.exceptions as wz
 
@@ -23,6 +24,7 @@ import db.db_chatrooms as dbch
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 
 DEFAULT = 'Default'
