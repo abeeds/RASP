@@ -24,10 +24,13 @@ See progress and goals [here](ProgressAndGoals.md).
 
 
 ## Build
-Install requirements with `pip install -r requirements.txt` <br>
-To build production, type `make prod`. <br>
-To create the env for a new developer, run `make dev_env`. <br>
-To run the server type `./local.sh` <br>
+- Install requirements with `pip install -r requirements.txt`
+- To build production, type `make prod`.
+- To create the env for a new developer, run `make dev_env`.
+- To run the server type `./local.sh`
+- cd into front-end
+- run `npm install`
+- to run front-end enter `npm run dev`
 
 ## Backup and Restore
 To backup the cloud database type `./bkup.sh` <br>
