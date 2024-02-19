@@ -35,6 +35,7 @@ ENDPOINTS_EP = '/endpoints'
 # user endpoint urls
 GET_USERS_URL = '/get_users'
 REGISTER_URL = "/register"
+LOGIN_URL = "/login"
 DEACTIVATE_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
@@ -120,6 +121,28 @@ class Register(Resource):
             new_id = dbu.insert_user(username, password)
             response['inserted_id'] = str(new_id.inserted_id)
             response['message'] = 'Registration Successful.'
+        return response
+
+@api.route(f'{LOGIN_URL}/<string:username>/<string:password>')
+class LogIn(Resource):
+    def get(self, username, password):
+        """
+        Endpoint for userpass check.
+        username can't have spaces in it.
+        usernames must also be unique.
+        """
+        response = {
+            'message': ""
+        }
+
+        # ensure the userpass combo is correct
+        if dbu.userpass_check(username, password):
+            response['message'] = 'Success! Logging you in.'
+
+        # make sure there aren't spaces in the username
+        else:
+            response['message'] = "Log in failed."
+
         return response
 
 
