@@ -123,6 +123,7 @@ class Register(Resource):
             response['message'] = 'Registration Successful.'
         return response
 
+
 @api.route(f'{LOGIN_URL}/<string:username>/<string:password>')
 class LogIn(Resource):
     def get(self, username, password):
