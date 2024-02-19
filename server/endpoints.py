@@ -138,11 +138,11 @@ class LogIn(Resource):
 
         # ensure the userpass combo is correct
         if dbu.userpass_check(username, password):
-            response['message'] = 'Success! Logging you in.'
+            response['message'] = 'true'
 
         # make sure there aren't spaces in the username
         else:
-            response['message'] = "Log in failed."
+            response['message'] = "false"
 
         return response
 
