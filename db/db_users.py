@@ -13,9 +13,11 @@ def user_exists(username: str):
     connect_db()
     return fetch_one(USER_COLLECT, {USERNAME: username})
 
+
 def userpass_check(username: str, password: str):
     connect_db()
     return fetch_one(USER_COLLECT, {USERNAME: username, PASSWORD: password})
+
 
 def insert_user(username: str, password: str):
     user = {}
