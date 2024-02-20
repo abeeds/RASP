@@ -31,9 +31,6 @@ See the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 - To build production, type `make prod`.
 - To create the env for a new developer, run `make dev_env`.
 - To run the server type `./local.sh`
-- cd into front-end
-- run `npm install`
-- to run front-end enter `npm run dev`
 
 ## Backup and Restore
 To backup the cloud database type `./bkup.sh` <br>
