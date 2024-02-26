@@ -193,7 +193,7 @@ class DeactivateSelf(Resource):
             'deleted_username': username if deleted_id
             else None,
             'message': 'Delete Successful' if deleted_id
-            else "Username does not exist.",
+            else "User/pass combo does not exist.",
         }
 
         return response
