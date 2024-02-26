@@ -36,7 +36,8 @@ ENDPOINTS_EP = '/endpoints'
 GET_USERS_URL = '/get_users'
 REGISTER_URL = "/register"
 LOGIN_URL = "/login"
-DEACTIVATE_URL = "/deactivate"
+DEACTIVATE_URL = "/devdeactivate"
+DEACTIVATE_SELF_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
 
@@ -156,6 +157,32 @@ class DeactivateUser(Resource):
         """
         deleted_id = ""
         user_doc = dbu.user_exists(username)
+        if user_doc and '_id' in user_doc:
+            deleted_id = str(user_doc['_id'])
+            dbu.deactivate(username)
+
+        response = {
+            'deleted_id': deleted_id if deleted_id
+            else None,
+            'deleted_username': username if deleted_id
+            else None,
+            'message': 'Delete Successful' if deleted_id
+            else "Username does not exist.",
+        }
+
+        return response
+
+
+@api.route(f'{DEACTIVATE_SELF_URL}/<string:username>/<string:password>')
+class DeactivateSelf(Resource):
+    def delete(self, username, password):
+        """
+        Endpoint for deleting users.
+        The user is identified by the username.
+        Password is verified.
+        """
+        deleted_id = ""
+        user_doc = dbu.userpass_check(username, password)
         if user_doc and '_id' in user_doc:
             deleted_id = str(user_doc['_id'])
             dbu.deactivate(username)
