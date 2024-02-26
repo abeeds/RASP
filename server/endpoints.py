@@ -10,7 +10,7 @@ CTRL + F to jump to these sections:
 
 # from http import HTTPStatus
 
-from flask import Flask  # , request
+from flask import Flask, request
 from flask_restx import Resource, Api  # , fields
 # import db.db_connect as dbc
 from flask_cors import CORS
@@ -50,7 +50,8 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 # message endpoint urls
 GET_MSGS_URL = '/get_msgs'
 GET_MSGS_TEST_URL = '/get_msgs_test_version'
-WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
+# WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
+WRITE_MSG_URL = '/write_msg'
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 
 
@@ -293,7 +294,8 @@ class GetMsgsTestVer(Resource):
 
 @api.route(f'{WRITE_MSG_URL}')
 class WriteMessage(Resource):
-    def post(self, room, username, content):
+    # def post(self, room, username, content):
+    def post(self):
         """
         Writes a message to the specified room from the specified user.
         room specifies the chatroom
@@ -303,6 +305,9 @@ class WriteMessage(Resource):
         Please use the get endpoints to see values you can
         use.
         """
+        room = request.json['room']
+        username = request.json['username']
+        content = request.json['content']
         if not dbch.room_exists(room):
             return {
                 "Status": "A room with that name does not exist."
