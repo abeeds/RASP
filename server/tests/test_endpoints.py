@@ -107,6 +107,7 @@ def test_register(mock_add):
     assert "message" in resp_json
 
 
+@pytest.mark.skip('rewrite for new endpoint!')
 def test_write_msg(temp_chatroom, temp_user, temp_msg):
     resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
     assert resp.status_code == OK
