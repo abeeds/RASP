@@ -192,7 +192,8 @@ class DeactivateSelf(Resource):
             else None,
             'deleted_username': username if deleted_id
             else None,
-            'message': 'Account deactivated. Your messages persist.' if deleted_id
+            'message': 'Account deactivated. \
+                Your messages persist.' if deleted_id
             else "User/pass combo does not exist.",
         }
 
