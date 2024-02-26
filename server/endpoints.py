@@ -305,9 +305,9 @@ class WriteMessage(Resource):
         Please use the get endpoints to see values you can
         use.
         """
-        room = request.json['room']
-        username = request.json['username']
-        content = request.json['content']
+        room = request.json[dbm.CHATROOM]
+        username = request.json[dbm.USERNAME]
+        content = request.json[dbm.CONTENT]
         if not dbch.room_exists(room):
             return {
                 "Status": "A room with that name does not exist."
