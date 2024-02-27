@@ -8,10 +8,10 @@ CTRL + F to jump to these sections:
     CHATROOM RELATED ENDPOINTS
 """
 
-# from http import HTTPStatus
+from http import HTTPStatus
 
 from flask import Flask, request
-from flask_restx import Resource, Api  # , fields
+from flask_restx import Resource, Api, fields
 # import db.db_connect as dbc
 from flask_cors import CORS
 
