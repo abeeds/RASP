@@ -292,9 +292,18 @@ class GetMsgsTestVer(Resource):
         return messages
 
 
+message_fields = api.model('NewMessage', {
+    dbm.CHATROOM: fields.String,
+    dbm.USERNAME: fields.String,
+    dbm.CONTENT: fields.String,
+})
+
+
 @api.route(f'{WRITE_MSG_URL}')
 class WriteMessage(Resource):
-    # def post(self, room, username, content):
+    @api.expect(message_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
     def post(self):
         """
         Writes a message to the specified room from the specified user.
