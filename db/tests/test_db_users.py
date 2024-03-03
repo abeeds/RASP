@@ -22,6 +22,11 @@ def test_userpass_check(temp_user):
     assert response is not None
 
 
+def test_false_userpass_check():
+    response = dbu.userpass_check(TEST_USERNAME, TEST_PASSWORD)
+    assert response is None
+
+
 def test_insert_user():
     dbu.insert_user(TEST_USERNAME, TEST_PASSWORD)
     assert dbu.user_exists(TEST_USERNAME)
