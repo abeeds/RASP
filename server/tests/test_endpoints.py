@@ -107,9 +107,12 @@ def test_register(mock_add):
     assert "message" in resp_json
 
 
-@pytest.mark.skip('rewrite for new endpoint!')
 def test_write_msg(temp_chatroom, temp_user, temp_msg):
-    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
+    resp = TEST_CLIENT.post('/write_msg', json={
+        dbm.USERNAME: TESTUSER,
+        dbm.CHATROOM: TESTROOM,
+        dbm.CONTENT: TESTCONTENT
+        })
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
