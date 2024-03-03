@@ -17,6 +17,11 @@ def temp_user():
         dbu.deactivate(TEST_USERNAME)
 
 
+def test_userpass_check(temp_user):
+    response = dbu.userpass_check(TEST_USERNAME, TEST_PASSWORD)
+    assert response is not None
+
+
 def test_insert_user():
     dbu.insert_user(TEST_USERNAME, TEST_PASSWORD)
     assert dbu.user_exists(TEST_USERNAME)
