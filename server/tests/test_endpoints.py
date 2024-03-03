@@ -155,5 +155,6 @@ def test_update_username(mock_update):
 
 
 def test_login(temp_user):
-    resp = TEST_CLIENT.get('{ep.LOGIN_URL}/{TESTUSER}/{TESTPASS}')
-    assert resp.message == "true"
+    resp = TEST_CLIENT.get(f'{ep.LOGIN_URL}/{TESTUSER}/{TESTPASS}')
+    resp_json = resp.get_json()
+    assert resp_json['message'] == "true"
