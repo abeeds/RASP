@@ -152,3 +152,8 @@ def test_update_username(mock_update):
     resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/anyuser/anynewuser')
     assert resp.status_code == OK
     assert dbu.user_exists('anyuser') is None
+
+
+def test_login(temp_user):
+    resp = TEST_CLIENT.get('{ep.LOGIN_URL}/{TESTUSER}/{TESTPASS}')
+    assert resp.message == "true"
