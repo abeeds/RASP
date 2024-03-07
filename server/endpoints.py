@@ -426,9 +426,9 @@ class UpdateCrDesc(Resource):
             "Status": ""
         }
 
-        if not dbch.room_exists(room_name):
+        if not dbch.room_exists(room):
             response["Status"] = "A room with that name does not exist."
         else:
-            dbch.update_description(room_name, new_desc)
+            dbch.update_description(room, description)
             response["Status"] = "Chatroom description updated successfully."
         return response
