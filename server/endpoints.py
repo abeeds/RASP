@@ -412,7 +412,7 @@ class DeleteChatroom(Resource):
 
 @api.route(f'{UPDATE_CR_DESC_URL}')
 class UpdateCrDesc(Resource):
-    def put(Resource, room_name, new_desc):
+    def put(Resource):
         """
         This endpoint updates the chatroom's description.
         The chatroom is specified with the room_name parameter.
