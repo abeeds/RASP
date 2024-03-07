@@ -355,6 +355,12 @@ class DeleteMsg(Resource):
 
 
 # --------- CHATROOM RELATED ENDPOINTS ---------
+chatroom_fields = api.model('NewChatroom', {
+    dbch.NAME: fields.String,
+    dbch.DESC: fields.String,
+})
+
+
 @api.route(f'{GET_CHATROOMS_URL}')
 class GetChatrooms(Resource):
     def get(self):
@@ -412,6 +418,9 @@ class DeleteChatroom(Resource):
 
 @api.route(f'{UPDATE_CR_DESC_URL}')
 class UpdateCrDesc(Resource):
+    @api.expect(chatroom_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
     def put(Resource):
         """
         This endpoint updates the chatroom's description.
