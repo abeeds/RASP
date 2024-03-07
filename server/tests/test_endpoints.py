@@ -15,6 +15,7 @@ TEST_CLIENT = ep.app.test_client()
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
 TESTROOM = 'dev chatroom'
+TESTDESC = 'this description has been updated'
 TESTUSER = 'dev user'
 TESTPASS = 'password'
 TESTCONTENT = 'lorem ipsum dolor sit amet'
@@ -137,7 +138,10 @@ def test_delete_msg(mock_del):
 
 @patch('db.db_chatrooms.update_description', autospec=True)
 def test_update_chatroom_desc(mock_update):
-    resp = TEST_CLIENT.put(f'{ep.UPDATE_CR_DESC_URL}/anyroom/anydesc')
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_CR_DESC_URL}', json={
+        dbch.NAME: TESTROOM,
+        dbch.DESC: TESTDESC
+    })
     assert resp.status_code == OK
 
 

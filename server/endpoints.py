@@ -410,7 +410,7 @@ class DeleteChatroom(Resource):
         return response
 
 
-@api.route(f'{UPDATE_CR_DESC_URL}/<string:room_name>/<string:new_desc>')
+@api.route(f'{UPDATE_CR_DESC_URL}')
 class UpdateCrDesc(Resource):
     def put(Resource, room_name, new_desc):
         """
@@ -418,6 +418,9 @@ class UpdateCrDesc(Resource):
         The chatroom is specified with the room_name parameter.
         The new description is entered in the new_desc parameter.
         """
+
+        room = request.json[dbch.NAME]
+        description = request.json[dbch.DESC]
 
         response = {
             "Status": ""
