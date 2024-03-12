@@ -17,6 +17,7 @@ from flask_cors import CORS
 
 # import werkzeug.exceptions as wz
 
+import db.db_connect as dbc
 import db.db_users as dbu
 import db.db_messages as dbm
 import db.db_chatrooms as dbch
@@ -53,6 +54,8 @@ GET_MSGS_TEST_URL = '/get_msgs_test_version'
 # WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 WRITE_MSG_URL = '/write_msg'
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
+
+NUKE_URL = '/wipe/<string:collection>/<string:code>'
 
 
 @api.route(HELLO_EP)
@@ -440,4 +443,22 @@ class UpdateCrDesc(Resource):
         else:
             dbch.update_description(room, description)
             response["Status"] = "Chatroom description updated successfully."
+        return response
+
+
+@api.route(f'{NUKE_URL}')
+class DeleteAllInCollection(Resource):
+    def delete(self, collection, code):
+        """
+        Endpoint for wiping all docs in a collection.
+        """
+        response = {
+            "Status": ""
+        }
+
+        if code == "4253":
+            dbc.del_all_in_collection(collection)
+            response["Status"] = "Code accepted."
+        else:
+            response["Status"] = "Permission denied."
         return response

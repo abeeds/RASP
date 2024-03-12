@@ -162,3 +162,8 @@ def test_login(temp_user):
     resp = TEST_CLIENT.get(f'{ep.LOGIN_URL}/{TESTUSER}/{TESTPASS}')
     resp_json = resp.get_json()
     assert resp_json['message'] == "true"
+
+
+@pytest.mark.skip("NEEDS TEST")
+def test_wipe():
+    pass
