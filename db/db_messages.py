@@ -46,8 +46,7 @@ def get_chatroom_messages(chatroom: str):
                     {
                         "Chatroom": msg[CHATROOM],
                         "User": msg[USERNAME],
-                        "Timestamp": str(datetime.utcfromtimestamp(
-                            msg[TIMESTAMP])),
+                        "Timestamp": msg[TIMESTAMP],
                         "Content": msg[CONTENT]
                     }
                     for msg in messages}
