@@ -413,7 +413,7 @@ class DeleteChatroom(Resource):
             response["Status"] = "Chatroom with that name doesn't exist"
         else:
             dbch.delete_chatroom(room_name)
-            response["Chatroom Deleted"]: room_name
+            response["Chatroom Deleted"] = room_name
             response["Status"] = "Chatroom deleted successfuly"
 
         return response
