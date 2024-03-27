@@ -14,6 +14,7 @@ from flask import Flask, request
 from flask_restx import Resource, Api, fields
 # import db.db_connect as dbc
 from flask_cors import CORS
+import bcrypt
 
 # import werkzeug.exceptions as wz
 
@@ -90,6 +91,23 @@ class Endpoints(Resource):
 
 
 # ----------- USER RELATED ENDPOINTS -----------
+@api.route('/HASH_ALL_USERS')
+class HashAllUsers(Resource):
+    def post(self):
+        dbc.connect_db()
+        users_data = dbc.fetch_all("users")
+        users_dict = {user["username"]: {"password": str(user["password"])}
+                      for user in users_data}
+
+        for user in users_dict:
+            bcrypt.hashpw(user["password"].encode('utf-8'),
+                          bcrypt.gensalt()).decode('utf-8')
+
+        return {
+            'message': "Hashed Successfully"
+        }
+
+
 @api.route(f'{GET_USERS_URL}')
 class GetUsers(Resource):
     def get(self):
