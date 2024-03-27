@@ -3,14 +3,19 @@
     - users
     - messages
     - chatrooms
+- Following features are currently functional on the front-end, but may require styling improvements
+    - Chatroom selection page
+    - The actual page displaying messages from a chatroom
+    - sending messages
+    - deleting messages
+    - register/login/logout
 
 # Goals
 - Design user interface
     - User profile
-    - Chatroom selection
-    - Chatroom pages
-    - Intuitive means to use API endpoints
 - Implement frontend
     - implement elements listed above
-    - implement polling system so messages display as they are sent
-- Ensure frontend interacts with backend correctly
+- Features to Implement
+    - Edit messages
+    - Reply to messages
+    - share images
