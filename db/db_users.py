@@ -54,7 +54,9 @@ def update_username(old_name: str, new_name: str):
 
 def update_password(username: str, new_pw: str):
     filter = {USERNAME: username}
-    new_vals = {"$set": {PASSWORD: new_pw}}
+    hashed_pw = bcrypt.hashpw(new_pw.encode('utf-8'),
+                              bcrypt.gensalt()).decode('utf-8')
+    new_vals = {"$set": {PASSWORD: hashed_pw}}
 
     connect_db()
     update_one(USER_COLLECT, filter, new_vals)

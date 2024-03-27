@@ -1,5 +1,6 @@
 import pytest
 import db.db_users as dbu
+import bcrypt
 
 TEST_USERNAME = "test"
 NEW_USERNAME = "anothertest"
@@ -37,7 +38,7 @@ def test_update_password():
     user = dbu.user_exists(TEST_USERNAME)
 
     assert user is not None
-    assert user[dbu.PASSWORD] == NEW_PASSWORD
+    assert dbu.userpass_check(TEST_USERNAME, NEW_PASSWORD) is not None
 
 
 def test_update_username():
