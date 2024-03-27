@@ -1,6 +1,5 @@
 import pytest
 import db.db_users as dbu
-import bcrypt
 
 TEST_USERNAME = "test"
 NEW_USERNAME = "anothertest"
