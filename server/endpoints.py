@@ -14,7 +14,6 @@ from flask import Flask, request
 from flask_restx import Resource, Api, fields
 # import db.db_connect as dbc
 from flask_cors import CORS
-import bcrypt
 
 # import werkzeug.exceptions as wz
 
@@ -91,26 +90,6 @@ class Endpoints(Resource):
 
 
 # ----------- USER RELATED ENDPOINTS -----------
-@api.route('/HASH_ALL_USERS')
-class HashAllUsers(Resource):
-    def post(self):
-        dbc.connect_db()
-        users_data = dbc.fetch_all("users")
-        users_dict = {user["username"]: {"password": str(user["password"])}
-                      for user in users_data}
-
-        for username in users_dict.keys():
-            user_info = users_dict[username]
-            hashed_password = bcrypt.hashpw(
-                user_info["password"].encode('utf-8'), bcrypt.gensalt())
-            hashed_pw_str = hashed_password.decode('utf-8')
-            dbu.update_password(username, hashed_pw_str)
-
-        return {
-            'message': "Hashed Successfully"
-        }
-
-
 @api.route(f'{GET_USERS_URL}')
 class GetUsers(Resource):
     def get(self):
@@ -126,34 +105,6 @@ class GetUsers(Resource):
 
 @api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
 class Register(Resource):
-    def post(self, username, password):
-        """
-        Endpoint for inserting users.
-        username can't have spaces in it.
-        usernames must also be unique.
-        """
-        response = {
-            'inserted_id': None,
-            'message': ""
-        }
-
-        # ensure the username is not taken
-        if dbu.user_exists(username):
-            response['message'] = 'Username is already taken.'
-
-        # make sure there aren't spaces in the username
-        elif " " in username:
-            response['message'] = "Username cannot have a space"
-
-        else:
-            new_id = dbu.insert_user(username, password)
-            response['inserted_id'] = str(new_id.inserted_id)
-            response['message'] = 'Registration Successful.'
-        return response
-
-
-@api.route(f'{HASHED_REGISTER_URL}/<string:username>/<string:password>')
-class HashedRegister(Resource):
     def post(self, username, password):
         """
         Endpoint for inserting users.
@@ -175,7 +126,7 @@ class HashedRegister(Resource):
             response['message'] = "Username cannot have a space"
 
         else:
-            new_id = dbu.hashed_register(username, password)
+            new_id = dbu.insert_user(username, password)
             response['inserted_id'] = str(new_id.inserted_id)
             response['message'] = 'Registration Successful.'
         return response
@@ -195,29 +146,6 @@ class LogIn(Resource):
 
         # ensure the userpass combo is correct
         if dbu.userpass_check(username, password):
-            response['message'] = 'true'
-
-        # make sure there aren't spaces in the username
-        else:
-            response['message'] = "false"
-
-        return response
-
-
-@api.route(f'{HASHED_LOGIN_URL}/<string:username>/<string:password>')
-class HashedLogIn(Resource):
-    def get(self, username, password):
-        """
-        Endpoint for userpass check.
-        username can't have spaces in it.
-        usernames must also be unique.
-        """
-        response = {
-            'message': ""
-        }
-
-        # ensure the userpass combo is correct
-        if dbu.hashed_login(username, password):
             response['message'] = 'true'
 
         # make sure there aren't spaces in the username

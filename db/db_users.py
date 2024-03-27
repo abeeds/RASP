@@ -17,11 +17,6 @@ def user_exists(username: str):
 
 def userpass_check(username: str, password: str):
     connect_db()
-    return fetch_one(USER_COLLECT, {USERNAME: username, PASSWORD: password})
-
-
-def hashed_login(username: str, password: str):
-    connect_db()
     user = fetch_one(USER_COLLECT, {USERNAME: username})
 
     # checks password with the hashed version in the database
@@ -31,16 +26,6 @@ def hashed_login(username: str, password: str):
 
 
 def insert_user(username: str, password: str):
-    user = {}
-    user[USERNAME] = username
-    user[PASSWORD] = password
-
-    connect_db()
-    _id = insert_one(USER_COLLECT, user)
-    return _id
-
-
-def hashed_register(username: str, password: str):
     user = {}
     user[USERNAME] = username
     user[PASSWORD] = bcrypt.hashpw(password.encode('utf-8'),
