@@ -1,6 +1,7 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
 from .db_connect import update_one, fetch_all
+import bcrypt
 
 USER_COLLECT = "users"
 
@@ -23,6 +24,17 @@ def insert_user(username: str, password: str):
     user = {}
     user[USERNAME] = username
     user[PASSWORD] = password
+
+    connect_db()
+    _id = insert_one(USER_COLLECT, user)
+    return _id
+
+
+def hashed_register(username: str, password: str):
+    user = {}
+    user[USERNAME] = username
+    user[PASSWORD] = bcrypt.hashpw(password.encode('utf-8'),
+                                   bcrypt.gensalt()).decode('utf-8')
 
     connect_db()
     _id = insert_one(USER_COLLECT, user)

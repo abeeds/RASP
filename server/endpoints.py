@@ -37,6 +37,7 @@ ENDPOINTS_EP = '/endpoints'
 GET_USERS_URL = '/get_users'
 REGISTER_URL = "/register"
 LOGIN_URL = "/login"
+HASHED_REGISTER_URL = "/hashed_register"
 DEACTIVATE_URL = "/devdeactivate"
 DEACTIVATE_SELF_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
@@ -124,6 +125,35 @@ class Register(Resource):
 
         else:
             new_id = dbu.insert_user(username, password)
+            response['inserted_id'] = str(new_id.inserted_id)
+            response['message'] = 'Registration Successful.'
+        return response
+
+
+@api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
+class HashedRegister(Resource):
+    def post(self, username, password):
+        """
+        Endpoint for inserting users.
+        username can't have spaces in it.
+        usernames must also be unique.
+        Passwords are hashed.
+        """
+        response = {
+            'inserted_id': None,
+            'message': ""
+        }
+
+        # ensure the username is not taken
+        if dbu.user_exists(username):
+            response['message'] = 'Username is already taken.'
+
+        # make sure there aren't spaces in the username
+        elif " " in username:
+            response['message'] = "Username cannot have a space"
+
+        else:
+            new_id = dbu.hashed_register(username, password)
             response['inserted_id'] = str(new_id.inserted_id)
             response['message'] = 'Registration Successful.'
         return response
