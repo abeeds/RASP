@@ -99,10 +99,12 @@ class HashAllUsers(Resource):
         users_dict = {user["username"]: {"password": str(user["password"])}
                       for user in users_data}
 
-        for username, user_info in users_dict.items():
+        for username in users_dict.items():
+            user_info = users_dict[username]
             hashed_password = bcrypt.hashpw(
                 user_info["password"].encode('utf-8'), bcrypt.gensalt())
-            users_dict[username]["password"] = hashed_password.decode('utf-8')
+            hashed_pw_str = hashed_password.decode('utf-8')
+            dbu.update_password(username, hashed_pw_str)
 
         return {
             'message': "Hashed Successfully"
