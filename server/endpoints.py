@@ -130,7 +130,7 @@ class Register(Resource):
         return response
 
 
-@api.route(f'{REGISTER_URL}/<string:username>/<string:password>')
+@api.route(f'{HASHED_REGISTER_URL}/<string:username>/<string:password>')
 class HashedRegister(Resource):
     def post(self, username, password):
         """
