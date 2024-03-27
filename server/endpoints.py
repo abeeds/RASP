@@ -99,7 +99,7 @@ class HashAllUsers(Resource):
         users_dict = {user["username"]: {"password": str(user["password"])}
                       for user in users_data}
 
-        for username in users_dict.items():
+        for username in users_dict.keys():
             user_info = users_dict[username]
             hashed_password = bcrypt.hashpw(
                 user_info["password"].encode('utf-8'), bcrypt.gensalt())
