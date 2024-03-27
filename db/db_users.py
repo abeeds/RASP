@@ -20,11 +20,11 @@ def userpass_check(username: str, password: str):
     user = fetch_one(USER_COLLECT, {USERNAME: username})
 
     # checks password with the hashed version in the database
-    if user is None:
-        return None
-    if bcrypt.checkpw(password.encode('utf-8'),
-                      user[PASSWORD].encode('utf-8')):
+    if (user is not None
+        and bcrypt.checkpw(password.encode('utf-8'),
+                           user[PASSWORD].encode('utf-8'))):
         return user
+    return None
 
 
 def insert_user(username: str, password: str):
