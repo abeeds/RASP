@@ -20,6 +20,16 @@ def userpass_check(username: str, password: str):
     return fetch_one(USER_COLLECT, {USERNAME: username, PASSWORD: password})
 
 
+def hashed_login(username: str, password: str):
+    connect_db()
+    user = fetch_one(USER_COLLECT, {USERNAME: username})
+
+    # checks password with the hashed version in the database
+    if bcrypt.checkpw(password.encode('utf-8'),
+                      user[PASSWORD].encode('utf-8')):
+        return user
+
+
 def insert_user(username: str, password: str):
     user = {}
     user[USERNAME] = username

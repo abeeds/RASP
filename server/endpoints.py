@@ -37,6 +37,7 @@ ENDPOINTS_EP = '/endpoints'
 GET_USERS_URL = '/get_users'
 REGISTER_URL = "/register"
 LOGIN_URL = "/login"
+HASHED_LOGIN_URL = "/hashed_login"
 HASHED_REGISTER_URL = "/hashed_register"
 DEACTIVATE_URL = "/devdeactivate"
 DEACTIVATE_SELF_URL = "/deactivate"
@@ -173,6 +174,29 @@ class LogIn(Resource):
 
         # ensure the userpass combo is correct
         if dbu.userpass_check(username, password):
+            response['message'] = 'true'
+
+        # make sure there aren't spaces in the username
+        else:
+            response['message'] = "false"
+
+        return response
+
+
+@api.route(f'{HASHED_LOGIN_URL}/<string:username>/<string:password>')
+class HashedLogIn(Resource):
+    def get(self, username, password):
+        """
+        Endpoint for userpass check.
+        username can't have spaces in it.
+        usernames must also be unique.
+        """
+        response = {
+            'message': ""
+        }
+
+        # ensure the userpass combo is correct
+        if dbu.hashed_login(username, password):
             response['message'] = 'true'
 
         # make sure there aren't spaces in the username
