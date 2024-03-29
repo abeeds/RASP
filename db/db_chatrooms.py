@@ -5,6 +5,7 @@ import db.db_messages as dbm
 CHATROOM_COLLECT = "chat rooms"
 NAME = "chatroom_name"
 DESC = "description"
+OWNER = "owner"
 
 
 def room_exists(name: str):
@@ -12,10 +13,11 @@ def room_exists(name: str):
     return dbc.fetch_one(CHATROOM_COLLECT, {NAME: name})
 
 
-def insert_chatroom(name: str, desc: str = ""):
+def insert_chatroom(name: str, desc: str = "", owner: str = ""):
     room = {}
     room[NAME] = name
     room[DESC] = desc
+    room[OWNER] = owner
 
     dbc.connect_db()
     _id = dbc.insert_one(CHATROOM_COLLECT, room)
@@ -44,6 +46,13 @@ def get_chatrooms():
     dbc.connect_db()
     chatrooms = dbc.fetch_all(CHATROOM_COLLECT)
 
-    chatrooms_dict = {chatroom[NAME]: {DESC: str(chatroom[DESC])}
-                      for chatroom in chatrooms}
+    chatrooms_dict = {}
+    for chatroom in chatrooms:
+        chatroom_name = chatroom.get(NAME)
+        chatroom_desc = str(chatroom.get(DESC, ""))
+        chatroom_owner = str(chatroom.get(OWNER, ""))
+
+        chatrooms_dict[chatroom_name] = {DESC: chatroom_desc,
+                                         OWNER: chatroom_owner}
+
     return chatrooms_dict
