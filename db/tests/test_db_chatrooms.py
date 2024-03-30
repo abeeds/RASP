@@ -4,6 +4,7 @@ import db.db_chatrooms as dbch
 TEST_CHATROOM = "room"
 TEST_DESC = "A place to hang out."
 TEST_NEW_DESC = "A fun place to hang out."
+TEST_OWNER = "King Lizard"
 
 
 @pytest.fixture(scope='function')
@@ -17,7 +18,7 @@ def temp_chatroom():
 
 
 def test_insert_chatroom():
-    dbch.insert_chatroom(TEST_CHATROOM, TEST_DESC)
+    dbch.insert_chatroom(TEST_CHATROOM, TEST_DESC, TEST_OWNER)
     assert dbch.room_exists(TEST_CHATROOM)
 
 

@@ -16,6 +16,7 @@ ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
 TESTROOM = 'dev chatroom'
 TESTDESC = 'this description has been updated'
+TESTOWNER = 'King Lizard'
 TESTUSER = 'dev user'
 TESTPASS = 'password'
 TESTCONTENT = 'lorem ipsum dolor sit amet'
@@ -92,7 +93,11 @@ def test_deactivate(mock_del):
 
 @patch('db.db_chatrooms.insert_chatroom', autospec=True)
 def test_insert_chatroom(mock_add):
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}/tstroom/tstdesc')
+    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}', json={
+            dbch.NAME: TESTROOM,
+            dbch.DESC: TESTDESC,
+            dbch.OWNER: TESTOWNER,
+        })
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)

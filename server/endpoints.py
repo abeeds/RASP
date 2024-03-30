@@ -364,6 +364,7 @@ class DeleteMsg(Resource):
 chatroom_fields = api.model('NewChatroom', {
     dbch.NAME: fields.String,
     dbch.DESC: fields.String,
+    dbch.OWNER: fields.String,
 })
 
 
@@ -380,20 +381,27 @@ class GetChatrooms(Resource):
         return dbch.get_chatrooms()
 
 
-@api.route(f'{INSERT_CHATROOM_URL}/<string:room_name>/<string:room_desc>')
+@api.route(f'{INSERT_CHATROOM_URL}')
 class InsertChatroom(Resource):
-    def post(self, room_name, room_desc=""):
+    @api.expect(chatroom_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
         """
         Inserts a chatroom.
         room_name specifies the name.
         room_desc specifies the description.
         """
+        room_name = request.json[dbch.NAME]
+        room_desc = request.json[dbch.DESC]
+        room_owner = request.json[dbch.OWNER]
         response = {
             "status": ""
         }
         if dbch.room_exists(room_name):
             response["status"] = "A chatroom with this name already exists"
-        elif dbch.insert_chatroom(room_name, room_desc) is not None:
+        elif dbch.insert_chatroom(
+                room_name, room_desc, room_owner) is not None:
             response["status"] = "Chatroom created successfully."
         else:
             response["status"] = "Chatroom creation failed."
