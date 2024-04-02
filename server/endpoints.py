@@ -21,6 +21,7 @@ import db.db_connect as dbc
 import db.db_users as dbu
 import db.db_messages as dbm
 import db.db_chatrooms as dbch
+import forms.form as frm
 
 
 app = Flask(__name__)
@@ -58,6 +59,7 @@ WRITE_MSG_URL = '/write_msg'
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
+GET_FORMS_URL = '/get_forms'
 
 
 @api.route(HELLO_EP)
@@ -473,3 +475,18 @@ class DeleteAllInCollection(Resource):
         else:
             response["Status"] = "Permission denied."
         return response
+
+
+@api.route(f'{GET_FORMS_URL}')
+class GetForms(Resource):
+    """
+    This method returns all form entries in a dict.
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.doc(params=frm.get_form_descr())
+    def get(self):
+
+        form_data = frm.get_form_descr()
+
+        return form_data
