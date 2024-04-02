@@ -2,6 +2,7 @@ include common.mk
 
 API_DIR = server
 DB_DIR = db
+FORMS_DIR = forms
 REQ_DIR = .
 
 PYTESTFLAGS = -vv --verbose --cov-branch --cov-report term-missing --tb=short -W ignore::FutureWarning
@@ -17,6 +18,7 @@ github: FORCE
 all_tests: FORCE
 	cd $(API_DIR); make tests
 	cd $(DB_DIR); make tests
+	cd $(FORMS_DIR); make tests
 
 dev_env: FORCE
 	pip install -r $(REQ_DIR)/requirements-dev.txt
