@@ -35,28 +35,26 @@ HELLO_RESP = 'hello'
 ENDPOINTS_EP = '/endpoints'
 
 # user endpoint urls
-GET_USERS_URL = '/get_users'
-REGISTER_URL = "/register"
-LOGIN_URL = "/login"
-HASHED_LOGIN_URL = "/hashed_login"
-HASHED_REGISTER_URL = "/hashed_register"
 DEACTIVATE_URL = "/ban"
 DEACTIVATE_SELF_URL = "/deactivate"
+GET_USERS_URL = '/get_users'
+LOGIN_URL = "/login"
+REGISTER_URL = "/register"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
 
 # chatroom endpoint urls
+DELETE_CHATROOM_URL = '/delete_chatroom'
 GET_CHATROOMS_URL = '/get_chatrooms'
 INSERT_CHATROOM_URL = '/insert_chatroom'
-DELETE_CHATROOM_URL = '/delete_chatroom'
 UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
+DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 GET_MSGS_URL = '/get_msgs'
 GET_MSGS_TEST_URL = '/get_msgs_test_version'
 # WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 WRITE_MSG_URL = '/write_msg'
-DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
 GET_FORMS_URL = '/get_forms'
