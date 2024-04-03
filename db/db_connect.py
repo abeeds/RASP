@@ -94,6 +94,10 @@ def del_all_in_collection(collection, db=USER_DB):
     client[db][collection].delete_many({})
 
 
+def del_many(collection, filt, db=USER_DB):
+    client[db][collection].delete_many(filt)
+
+
 def update_doc(collection, filters, update_dict, db=USER_DB):
     return client[db][collection].update_one(filters, {'$set': update_dict})
 

@@ -40,7 +40,7 @@ REGISTER_URL = "/register"
 LOGIN_URL = "/login"
 HASHED_LOGIN_URL = "/hashed_login"
 HASHED_REGISTER_URL = "/hashed_register"
-DEACTIVATE_URL = "/devdeactivate"
+DEACTIVATE_URL = "/ban"
 DEACTIVATE_SELF_URL = "/deactivate"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
@@ -161,14 +161,16 @@ class LogIn(Resource):
 class DeactivateUser(Resource):
     def delete(self, username):
         """
-        Endpoint for deleting users.
+        Endpoint for banning users.
+        The user is deleted and all messages they have
+        written are also deleted.
         The user is identified by the username.
         """
         deleted_id = ""
         user_doc = dbu.user_exists(username)
         if user_doc and '_id' in user_doc:
             deleted_id = str(user_doc['_id'])
-            dbu.deactivate(username)
+            dbu.ban(username)
 
         response = {
             'deleted_id': deleted_id if deleted_id

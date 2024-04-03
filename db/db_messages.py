@@ -1,5 +1,6 @@
 from .db_connect import insert_one, connect_db, del_one
 from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
+from .db_connect import del_many
 from datetime import datetime
 from bson import ObjectId
 
@@ -66,3 +67,8 @@ def delete_message(id: str):
     connect_db()
     if message_exists(id):
         del_one(MESSAGE_COLLECT, {"_id": obID})
+
+
+def del_msgs_from_user(username: str):
+    connect_db()
+    del_many(MESSAGE_COLLECT, {USERNAME: username})

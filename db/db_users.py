@@ -2,6 +2,7 @@ from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
 from .db_connect import update_one, fetch_all
 import bcrypt
+from .db_messages import del_msgs_from_user
 
 USER_COLLECT = "users"
 
@@ -44,6 +45,13 @@ def deactivate(username: str):
     connect_db()
     if user_exists(username):
         del_one(USER_COLLECT, {USERNAME: username})
+
+
+def ban(username: str):
+    connect_db()
+    if user_exists(username):
+        del_one(USER_COLLECT, {USERNAME: username})
+        del_msgs_from_user(username)
 
 
 def update_username(old_name: str, new_name: str):
