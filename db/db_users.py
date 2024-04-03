@@ -8,6 +8,7 @@ USER_COLLECT = "users"
 # User fields
 USERNAME = "username"
 PASSWORD = "password"
+MEMBERSHIP = "membership"
 
 
 def user_exists(username: str):
@@ -32,6 +33,7 @@ def insert_user(username: str, password: str):
     user[USERNAME] = username
     user[PASSWORD] = bcrypt.hashpw(password.encode('utf-8'),
                                    bcrypt.gensalt()).decode('utf-8')
+    user[MEMBERSHIP] = []
 
     connect_db()
     _id = insert_one(USER_COLLECT, user)
@@ -67,7 +69,12 @@ def get_users():
     users_data = fetch_all(USER_COLLECT)
 
     # Create a dictionary with usernames as keys and user details as values
-    users_dict = {user[USERNAME]: {"_id": str(user["_id"])}
-                  for user in users_data}
+    users_dict = {}
+    for user in users_data:
+        user_name = user.get(USERNAME)
+        user_membership = list(user.get(MEMBERSHIP, []))
+
+        users_dict[user_name] = {USERNAME: user_name,
+                                 MEMBERSHIP: user_membership}
 
     return users_dict
