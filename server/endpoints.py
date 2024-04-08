@@ -279,7 +279,7 @@ class GetMsgs(Resource):
         return messages
 
 
-@api.route(f'{GET_MSGS_PG_URL}/<string:room_name>/<int:pages>')
+@api.route(f'{GET_MSGS_PG_URL}/<string:room_name>/<string:pages>')
 class GetMsgsLim(Resource):
     def get(self, room_name, pages):
         """
