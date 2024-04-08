@@ -67,7 +67,7 @@ def fetch_one(collection, filt, db=USER_DB):
         return doc
 
 
-def fetch_many(collection, filt, db=USER_DB, limit="MAX"):
+def fetch_many(collection, filt, limit="MAX", db=USER_DB,):
     """
     Find with a filter and return all.
     """
