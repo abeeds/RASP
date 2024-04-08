@@ -44,6 +44,7 @@ def get_chatroom_messages(chatroom: str, pages="ALL"):
     if pages == "ALL":
         messages = fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
     else:
+        pages = int(pages)
         messages = fetch_many(MESSAGE_COLLECT,
                               {CHATROOM: chatroom},
                               10 * pages)
