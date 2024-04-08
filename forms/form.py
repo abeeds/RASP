@@ -54,7 +54,7 @@ def get_form_descr() -> dict:
 
 
 def get_fld_names() -> list:
-    return ff.get_fld_names(FORM_FLDS)
+    return ff.get_fld_names(FORM_FLDS0)
 
 
 def main():
