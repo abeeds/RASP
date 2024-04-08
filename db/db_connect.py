@@ -72,11 +72,13 @@ def fetch_many(collection, filt, limit="MAX", sort_by=None, db=USER_DB,):
     Find with a filter and return all.
     """
     ret = []
+    sort_order = [(sort_by, pm.DESCENDING)] if sort_by else None
+
     if (limit == "MAX"):
-        docs = client[db][collection].find(filt).sort(sort_by)
+        docs = client[db][collection].find(filt).sort(sort_order)
     else:
         limit = int(limit)
-        docs = client[db][collection].find(filt).sort(sort_by).limit(limit)
+        docs = client[db][collection].find(filt).sort(sort_order).limit(limit)
 
     for doc in docs:
         if MONGO_ID in doc:
