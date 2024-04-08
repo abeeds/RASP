@@ -47,7 +47,7 @@ def get_chatroom_messages(chatroom: str, pages="ALL"):
         pages = int(pages)
         messages = fetch_many(MESSAGE_COLLECT,
                               {CHATROOM: chatroom},
-                              pages)
+                              pages * 10)
 
     message_dict = {str(msg["_id"]):
                     {
