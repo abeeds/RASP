@@ -513,6 +513,41 @@ class GetForms(Resource):
     @api.doc(params=frm.get_form_descr())
     def get(self):
 
-        form_data = frm.get_form_descr()
+        # print(f'username: {username}; fieldtype: {fieldtype}')
+
+        form_data = frm.get_form()
+        print(form_data)
 
         return form_data
+
+
+hform_fields = api.model('HForm', {
+    'username': fields.String,
+    'password': fields.String,
+})
+
+
+@api.route('/hform')
+class UpdateCrDesc(Resource):
+    @api.expect(hform_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(Resource):
+        """
+        This endpoint updates the chatroom's description.
+        The chatroom is specified with the room_name parameter.
+        The new description is entered in the new_desc parameter.
+        """
+
+        username = request.json['username']
+        password = request.json['password']
+
+        print(f'usernane: {username}')
+        print(f'password: {password}')
+
+        response = {
+            "Status": ""
+        }
+        response["Status"] = "Code accepted."
+
+        return response
