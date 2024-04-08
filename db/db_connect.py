@@ -75,6 +75,7 @@ def fetch_many(collection, filt, db=USER_DB, limit="MAX"):
     if (limit == "MAX"):
         docs = client[db][collection].find(filt)
     else:
+        limit = int(limit)
         docs = client[db][collection].find(filt).limit(limit)
 
     for doc in docs:
