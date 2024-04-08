@@ -39,9 +39,14 @@ def get_all_messages():
     return fetch_all_as_dict(TIMESTAMP, MESSAGE_COLLECT)
 
 
-def get_chatroom_messages(chatroom: str):
+def get_chatroom_messages(chatroom: str, pages="ALL"):
     connect_db()
-    messages = fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
+    if pages == "ALL":
+        messages = fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
+    else:
+        messages = fetch_many(MESSAGE_COLLECT,
+                              {CHATROOM: chatroom},
+                              10 * pages)
 
     message_dict = {str(msg["_id"]):
                     {

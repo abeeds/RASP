@@ -52,6 +52,7 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 # message endpoint urls
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 GET_MSGS_URL = '/get_msgs'
+GET_MSGS_PG_URL = '/get_msgs_pg'
 GET_MSGS_TEST_URL = '/get_msgs_test_version'
 # WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 WRITE_MSG_URL = '/write_msg'
@@ -275,6 +276,31 @@ class GetMsgs(Resource):
             }
 
         messages = dbm.get_chatroom_messages(room_name)
+        return messages
+
+
+@api.route(f'{GET_MSGS_PG_URL}/<string:room_name>/<int:pages>')
+class GetMsgsLim(Resource):
+    def get(self, room_name, pages):
+        """
+        Returns a certain amount of messages from a specific room.
+        Each page is 10 messages
+        This endpoint checks that the room is valid.
+        Use the get_chatrooms endpoint to see all valid rooms.
+        The format of each returned message is:
+        id: {
+            "Chatroom": ______,
+            "User": ______,
+            "Timestamp: ______,
+            "Content": ______
+        }
+        """
+        if not dbch.room_exists(room_name):
+            return {
+                "Status": "Room does not exist."
+            }
+
+        messages = dbm.get_chatroom_messages(room_name, pages)
         return messages
 
 

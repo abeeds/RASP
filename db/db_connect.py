@@ -67,12 +67,17 @@ def fetch_one(collection, filt, db=USER_DB):
         return doc
 
 
-def fetch_many(collection, filt, db=USER_DB):
+def fetch_many(collection, filt, db=USER_DB, limit="MAX"):
     """
     Find with a filter and return all.
     """
     ret = []
-    for doc in client[db][collection].find(filt):
+    if (limit == "MAX"):
+        docs = client[db][collection].find(filt)
+    else:
+        docs = client[db][collection].find(filt).limit(limit)
+
+    for doc in docs:
         if MONGO_ID in doc:
             # Convert mongo ID to a string so it works as JSON
             doc[MONGO_ID] = str(doc[MONGO_ID])
