@@ -42,12 +42,15 @@ def get_all_messages():
 def get_chatroom_messages(chatroom: str, pages="ALL"):
     connect_db()
     if pages == "ALL":
-        messages = fetch_many(MESSAGE_COLLECT, {CHATROOM: chatroom})
+        messages = fetch_many(MESSAGE_COLLECT,
+                              {CHATROOM: chatroom},
+                              sort_by=TIMESTAMP)
     else:
         pages = int(pages)
         messages = fetch_many(MESSAGE_COLLECT,
                               {CHATROOM: chatroom},
-                              pages * 10)
+                              pages * 10,
+                              TIMESTAMP)
 
     message_dict = {str(msg["_id"]):
                     {

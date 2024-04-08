@@ -67,16 +67,16 @@ def fetch_one(collection, filt, db=USER_DB):
         return doc
 
 
-def fetch_many(collection, filt, limit="MAX", db=USER_DB,):
+def fetch_many(collection, filt, limit="MAX", sort_by=None, db=USER_DB,):
     """
     Find with a filter and return all.
     """
     ret = []
     if (limit == "MAX"):
-        docs = client[db][collection].find(filt)
+        docs = client[db][collection].find(filt).sort(sort_by)
     else:
         limit = int(limit)
-        docs = client[db][collection].find(filt).limit(limit)
+        docs = client[db][collection].find(filt).sort(sort_by).limit(limit)
 
     for doc in docs:
         if MONGO_ID in doc:
