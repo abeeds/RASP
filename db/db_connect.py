@@ -85,6 +85,9 @@ def fetch_many(collection, filt, limit="MAX", sort_by=None, db=USER_DB,):
             # Convert mongo ID to a string so it works as JSON
             doc[MONGO_ID] = str(doc[MONGO_ID])
         ret.append(doc)
+
+    if (sort_by is not None):
+        ret.reverse()
     return ret
 
 
