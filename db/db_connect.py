@@ -28,6 +28,7 @@ def connect_db():
         print("Setting client because it is None.")
         if os.environ.get("CLOUD_MONGO", LOCAL) == CLOUD:
             password = os.environ.get("GAME_MONGO_PW")
+            print(f'password: {password}')
             if not password:
                 raise ValueError('You must set your password '
                                  + 'to use Mongo in the cloud.')

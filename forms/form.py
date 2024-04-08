@@ -9,7 +9,7 @@ from forms.form_filler import FLD_NM  # for tests
 USERNAME = 'username'
 PASSWORD = 'password'
 
-FORM_FLDS = [
+FORM_FLDS0 = [
     {
         FLD_NM: 'Instructions',
         ff.QSTN: 'Leave all fields blank to see all glossary entries.',
@@ -30,6 +30,18 @@ FORM_FLDS = [
 ]
 
 
+FORM_FLDS = [
+    {
+        'fieldName': 'username',
+        'type': 'text',
+    },
+    {
+        'fieldName': 'password',
+        'type': 'text',
+    },
+]
+
+
 def get_form() -> list:
     return FORM_FLDS
 
@@ -38,7 +50,7 @@ def get_form_descr() -> dict:
     """
     For Swagger!
     """
-    return ff.get_form_descr(FORM_FLDS)
+    return ff.get_form_descr(FORM_FLDS0)
 
 
 def get_fld_names() -> list:

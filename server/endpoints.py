@@ -528,7 +528,7 @@ hform_fields = api.model('HForm', {
 
 
 @api.route('/hform')
-class UpdateCrDesc(Resource):
+class UpdateCrDescHATEOAS(Resource):
     @api.expect(hform_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
