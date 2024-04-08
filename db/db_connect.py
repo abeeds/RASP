@@ -75,7 +75,7 @@ def fetch_many(collection, filt, limit="MAX", sort_by=None, db=USER_DB,):
     sort_order = [(sort_by, pm.DESCENDING)] if sort_by else None
 
     if (limit == "MAX"):
-        docs = client[db][collection].find(filt)
+        docs = client[db][collection].find(filt).sort(sort_order)
     else:
         limit = int(limit)
         docs = client[db][collection].find(filt).sort(sort_order).limit(limit)
