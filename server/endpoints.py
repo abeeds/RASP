@@ -555,6 +555,11 @@ class UpdatePassword(Resource):
         # ensure the userpass combo is correct
         if dbu.userpass_check(user, oldpwd):
             response['Status'] = 'oldpwd match confirmed'
+            if newpwd == newpwdConfirm:
+                dbu.update_password(user, newpwd)
+                response['Status'] = 'all info true, update attempted'
+            else:
+                response['Status'] = 'new passwords do not match'
         else:
             response['Status'] = 'incorrect password'
 
