@@ -522,13 +522,15 @@ class GetForms(Resource):
 
 
 hform_fields = api.model('HForm', {
-    'username': fields.String,
-    'password': fields.String,
+    'user': fields.String,
+    'oldpwd': fields.String,
+    'newpwd': fields.String,
+    'newpwdConfirm': fields.String,
 })
 
 
 @api.route('/hform')
-class UpdateCrDescHATEOAS(Resource):
+class UpdatePassword(Resource):
     @api.expect(hform_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
@@ -539,15 +541,23 @@ class UpdateCrDescHATEOAS(Resource):
         The new description is entered in the new_desc parameter.
         """
 
-        username = request.json['username']
-        password = request.json['password']
+        user = request.json['user']
+        oldpwd = request.json['oldpwd']
+        newpwd = request.json['newpwd']
+        newpwdConfirm = request.json['newpwdConfirm']
 
-        print(f'usernane: {username}')
-        print(f'password: {password}')
+        print(f'returned: {user}, {oldpwd}, {newpwd}, {newpwdConfirm}')
 
         response = {
             "Status": ""
         }
-        response["Status"] = "Code accepted."
+
+        # ensure the userpass combo is correct
+        if dbu.userpass_check(user, oldpwd):
+            response['Status'] = 'oldpwd match confirmed'
+        else:
+            response['Status'] = 'incorrect password'
+
+        print(response)
 
         return response

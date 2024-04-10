@@ -32,14 +32,24 @@ FORM_FLDS0 = [
 
 FORM_FLDS = [
     {
-        'fieldName': 'username',
+        'fieldName': 'user',
         'type': 'text',
-        'label': 'Username'
+        'label': 'Confirm User'
     },
     {
-        'fieldName': 'password',
+        'fieldName': 'oldpwd',
         'type': 'password',
-        'label': 'Password'
+        'label': 'Old Password'
+    },
+    {
+        'fieldName': 'newpwd',
+        'type': 'password',
+        'label': 'New Password'
+    },
+    {
+        'fieldName': 'newpwdConfirm',
+        'type': 'password',
+        'label': 'Confirm Password'
     },
 ]
 
