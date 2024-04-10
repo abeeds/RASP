@@ -34,10 +34,12 @@ FORM_FLDS = [
     {
         'fieldName': 'username',
         'type': 'text',
+        'label': 'Username'
     },
     {
         'fieldName': 'password',
-        'type': 'text',
+        'type': 'password',
+        'label': 'Password'
     },
 ]
 
