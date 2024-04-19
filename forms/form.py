@@ -8,6 +8,9 @@ from forms.form_filler import FLD_NM  # for tests
 
 USERNAME = 'username'
 PASSWORD = 'password'
+FIELDNM = 'fieldName'
+TYPE = 'type'
+LABEL = 'label'
 
 FORM_FLDS0 = [
     {
@@ -32,24 +35,24 @@ FORM_FLDS0 = [
 
 FORM_FLDS = [
     {
-        'fieldName': 'user',
-        'type': 'text',
-        'label': 'Confirm User'
+        FIELDNM: 'user',
+        TYPE: 'text',
+        LABEL: 'Confirm User'
     },
     {
-        'fieldName': 'oldpwd',
-        'type': 'password',
-        'label': 'Old Password'
+        FIELDNM: 'oldpwd',
+        TYPE: 'password',
+        LABEL: 'Old Password'
     },
     {
-        'fieldName': 'newpwd',
-        'type': 'password',
-        'label': 'New Password'
+        FIELDNM: 'newpwd',
+        TYPE: 'password',
+        LABEL: 'New Password'
     },
     {
-        'fieldName': 'newpwdConfirm',
-        'type': 'password',
-        'label': 'Confirm Password'
+        FIELDNM: 'newpwdConfirm',
+        TYPE: 'password',
+        LABEL: 'Confirm Password'
     },
 ]
 
