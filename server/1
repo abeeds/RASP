@@ -534,9 +534,11 @@ class UpdatePassword(Resource):
     @api.expect(hform_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def put(Resource):
+    def post(Resource):
         """
-        Updates the password of account with specific username.
+        This endpoint updates the chatroom's description.
+        The chatroom is specified with the room_name parameter.
+        The new description is entered in the new_desc parameter.
         """
 
         user = request.json['user']
