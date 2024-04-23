@@ -251,6 +251,74 @@ class UpdatePw(Resource):
 
 
 # -------- MESSAGE RELATED ENDPOINTS --------
+edit_message_fields = api.model('UpdatedMessage', {
+    dbm.ID: fields.String,
+    dbm.CONTENT: fields.String,
+})
+
+
+message_fields = api.model('NewMessage', {
+    dbm.CHATROOM: fields.String,
+    dbm.USERNAME: fields.String,
+    dbm.CONTENT: fields.String,
+})
+
+
+@api.route(f'{MSG_URL}')
+class Messages(Resource):
+    @api.expect(message_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Writes a message to the specified room from the specified user.
+        room specifies the chatroom
+        username specifies the user
+        content specifies the content of the message
+        This field checks that the user and room are valid.
+        Please use the get endpoints to see values you can
+        use.
+        """
+        room = request.json[dbm.CHATROOM]
+        username = request.json[dbm.USERNAME]
+        content = request.json[dbm.CONTENT]
+        if not dbch.room_exists(room):
+            return {
+                "Status": "A room with that name does not exist."
+            }
+        if not dbu.user_exists(username):
+            return {
+                "Status": "User with that username does not exist."
+            }
+
+        dbm.insert_message(username, room, content)
+        return {
+            "Status": "message written successfully."
+        }
+
+    @api.expect(edit_message_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def put(self):
+        """
+        Updates a message, specified by object id, with the new content.
+        You can use the get messages endpoint to retrieve an id
+        """
+
+        id = request.json[dbm.ID]
+        content = request.json[dbm.CONTENT]
+
+        if not dbm.message_exists(id):
+            return {
+                "Status": f"A message with id {id} was not found."
+            }
+
+        dbm.edit_message(id, content)
+        return {
+                "Status": "Message updated successfully."
+            }
+
+
 @api.route(f'{MSG_URL}/<string:room_name>')
 class GetMsgs(Resource):
     def get(self, room_name):
@@ -320,77 +388,6 @@ class GetMsgsTestVer(Resource):
 
         messages = dbm.get_chatroom_messages(room_name)
         return messages
-
-
-edit_message_fields = api.model('UpdatedMessage', {
-    dbm.ID: fields.String,
-    dbm.CONTENT: fields.String,
-})
-
-
-@api.route(f'{MSG_URL}')
-class PutMsg(Resource):
-    @api.expect(edit_message_fields)
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def put(self):
-        """
-        Updates a message, specified by object id, with the new content.
-        You can use the get messages endpoint to retrieve an id
-        """
-
-        id = request.json[dbm.ID]
-        content = request.json[dbm.CONTENT]
-
-        if not dbm.message_exists(id):
-            return {
-                "Status": f"A message with id {id} was not found."
-            }
-
-        dbm.edit_message(id, content)
-        return {
-                "Status": "Message updated successfully."
-            }
-
-
-message_fields = api.model('NewMessage', {
-    dbm.CHATROOM: fields.String,
-    dbm.USERNAME: fields.String,
-    dbm.CONTENT: fields.String,
-})
-
-
-@api.route(f'{MSG_URL}')
-class WriteMessage(Resource):
-    @api.expect(message_fields)
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def post(self):
-        """
-        Writes a message to the specified room from the specified user.
-        room specifies the chatroom
-        username specifies the user
-        content specifies the content of the message
-        This field checks that the user and room are valid.
-        Please use the get endpoints to see values you can
-        use.
-        """
-        room = request.json[dbm.CHATROOM]
-        username = request.json[dbm.USERNAME]
-        content = request.json[dbm.CONTENT]
-        if not dbch.room_exists(room):
-            return {
-                "Status": "A room with that name does not exist."
-            }
-        if not dbu.user_exists(username):
-            return {
-                "Status": "User with that username does not exist."
-            }
-
-        dbm.insert_message(username, room, content)
-        return {
-            "Status": "message written successfully."
-        }
 
 
 @api.route(f'{MSG_URL}/<string:msg_id>')
