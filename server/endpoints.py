@@ -52,7 +52,6 @@ UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 # message endpoint urls
 MSG_URL = '/messages'
 GET_MSGS_TEST_URL = '/get_msgs_test_version'
-# MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
 GET_FORMS_URL = '/get_forms'
