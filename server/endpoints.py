@@ -50,6 +50,7 @@ INSERT_CHATROOM_URL = '/insert_chatroom'
 UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
+EDIT_MSG_URL = '/messages'
 DEL_MSG_URL = '/delete_msg/<string:msg_id>'
 GET_MSGS_URL = '/get_msgs'
 GET_MSGS_PG_URL = '/get_msgs_pg'
@@ -326,6 +327,37 @@ class GetMsgsTestVer(Resource):
         return messages
 
 
+edit_message_fields = api.model('UpdatedMessage', {
+    dbm.ID: fields.String,
+    dbm.CONTENT: fields.String,
+})
+
+
+@api.route(f'{EDIT_MSG_URL}')
+class PutMsg(Resource):
+    @api.expect(edit_message_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def put(self):
+        """
+        Updates a message, specified by object id, with the new content.
+        You can use the get messages endpoint to retrieve an id
+        """
+        
+        id = request.json[dbm.ID]
+        content = request.json[dbm.CONTENT]
+
+        if not dbm.message_exists(id):
+            return {
+                "Status": f"A message with id {id} was not found."
+            }
+        
+        dbm.edit_message(id, content)
+        return {
+                "Status": "Message updated successfully."
+            }
+
+
 message_fields = api.model('NewMessage', {
     dbm.CHATROOM: fields.String,
     dbm.USERNAME: fields.String,
@@ -355,7 +387,6 @@ class WriteMessage(Resource):
             return {
                 "Status": "A room with that name does not exist."
             }
-
         if not dbu.user_exists(username):
             return {
                 "Status": "User with that username does not exist."

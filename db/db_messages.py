@@ -1,6 +1,6 @@
 from .db_connect import insert_one, connect_db, del_one
 from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
-from .db_connect import del_many
+from .db_connect import del_many, update_one
 from datetime import datetime
 from bson import ObjectId
 
@@ -17,8 +17,10 @@ MESSAGE_COLLECT = "messages"
 # message db fields
 USERNAME = "username"
 TIMESTAMP = "timestamp"
+LAST_EDITED = "last_edited"
 CHATROOM = "chatroom_name"
 CONTENT = "content"
+ID = "_id"
 
 
 # assumes the username and room name are already verified
@@ -52,11 +54,12 @@ def get_chatroom_messages(chatroom: str, pages="ALL"):
                               pages * 10,
                               TIMESTAMP)
 
-    message_dict = {str(msg["_id"]):
+    message_dict = {str(msg[ID]):
                     {
                         "Chatroom": msg[CHATROOM],
                         "User": msg[USERNAME],
                         "Timestamp": msg[TIMESTAMP],
+                        **({"Last Edited": msg[LAST_EDITED]} if LAST_EDITED in msg else {}),
                         "Content": msg[CONTENT]
                     }
                     for msg in messages}
@@ -67,7 +70,7 @@ def get_chatroom_messages(chatroom: str, pages="ALL"):
 def message_exists(id: str):
     obID = ObjectId(id)
     connect_db()
-    return fetch_one(MESSAGE_COLLECT, {"_id": obID})
+    return fetch_one(MESSAGE_COLLECT, {ID: obID})
 
 
 def delete_message(id: str):
@@ -75,9 +78,21 @@ def delete_message(id: str):
 
     connect_db()
     if message_exists(id):
-        del_one(MESSAGE_COLLECT, {"_id": obID})
+        del_one(MESSAGE_COLLECT, {ID: obID})
 
 
 def del_msgs_from_user(username: str):
     connect_db()
     del_many(MESSAGE_COLLECT, {USERNAME: username})
+
+
+def edit_message(id: str, new_msg: str):
+    filter = {ID:  ObjectId(id)}
+    new_vals = {"$set": {
+        CONTENT: new_msg,
+        LAST_EDITED: datetime.now().timestamp()
+        }}
+
+    connect_db()
+    if message_exists(id):
+        update_one(MESSAGE_COLLECT, filter, new_vals)

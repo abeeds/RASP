@@ -1,9 +1,11 @@
 import pytest
 import db.db_messages as dbm
+import db.db_connect as dbc
 
 TEST_USERNAME = "First Last"
 TEST_CHATROOM = "test"
 TEST_CONTENT = "Lorem ipsum dolor sit amet"
+TEST_NEW_CONTENT = "NEW MSG"
 TEST_ID = ""  # set later
 
 
@@ -22,6 +24,13 @@ def test_insert_message():
 
     TEST_ID = dbm.insert_message(TEST_USERNAME, TEST_CHATROOM, TEST_CONTENT)[0]
     assert dbm.message_exists(TEST_ID)
+
+
+def test_edit_message():
+    dbm.edit_message(TEST_ID)
+
+    msg = dbm.message_exists(TEST_ID)
+    assert msg[dbm.CONTENT] == TEST_NEW_CONTENT
 
 
 def test_delete_message():

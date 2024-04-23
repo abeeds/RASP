@@ -20,6 +20,7 @@ TESTOWNER = 'King Lizard'
 TESTUSER = 'dev user'
 TESTPASS = 'password'
 TESTCONTENT = 'lorem ipsum dolor sit amet'
+TESTUPDATEDCONTENT = 'heehee'
 
 
 @pytest.fixture(scope='function')
@@ -123,6 +124,15 @@ def test_write_msg(temp_chatroom, temp_user, temp_msg):
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
     assert "Status" in resp_json
+
+
+@patch('db.db_messages.edit_message', autospec=True)
+def test_edit_msg(mock_update):
+    resp = TEST_CLIENT.put(f'{ep.EDIT_MSG_URL}', json={
+        dbm.ID: MOCK_ID,
+        dbm.CONTENT: TESTUPDATEDCONTENT
+    })
+    assert resp.status_code == OK
 
 
 @patch('db.db_chatrooms.delete_chatroom', autospec=True)
