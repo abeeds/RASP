@@ -343,7 +343,7 @@ class PutMsg(Resource):
         Updates a message, specified by object id, with the new content.
         You can use the get messages endpoint to retrieve an id
         """
-        
+
         id = request.json[dbm.ID]
         content = request.json[dbm.CONTENT]
 
@@ -351,7 +351,7 @@ class PutMsg(Resource):
             return {
                 "Status": f"A message with id {id} was not found."
             }
-        
+
         dbm.edit_message(id, content)
         return {
                 "Status": "Message updated successfully."
