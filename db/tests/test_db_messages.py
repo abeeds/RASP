@@ -29,7 +29,7 @@ def test_insert_message():
 def test_edit_message():
     dbm.edit_message(TEST_ID)
 
-    msg = dbm.message_exists(TEST_ID)
+    msg = dbm.message_exists(TEST_ID, TEST_NEW_CONTENT)
     assert msg[dbm.CONTENT] == TEST_NEW_CONTENT
 
 
