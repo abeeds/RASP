@@ -76,8 +76,9 @@ def test_get_chatrooms(temp_chatroom):
 
 
 def test_get_messages(temp_chatroom, temp_user, temp_msg):
-    resp = TEST_CLIENT.post(f'/write_msg/{TESTROOM}/{TESTUSER}/tstcontent')
-    resp = TEST_CLIENT.get(f'{ep.GET_MSGS_URL}/{TESTROOM}')
+    resp = TEST_CLIENT.post(
+        f'{ep.MSG_URL}/{TESTROOM}/{TESTUSER}/tstcontent')
+    resp = TEST_CLIENT.get(f'{ep.MSG_URL}/{TESTROOM}')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
@@ -115,7 +116,7 @@ def test_register(mock_add):
 
 
 def test_write_msg(temp_chatroom, temp_user, temp_msg):
-    resp = TEST_CLIENT.post('/write_msg', json={
+    resp = TEST_CLIENT.post(f'{ep.MSG_URL}', json={
         dbm.USERNAME: TESTUSER,
         dbm.CHATROOM: TESTROOM,
         dbm.CONTENT: TESTCONTENT
@@ -128,7 +129,7 @@ def test_write_msg(temp_chatroom, temp_user, temp_msg):
 
 @patch('db.db_messages.edit_message', autospec=True)
 def test_edit_msg(mock_update):
-    resp = TEST_CLIENT.put(f'{ep.EDIT_MSG_URL}', json={
+    resp = TEST_CLIENT.put(f'{ep.MSG_URL}', json={
         dbm.ID: MOCK_ID,
         dbm.CONTENT: TESTUPDATEDCONTENT
     })
@@ -146,7 +147,7 @@ def test_delete_chatroom(mock_del):
 
 @patch('db.db_messages.delete_message', autospec=True)
 def test_delete_msg(mock_del):
-    resp = TEST_CLIENT.delete(f'/delete_msg/{MOCK_ID}')
+    resp = TEST_CLIENT.delete(f'{ep.MSG_URL}/{MOCK_ID}')
     assert resp.status_code == OK
     assert dbm.message_exists(MOCK_ID) is None
 

@@ -50,13 +50,9 @@ INSERT_CHATROOM_URL = '/insert_chatroom'
 UPDATE_CR_DESC_URL = '/update_chatroom_desc'
 
 # message endpoint urls
-EDIT_MSG_URL = '/messages'
-DEL_MSG_URL = '/delete_msg/<string:msg_id>'
-GET_MSGS_URL = '/get_msgs'
-GET_MSGS_PG_URL = '/get_msgs_pg'
+MSG_URL = '/messages'
 GET_MSGS_TEST_URL = '/get_msgs_test_version'
-# WRITE_MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
-WRITE_MSG_URL = '/write_msg'
+# MSG_URL = '/write_msg/<string:room>/<string:username>/<string:content>'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
 GET_FORMS_URL = '/get_forms'
@@ -256,7 +252,7 @@ class UpdatePw(Resource):
 
 
 # -------- MESSAGE RELATED ENDPOINTS --------
-@api.route(f'{GET_MSGS_URL}/<string:room_name>')
+@api.route(f'{MSG_URL}/<string:room_name>')
 class GetMsgs(Resource):
     def get(self, room_name):
         """
@@ -280,7 +276,7 @@ class GetMsgs(Resource):
         return messages
 
 
-@api.route(f'{GET_MSGS_PG_URL}/<string:room_name>/<string:pages>')
+@api.route(f'{MSG_URL}/<string:room_name>/<string:pages>')
 class GetMsgsLim(Resource):
     def get(self, room_name, pages):
         """
@@ -333,7 +329,7 @@ edit_message_fields = api.model('UpdatedMessage', {
 })
 
 
-@api.route(f'{EDIT_MSG_URL}')
+@api.route(f'{MSG_URL}')
 class PutMsg(Resource):
     @api.expect(edit_message_fields)
     @api.response(HTTPStatus.OK, 'Success')
@@ -365,7 +361,7 @@ message_fields = api.model('NewMessage', {
 })
 
 
-@api.route(f'{WRITE_MSG_URL}')
+@api.route(f'{MSG_URL}')
 class WriteMessage(Resource):
     @api.expect(message_fields)
     @api.response(HTTPStatus.OK, 'Success')
@@ -398,7 +394,7 @@ class WriteMessage(Resource):
         }
 
 
-@api.route(f'{DEL_MSG_URL}')
+@api.route(f'{MSG_URL}/<string:msg_id>')
 class DeleteMsg(Resource):
     def delete(self, msg_id):
         """
