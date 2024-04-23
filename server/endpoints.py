@@ -44,10 +44,7 @@ UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
 
 # chatroom endpoint urls
-DELETE_CHATROOM_URL = '/delete_chatroom'
-GET_CHATROOMS_URL = '/get_chatrooms'
-INSERT_CHATROOM_URL = '/insert_chatroom'
-UPDATE_CR_DESC_URL = '/update_chatroom_desc'
+CHATROOMS_URL = '/chatrooms'
 
 # message endpoint urls
 MSG_URL = '/messages'
@@ -418,9 +415,14 @@ chatroom_fields = api.model('NewChatroom', {
     dbch.OWNER: fields.String,
 })
 
+edit_chatroom_fields = api.model('UpdatedChatroom', {
+    dbch.NAME: fields.String,
+    dbch.DESC: fields.String,
+})
 
-@api.route(f'{GET_CHATROOMS_URL}')
-class GetChatrooms(Resource):
+
+@api.route(f'{CHATROOMS_URL}')
+class Chatrooms(Resource):
     def get(self):
         """
         Displays all available chatrooms.
@@ -431,9 +433,6 @@ class GetChatrooms(Resource):
         """
         return dbch.get_chatrooms()
 
-
-@api.route(f'{INSERT_CHATROOM_URL}')
-class InsertChatroom(Resource):
     @api.expect(chatroom_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
@@ -459,31 +458,7 @@ class InsertChatroom(Resource):
 
         return response
 
-
-@api.route(f'{DELETE_CHATROOM_URL}/<string:room_name>')
-class DeleteChatroom(Resource):
-    def delete(self, room_name):
-        """
-        Endpoint for deleting chatrooms identified by room_name.
-        This endpoint also deletes all messages associated with it.
-        """
-        response = {
-            "Chatroom Deleted": "",
-            "Status": ""
-        }
-        if not dbch.room_exists(room_name):
-            response["Status"] = "Chatroom with that name doesn't exist"
-        else:
-            dbch.delete_chatroom(room_name)
-            response["Chatroom Deleted"] = room_name
-            response["Status"] = "Chatroom deleted successfuly"
-
-        return response
-
-
-@api.route(f'{UPDATE_CR_DESC_URL}')
-class UpdateCrDesc(Resource):
-    @api.expect(chatroom_fields)
+    @api.expect(edit_chatroom_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
     def put(Resource):
@@ -505,6 +480,27 @@ class UpdateCrDesc(Resource):
         else:
             dbch.update_description(room, description)
             response["Status"] = "Chatroom description updated successfully."
+        return response
+
+
+@api.route(f'{CHATROOMS_URL}/<string:room_name>')
+class DeleteChatroom(Resource):
+    def delete(self, room_name):
+        """
+        Endpoint for deleting chatrooms identified by room_name.
+        This endpoint also deletes all messages associated with it.
+        """
+        response = {
+            "Chatroom Deleted": "",
+            "Status": ""
+        }
+        if not dbch.room_exists(room_name):
+            response["Status"] = "Chatroom with that name doesn't exist"
+        else:
+            dbch.delete_chatroom(room_name)
+            response["Chatroom Deleted"] = room_name
+            response["Status"] = "Chatroom deleted successfuly"
+
         return response
 
 

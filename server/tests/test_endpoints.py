@@ -68,7 +68,7 @@ def test_get_users(temp_user):
 
 
 def test_get_chatrooms(temp_chatroom):
-    resp = TEST_CLIENT.get(ep.GET_CHATROOMS_URL)
+    resp = TEST_CLIENT.get(ep.CHATROOMS_URL)
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert isinstance(resp_json, dict)
@@ -95,7 +95,7 @@ def test_deactivate(mock_del):
 
 @patch('db.db_chatrooms.insert_chatroom', autospec=True)
 def test_insert_chatroom(mock_add):
-    resp = TEST_CLIENT.post(f'{ep.INSERT_CHATROOM_URL}', json={
+    resp = TEST_CLIENT.post(f'{ep.CHATROOMS_URL}', json={
             dbch.NAME: TESTROOM,
             dbch.DESC: TESTDESC,
             dbch.OWNER: TESTOWNER,
@@ -138,7 +138,7 @@ def test_edit_msg(mock_update):
 
 @patch('db.db_chatrooms.delete_chatroom', autospec=True)
 def test_delete_chatroom(mock_del):
-    resp = TEST_CLIENT.delete(f'{ep.DELETE_CHATROOM_URL}/testroomname')
+    resp = TEST_CLIENT.delete(f'{ep.CHATROOMS_URL}/testroomname')
     resp_json = resp.get_json()
     assert "Chatroom Deleted" in resp_json
     assert resp.status_code == OK
@@ -154,7 +154,7 @@ def test_delete_msg(mock_del):
 
 @patch('db.db_chatrooms.update_description', autospec=True)
 def test_update_chatroom_desc(mock_update):
-    resp = TEST_CLIENT.put(f'{ep.UPDATE_CR_DESC_URL}', json={
+    resp = TEST_CLIENT.put(f'{ep.CHATROOMS_URL}', json={
         dbch.NAME: TESTROOM,
         dbch.DESC: TESTDESC
     })
