@@ -59,7 +59,8 @@ def get_chatroom_messages(chatroom: str, pages="ALL"):
                         "Chatroom": msg[CHATROOM],
                         "User": msg[USERNAME],
                         "Timestamp": msg[TIMESTAMP],
-                        **({"Last Edited": msg[LAST_EDITED]} if LAST_EDITED in msg else {}),
+                        **({"Last Edited": msg[LAST_EDITED]} 
+                           if LAST_EDITED in msg else {}),
                         "Content": msg[CONTENT]
                     }
                     for msg in messages}
