@@ -57,8 +57,50 @@ FORM_FLDS = [
 ]
 
 
+FORMS = {
+    "UpdatePass": [
+        {
+            FIELDNM: 'user',
+            TYPE: 'text',
+            LABEL: 'Confirm User'
+        },
+        {
+            FIELDNM: 'oldpwd',
+            TYPE: 'password',
+            LABEL: 'Old Password'
+        },
+        {
+            FIELDNM: 'newpwd',
+            TYPE: 'password',
+            LABEL: 'New Password'
+        },
+        {
+            FIELDNM: 'newpwdConfirm',
+            TYPE: 'password',
+            LABEL: 'Confirm Password'
+        },
+    ],
+    "FormB": [
+        {
+            FIELDNM: 'user',
+            TYPE: 'text',
+            LABEL: 'Confirm User'
+        },
+        {
+            FIELDNM: 'color',
+            TYPE: 'color',
+            LABEL: 'form b'
+        },
+    ],
+}
+
+
 def get_form() -> list:
     return FORM_FLDS
+
+
+def fetch_form(formName) -> list:
+    return FORMS[formName]
 
 
 def get_form_descr() -> dict:

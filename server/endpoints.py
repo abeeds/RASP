@@ -52,6 +52,7 @@ GET_MSGS_TEST_URL = '/get_msgs_test_version'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
 GET_FORMS_URL = '/get_forms'
+FETCH_FORMS_URL = '/forms'
 
 
 @api.route(HELLO_EP)
@@ -583,3 +584,17 @@ class UpdatePassword(Resource):
         print(response)
 
         return response
+
+
+@api.route(f'{FETCH_FORMS_URL}/<string:form_name>')
+class FetchForms(Resource):
+    """
+    This method returns all form entries in a dict.
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def get(self, form_name):
+
+        form_data = frm.fetch_form(form_name)
+
+        return form_data
