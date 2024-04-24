@@ -92,6 +92,18 @@ FORMS = {
             LABEL: 'form b'
         },
     ],
+    "UpdateRoomDesc": [
+        {
+            FIELDNM: 'room',
+            TYPE: 'text',
+            LABEL: 'Chatroom Name'
+        },
+        {
+            FIELDNM: 'desc',
+            TYPE: 'text',
+            LABEL: 'New Description'
+        },
+    ],
 }
 
 
