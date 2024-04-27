@@ -1,6 +1,6 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
-from .db_connect import update_one, fetch_all
+from .db_connect import update_doc, fetch_all
 import bcrypt
 from .db_messages import del_msgs_from_user
 
@@ -56,20 +56,20 @@ def ban(username: str):
 
 def update_username(old_name: str, new_name: str):
     filter = {USERNAME: old_name}
-    new_vals = {"$set": {USERNAME: new_name}}
+    new_vals = {USERNAME: new_name}
 
     connect_db()
-    update_one(USER_COLLECT, filter, new_vals)
+    update_doc(USER_COLLECT, filter, new_vals)
 
 
 def update_password(username: str, new_pw: str):
     filter = {USERNAME: username}
     hashed_pw = bcrypt.hashpw(new_pw.encode('utf-8'),
                               bcrypt.gensalt()).decode('utf-8')
-    new_vals = {"$set": {PASSWORD: hashed_pw}}
+    new_vals = {PASSWORD: hashed_pw}
 
     connect_db()
-    update_one(USER_COLLECT, filter, new_vals)
+    update_doc(USER_COLLECT, filter, new_vals)
 
 
 def get_users():

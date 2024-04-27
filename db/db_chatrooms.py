@@ -36,10 +36,10 @@ def delete_chatroom(name: str):
 
 def update_description(name: str, new_desc: str = ""):
     filter = {NAME: name}
-    new_vals = {"$set": {DESC: new_desc}}
+    new_vals = {DESC: new_desc}
 
     dbc.connect_db()
-    dbc.update_one(CHATROOM_COLLECT, filter, new_vals)
+    dbc.update_doc(CHATROOM_COLLECT, filter, new_vals)
 
 
 def get_chatrooms():
