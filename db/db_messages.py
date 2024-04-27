@@ -1,6 +1,6 @@
 from .db_connect import insert_one, connect_db, del_one
 from .db_connect import fetch_one, fetch_all_as_dict, fetch_many
-from .db_connect import del_many, update_one
+from .db_connect import del_many, update_doc
 from datetime import datetime
 from bson import ObjectId
 
@@ -37,7 +37,7 @@ def insert_message(username: str, room: str, content: str):
 
     connect_db()
     _id = insert_one(MESSAGE_COLLECT, new_msg).inserted_id
-    update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+    update_doc(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
                {TIMESTAMP: new_msg[TIMESTAMP]})
     return _id, new_msg[TIMESTAMP]
 
@@ -86,26 +86,26 @@ def delete_message(id: str):
     connect_db()
     if message_exists(id):
         del_one(MESSAGE_COLLECT, {ID: obID})
-        update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+        update_doc(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
                    {TIMESTAMP: datetime.now().timestamp()})
 
 
 def del_msgs_from_user(username: str):
     connect_db()
     del_many(MESSAGE_COLLECT, {USERNAME: username})
-    update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+    update_doc(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
                {TIMESTAMP: datetime.now().timestamp()})
 
 
 def edit_message(id: str, new_msg: str):
     filter = {ID:  ObjectId(id)}
-    new_vals = {"$set": {
+    new_vals = {
         CONTENT: new_msg,
         LAST_EDITED: datetime.now().timestamp()
-        }}
+        }
 
     connect_db()
     if message_exists(id):
-        update_one(MESSAGE_COLLECT, filter, new_vals)
-        update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+        update_doc(MESSAGE_COLLECT, filter, new_vals)
+        update_doc(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
                    {TIMESTAMP: datetime.now().timestamp()})
