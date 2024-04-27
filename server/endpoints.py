@@ -114,7 +114,7 @@ class Register(Resource):
 
         # ensure the username is not taken
         if dbu.user_exists(username):
-            response['message'] = 'Username is already taken.'
+            response['message'] = f"{username} is already taken."
 
         # make sure there aren't spaces in the username
         elif " " in username:
@@ -171,7 +171,7 @@ class DeactivateUser(Resource):
             'deleted_username': username if deleted_id
             else None,
             'message': 'Delete Successful' if deleted_id
-            else "Username does not exist.",
+            else f"User {username} doesn't exist.",
         }
 
         return response
@@ -198,7 +198,7 @@ class DeactivateSelf(Resource):
             else None,
             'message': 'Account deactivated. \
                 Your messages persist.' if deleted_id
-            else "User/pass combo does not exist.",
+            else "User/pass combo doesn't exist.",
         }
 
         return response
@@ -216,10 +216,10 @@ class UpdateUser(Resource):
             "Status": ""
         }
         if not dbu.user_exists(curr_username):
-            response["Status"] = "The current username doesn't exist."
+            response["Status"] = f"User {curr_username} doesn't exist."
 
         elif dbu.user_exists(new_username):
-            response["Status"] = "The new username is already taken."
+            response["Status"] = f"{new_username} is already taken."
 
         else:
             dbu.update_username(curr_username, new_username)
@@ -243,7 +243,7 @@ class UpdatePw(Resource):
 
         response = {
             'Status': "Updated Successfully" if updateStatus
-            else "The provided username does not exist."
+            else f"User {username} doesn't exist."
         }
         return response
 
@@ -282,11 +282,11 @@ class Messages(Resource):
         content = request.json[dbm.CONTENT]
         if not dbch.room_exists(room):
             return {
-                "Status": "A room with that name does not exist."
+                "Status": f"Chatroom {room} doesn't exist"
             }
         if not dbu.user_exists(username):
             return {
-                "Status": "User with that username does not exist."
+                "Status": f"User {username} doesn't exist."
             }
 
         dbm.insert_message(username, room, content)
@@ -334,7 +334,7 @@ class GetMsgs(Resource):
         """
         if not dbch.room_exists(room_name):
             return {
-                "Status": "Room does not exist."
+                "Status": f"Chatroom {room_name} doesn't exist"
             }
 
         messages = dbm.get_chatroom_messages(room_name)
@@ -359,7 +359,7 @@ class GetMsgsLim(Resource):
         """
         if not dbch.room_exists(room_name):
             return {
-                "Status": "Room does not exist."
+                "Status": f"Chatroom {room_name} doesn't exist"
             }
 
         messages = dbm.get_chatroom_messages(room_name, pages)
@@ -400,7 +400,7 @@ class DeleteMsg(Resource):
         """
         if not dbm.message_exists(msg_id):
             return {
-                "Status": "A message with that ID does not exist."
+                "Status": f"A message with id {msg_id} was not found."
             }
 
         dbm.delete_message(msg_id)
@@ -477,7 +477,7 @@ class Chatrooms(Resource):
         }
 
         if not dbch.room_exists(room):
-            response["Status"] = "A room with that name does not exist."
+            response["Status"] = f"Chatroom {room} doesn't exist"
         else:
             dbch.update_description(room, description)
             response["Status"] = "Chatroom description updated successfully."
@@ -496,7 +496,7 @@ class DeleteChatroom(Resource):
             "Status": ""
         }
         if not dbch.room_exists(room_name):
-            response["Status"] = "Chatroom with that name doesn't exist"
+            response["Status"] = f"Chatroom {room_name} doesn't exist"
         else:
             dbch.delete_chatroom(room_name)
             response["Chatroom Deleted"] = room_name
