@@ -14,6 +14,10 @@ from bson import ObjectId
 
 MESSAGE_COLLECT = "messages"
 
+# this collections tracks when messages was last edited
+LAST_MODIFIED_COLLECT = "last_modified"
+COLLECTION_CONST = "collection"
+
 # message db fields
 USERNAME = "username"
 TIMESTAMP = "timestamp"
@@ -33,6 +37,8 @@ def insert_message(username: str, room: str, content: str):
 
     connect_db()
     _id = insert_one(MESSAGE_COLLECT, new_msg).inserted_id
+    update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+               {TIMESTAMP: new_msg[TIMESTAMP]})
     return _id, new_msg[TIMESTAMP]
 
 
@@ -80,11 +86,15 @@ def delete_message(id: str):
     connect_db()
     if message_exists(id):
         del_one(MESSAGE_COLLECT, {ID: obID})
+        update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+                   {TIMESTAMP: datetime.now().timestamp()})
 
 
 def del_msgs_from_user(username: str):
     connect_db()
     del_many(MESSAGE_COLLECT, {USERNAME: username})
+    update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+               {TIMESTAMP: datetime.now().timestamp()})
 
 
 def edit_message(id: str, new_msg: str):
@@ -97,3 +107,5 @@ def edit_message(id: str, new_msg: str):
     connect_db()
     if message_exists(id):
         update_one(MESSAGE_COLLECT, filter, new_vals)
+        update_one(LAST_MODIFIED_COLLECT, {COLLECTION_CONST: MESSAGE_COLLECT},
+                   {TIMESTAMP: datetime.now().timestamp()})
