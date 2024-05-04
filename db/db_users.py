@@ -1,15 +1,19 @@
 from .db_connect import insert_one, connect_db
 from .db_connect import fetch_one, del_one
 from .db_connect import update_doc, fetch_all
-import bcrypt
 from .db_messages import del_msgs_from_user
+import bcrypt
+from datetime import datetime
+import random
 
 USER_COLLECT = "users"
 
 # User fields
 USERNAME = "username"
 PASSWORD = "password"
+ID = "_id"
 MEMBERSHIP = "membership"
+SPECIALCHARS = "!@#$%^&*()-=_+}{[]|;':,./<>?"
 
 
 def user_exists(username: str):
@@ -86,3 +90,19 @@ def get_users():
                                  MEMBERSHIP: user_membership}
 
     return users_dict
+
+
+def create_login_token(username, password):
+    user = userpass_check(username, password)
+    if user is None:
+        return None
+
+    user_id = str(user[ID])
+    time = str(datetime.now().timestamp())
+    random_chars = ""
+    rand_len = random.randrange(1, 5)
+    for x in range(rand_len):
+        random_chars += random.choice(SPECIALCHARS)
+
+    token = user_id + random_chars + time
+    return token
