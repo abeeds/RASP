@@ -4,6 +4,7 @@ import db.db_users as dbu
 TEST_USERNAME = "test"
 NEW_USERNAME = "anothertest"
 TEST_PASSWORD = "testpw"
+FALSE_PASSWORD = "29318092381"
 NEW_PASSWORD = "updatedpw"
 
 
@@ -23,7 +24,7 @@ def test_userpass_check(temp_user):
 
 
 def test_false_userpass_check():
-    response = dbu.userpass_check(TEST_USERNAME, TEST_PASSWORD)
+    response = dbu.userpass_check(TEST_USERNAME, FALSE_PASSWORD)
     assert response is None
 
 
