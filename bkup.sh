@@ -5,7 +5,7 @@
 
 for collection in "${Collections[@]}"; do
     echo "Backing up $collection"
-    $EXP --collection=$collection --db=$DB --out=$BKUP_DIR/$collection.json $CONNECT_STR --username $USER --password $GAME_MONGO_PW
+    $EXP --collection="$collection" --db="$DB" --out="$BKUP_DIR/$collection.json" "$CONNECT_STR" --username "$USER" --password "$GAME_MONGO_PW"
 done
 
 git add $BKUP_DIR/*.json

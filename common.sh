@@ -23,4 +23,4 @@ then
     exit 1
 fi
 
-declare -a Collections=("users" "chatrooms" "messages")
+declare -a Collections=("users" "chat rooms" "messages")

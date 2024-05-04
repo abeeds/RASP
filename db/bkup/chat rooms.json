@@ -1,0 +1,6 @@
+{"_id":{"$oid":"657f34b172a7566a6b8becd9"},"chatroom_name":"new room","description":"this is a really fun place","owner":"thejollyfatso"}
+{"_id":{"$oid":"65c7d0bcf41a7dcd3d13c6ac"},"chatroom_name":"test room","description":"test room description","owner":"goldengraham"}
+{"_id":{"$oid":"65c7facd6d8252e7137f6d36"},"chatroom_name":"lorem ipsum","description":"dolor sit amet consequeter","owner":"gombychef"}
+{"_id":{"$oid":"65dd32b9edfb6cbd69a04523"},"chatroom_name":"General","description":"A place for any discussion!","owner":"gombychef"}
+{"_id":{"$oid":"65ff3be1f63394db79d849de"},"chatroom_name":"wadu","description":"wadu","owner":"thejollyfatso"}
+{"_id":{"$oid":"6608498d72b0bda67ce5b22b"},"chatroom_name":"unkeyed room","description":"this should have no owner","owner":null}

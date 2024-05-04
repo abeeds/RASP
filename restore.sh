@@ -20,5 +20,5 @@ fi
 
 for collection in "${Collections[@]}"; do
     echo "Restoring $collection"
-    $IMP --db=$DB --collection $collection --drop --file $BKUP_DIR/$collection.json
+    $IMP --db="$DB" --collection "$collection" --drop --file "$BKUP_DIR/$collection.json"
 done
