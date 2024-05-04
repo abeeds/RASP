@@ -35,21 +35,20 @@ HELLO_RESP = 'hello'
 ENDPOINTS_EP = '/endpoints'
 
 # user endpoint urls
-DEACTIVATE_URL = "/ban"
-DEACTIVATE_SELF_URL = "/deactivate"
-GET_USERS_URL = '/get_users'
-LOGIN_URL = "/login"
-REGISTER_URL = "/register"
-UPDATE_USER_URL = "/update_username"
-UPDATE_PASS_URL = "/update_password"
-NEW_LOGIN_URL = "/users/login"
+DEACTIVATE_URL = "/users/ban"
+DEACTIVATE_SELF_URL = "/users/deactivate"
+GET_USERS_URL = '/users/get_users'
+LOGIN_URL = "/users/login"
+REGISTER_URL = "/users/register"
+UPDATE_USER_URL = "/users/update_username"
+UPDATE_PASS_URL = "/users/update_password"
 
 # chatroom endpoint urls
 CHATROOMS_URL = '/chatrooms'
 
 # message endpoint urls
 MSG_URL = '/messages'
-GET_MSGS_TEST_URL = '/get_msgs_test_version'
+GET_MSGS_TEST_URL = '/messages/test'
 
 NUKE_URL = '/wipe/<string:collection>/<string:code>'
 GET_FORMS_URL = '/get_forms'
@@ -134,7 +133,7 @@ class Register(Resource):
         return response
 
 
-@api.route(f'{NEW_LOGIN_URL}')
+@api.route(f'{LOGIN_URL}')
 @api.expect(login_fields)
 class LogInPost(Resource):
     def post(self):
