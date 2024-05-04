@@ -42,6 +42,7 @@ LOGIN_URL = "/login"
 REGISTER_URL = "/register"
 UPDATE_USER_URL = "/update_username"
 UPDATE_PASS_URL = "/update_password"
+NEW_LOGIN_URL = "/users/login"
 
 # chatroom endpoint urls
 CHATROOMS_URL = '/chatrooms'
@@ -85,6 +86,12 @@ class Endpoints(Resource):
 
 
 # ----------- USER RELATED ENDPOINTS -----------
+login_fields = api.model('login', {
+    dbu.USERNAME: fields.String,
+    dbu.PASSWORD: fields.String,
+})
+
+
 @api.route(f'{GET_USERS_URL}')
 class GetUsers(Resource):
     def get(self):
@@ -125,6 +132,50 @@ class Register(Resource):
             response['inserted_id'] = str(new_id.inserted_id)
             response['message'] = 'Registration Successful.'
         return response
+
+
+@api.route(f'{NEW_LOGIN_URL}')
+@api.expect(login_fields)
+class LogInPost(Resource):
+    def post(self):
+        """
+            Either verified that the username and password are correct
+            or that the login token is correct.
+            Do not include login_token if you are including
+            username and password! It will not be checked!
+            Copy/Paste the following line for login token specifically:
+            "login_token": ""
+
+            if a username and password are entered, this returns a token
+            if a login_token is entered, it returns a
+            status saying success or an error if the token was not found
+        """
+        data = request.json
+        token = ""
+
+        if dbu.USERNAME in data and dbu.PASSWORD not in data:
+            return {"status":
+                    f"{dbu.USERNAME} was entered but not {dbu.PASSWORD}"}, 400
+
+        if dbu.PASSWORD in data and dbu.USERNAME not in data:
+            return {"status":
+                    f"{dbu.PASSWORD} was entered but not {dbu.USERNAME}"}, 400
+
+        if dbu.USERNAME in data and dbu.PASSWORD in data:
+            token = dbu.create_login_token(data[dbu.USERNAME],
+                                           data[dbu.PASSWORD])
+            if token is None:
+                return {"status":
+                        "The username and password do not match"}, 400
+            return {"status": "success",
+                    "token": token}, 200
+
+        if dbu.LOGIN_TOKEN in data:
+            if dbu.verify_login_token(data[dbu.LOGIN_TOKEN]):
+                return {"status": "success"}, 200
+            return {"status": "the login token could not be verified"}, 400
+
+        return {"status": "no valid fields entered"}, 400
 
 
 @api.route(f'{LOGIN_URL}/<string:username>/<string:password>')

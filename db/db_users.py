@@ -12,6 +12,7 @@ USER_COLLECT = "users"
 USERNAME = "username"
 PASSWORD = "password"
 ID = "_id"
+LOGIN_TOKEN = "login_token"
 MEMBERSHIP = "membership"
 SPECIALCHARS = "!@#$%^&*()-=_+}{[]|;':,./<>?"
 
@@ -99,10 +100,19 @@ def create_login_token(username, password):
 
     user_id = str(user[ID])
     time = str(datetime.now().timestamp())
+
     random_chars = ""
     rand_len = random.randrange(1, 5)
     for x in range(rand_len):
         random_chars += random.choice(SPECIALCHARS)
-
     token = user_id + random_chars + time
+    update = {LOGIN_TOKEN: token}
+
+    filter = {USERNAME: username}
+    update_doc(USER_COLLECT, filter, update)
     return token
+
+
+def verify_login_token(login_token):
+    user = fetch_one(USER_COLLECT, {LOGIN_TOKEN: login_token})
+    return user is not None
