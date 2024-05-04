@@ -121,16 +121,18 @@ class Register(Resource):
         # ensure the username is not taken
         if dbu.user_exists(username):
             response['message'] = f"{username} is already taken."
+            return response, HTTPStatus.CONFLICT
 
         # make sure there aren't spaces in the username
         elif " " in username:
             response['message'] = "Username cannot have a space"
+            return response, HTTPStatus.BAD_REQUEST
 
         else:
             new_id = dbu.insert_user(username, password)
             response['inserted_id'] = str(new_id.inserted_id)
             response['message'] = 'Registration Successful.'
-        return response
+            return response, HTTPStatus.OK
 
 
 @api.route(f'{LOGIN_URL}')
@@ -153,28 +155,35 @@ class LogInPost(Resource):
         token = ""
 
         if dbu.USERNAME in data and dbu.PASSWORD not in data:
-            return {"status":
-                    f"{dbu.USERNAME} was entered but not {dbu.PASSWORD}"}, 400
+            return {
+                    "status":
+                    f"{dbu.USERNAME} was entered but not {dbu.PASSWORD}"
+                   }, HTTPStatus.BAD_REQUEST
 
         if dbu.PASSWORD in data and dbu.USERNAME not in data:
-            return {"status":
-                    f"{dbu.PASSWORD} was entered but not {dbu.USERNAME}"}, 400
+            return {
+                    "status":
+                    f"{dbu.PASSWORD} was entered but not {dbu.USERNAME}"
+                   }, HTTPStatus.BAD_REQUEST
 
         if dbu.USERNAME in data and dbu.PASSWORD in data:
             token = dbu.create_login_token(data[dbu.USERNAME],
                                            data[dbu.PASSWORD])
             if token is None:
-                return {"status":
-                        "The username and password do not match"}, 400
+                return {
+                    "status":
+                        "The username and password do not match"
+                        }, HTTPStatus.NOT_ACCEPTABLE
             return {"status": "success",
-                    "token": token}, 200
+                    "token": token}, HTTPStatus.OK
 
         if dbu.LOGIN_TOKEN in data:
             if dbu.verify_login_token(data[dbu.LOGIN_TOKEN]):
-                return {"status": "success"}, 200
-            return {"status": "the login token could not be verified"}, 400
+                return {"status": "success"}, HTTPStatus.OK
+            return {"status":
+                    "the login token is not valid"}, HTTPStatus.BAD_REQUEST
 
-        return {"status": "no valid fields entered"}, 400
+        return {"status": "no valid fields entered"}, HTTPStatus.BAD_REQUEST
 
 
 @api.route(f'{LOGIN_URL}/<string:username>/<string:password>')
@@ -192,12 +201,12 @@ class LogIn(Resource):
         # ensure the userpass combo is correct
         if dbu.userpass_check(username, password):
             response['message'] = 'true'
+            return response, HTTPStatus.OK
 
         # make sure there aren't spaces in the username
         else:
             response['message'] = "false"
-
-        return response
+            return response, HTTPStatus.BAD_REQUEST
 
 
 @api.route(f'{DEACTIVATE_URL}/<string:username>')
@@ -267,14 +276,16 @@ class UpdateUser(Resource):
         }
         if not dbu.user_exists(curr_username):
             response["Status"] = f"User {curr_username} doesn't exist."
+            return response, HTTPStatus.NOT_FOUND
 
         elif dbu.user_exists(new_username):
             response["Status"] = f"{new_username} is already taken."
+            return response, HTTPStatus.CONFLICT
 
         else:
             dbu.update_username(curr_username, new_username)
             response['Status'] = "Updated Successfully"
-        return response
+            return response, HTTPStatus.OK
 
 
 @api.route(f'{UPDATE_PASS_URL}/<string:username>/<string:new_password>')
