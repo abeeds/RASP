@@ -15,7 +15,7 @@ from flask_restx import Resource, Api, fields
 # import db.db_connect as dbc
 from flask_cors import CORS
 
-# import werkzeug.exceptions as wz
+import werkzeug.exceptions as wz
 
 import db.db_connect as dbc
 import db.db_users as dbu
@@ -120,13 +120,12 @@ class Register(Resource):
 
         # ensure the username is not taken
         if dbu.user_exists(username):
-            response['message'] = f"{username} is already taken."
-            return response, HTTPStatus.CONFLICT
+            raise wz.Conflict(username)
 
         # make sure there aren't spaces in the username
         elif " " in username:
-            response['message'] = "Username cannot have a space"
-            return response, HTTPStatus.BAD_REQUEST
+            raise wz.BadRequest(username,
+                                description="Username can't have spaces")
 
         else:
             new_id = dbu.insert_user(username, password)
@@ -275,12 +274,10 @@ class UpdateUser(Resource):
             "Status": ""
         }
         if not dbu.user_exists(curr_username):
-            response["Status"] = f"User {curr_username} doesn't exist."
-            return response, HTTPStatus.NOT_FOUND
+            raise wz.NotFound(curr_username)
 
         elif dbu.user_exists(new_username):
-            response["Status"] = f"{new_username} is already taken."
-            return response, HTTPStatus.CONFLICT
+            raise wz.Conflict(new_username)
 
         else:
             dbu.update_username(curr_username, new_username)
