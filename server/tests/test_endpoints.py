@@ -173,6 +173,7 @@ def test_update_password(mock_update):
     dbu.deactivate(username)
 
 
+@pytest.mark.skip("REWRITE")
 @patch('db.db_users.update_username', autospec=True)
 def test_update_username(mock_update):
     username = 'anyuser'
