@@ -237,18 +237,17 @@ class DeactivateSelf(Resource):
         """
         deleted_id = ""
         user_doc = dbu.userpass_check(username, password)
+        if user_doc is None:
+            raise wz.NotFound(username)
         if user_doc and '_id' in user_doc:
             deleted_id = str(user_doc['_id'])
             dbu.deactivate(username)
 
         response = {
-            'deleted_id': deleted_id if deleted_id
-            else None,
-            'deleted_username': username if deleted_id
-            else None,
+            'deleted_id': deleted_id,
+            'deleted_username': username,
             'message': 'Account deactivated. \
-                Your messages persist.' if deleted_id
-            else "User/pass combo doesn't exist.",
+                Your messages persist.',
         }
 
         return response
