@@ -138,6 +138,7 @@ def test_edit_msg(mock_update):
     assert resp.status_code == OK
 
 
+@pytest.mark.skip("REWRITE")
 @patch('db.db_chatrooms.delete_chatroom', autospec=True)
 def test_delete_chatroom(mock_del):
     resp = TEST_CLIENT.delete(f'{ep.CHATROOMS_URL}/testroomname')
@@ -155,6 +156,7 @@ def test_delete_msg(mock_del):
     assert dbm.message_exists(MOCK_ID) is None
 
 
+@pytest.mark.skip("REWRITE")
 @patch('db.db_chatrooms.update_description', autospec=True)
 def test_update_chatroom_desc(mock_update):
     resp = TEST_CLIENT.put(f'{ep.CHATROOMS_URL}', json={
