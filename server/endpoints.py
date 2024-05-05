@@ -37,7 +37,7 @@ ENDPOINTS_EP = '/endpoints'
 # user endpoint urls
 DEACTIVATE_URL = "/users/ban"
 DEACTIVATE_SELF_URL = "/users/deactivate"
-GET_USERS_URL = '/users/get_users'
+GET_USERS_URL = '/users'
 LOGIN_URL = "/users/login"
 REGISTER_URL = "/users/register"
 UPDATE_USER_URL = "/users/update_username"
