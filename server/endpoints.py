@@ -165,8 +165,8 @@ class LogInPost(Resource):
             token = dbu.create_login_token(data[dbu.USERNAME],
                                            data[dbu.PASSWORD])
             if token is None:
-                raise wz.NotAcceptable(description="The username and"
-                                       + " password don't match")
+                raise wz.Unauthorized(description="The username and"
+                                      + " password don't match")
             return {"status": "success",
                     "token": token}, HTTPStatus.OK
 
@@ -486,12 +486,14 @@ class Chatrooms(Resource):
             "status": ""
         }
         if dbch.room_exists(room_name):
-            response["status"] = "A chatroom with this name already exists"
+            raise wz.Conflict(room_name)
         elif dbch.insert_chatroom(
                 room_name, room_desc, room_owner) is not None:
             response["status"] = "Chatroom created successfully."
+            return response, HTTPStatus.OK
         else:
-            response["status"] = "Chatroom creation failed."
+            raise wz.InternalServerError(
+                description="Chatroom creation failed")
 
         return response
 
@@ -513,11 +515,11 @@ class Chatrooms(Resource):
         }
 
         if not dbch.room_exists(room):
-            response["Status"] = f"Chatroom {room} doesn't exist"
+            raise wz.NotFound(room)
         else:
             dbch.update_description(room, description)
             response["Status"] = "Chatroom description updated successfully."
-        return response
+            return response, HTTPStatus.OK
 
 
 @api.route(f'{CHATROOMS_URL}/<string:room_name>')
@@ -532,13 +534,12 @@ class DeleteChatroom(Resource):
             "Status": ""
         }
         if not dbch.room_exists(room_name):
-            response["Status"] = f"Chatroom {room_name} doesn't exist"
+            raise wz.NotFound(room_name)
         else:
             dbch.delete_chatroom(room_name)
             response["Chatroom Deleted"] = room_name
             response["Status"] = "Chatroom deleted successfuly"
-
-        return response
+            return response, HTTPStatus.OK
 
 
 @api.route(f'{NUKE_URL}')
@@ -554,9 +555,9 @@ class DeleteAllInCollection(Resource):
         if code == "4253":
             dbc.del_all_in_collection(collection)
             response["Status"] = "Code accepted."
+            return response, HTTPStatus.OK
         else:
-            response["Status"] = "Permission denied."
-        return response
+            raise wz.BadRequest("Permission denied")
 
 
 @api.route(f'{GET_FORMS_URL}')
@@ -613,9 +614,10 @@ class UpdatePassword(Resource):
                 dbu.update_password(user, newpwd)
                 response['Status'] = 'Password update attempted.'
             else:
-                response['Status'] = 'New passwords do not match.'
+                raise wz.BadRequest(description='New passwords do not match.')
         else:
-            response['Status'] = 'Old password authentication failed.'
+            raise wz.Unauthorized(
+                description='Old password authentication failed.')
 
         print(response)
 
