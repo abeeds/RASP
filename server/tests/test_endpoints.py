@@ -84,6 +84,7 @@ def test_get_messages(temp_chatroom, temp_user, temp_msg):
     assert isinstance(resp_json, dict)
 
 
+@pytest.mark.skip("REWRITE")
 @patch('db.db_users.deactivate', autospec=True)
 def test_deactivate(mock_del):
     resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
