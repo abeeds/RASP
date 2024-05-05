@@ -212,20 +212,19 @@ class DeactivateUser(Resource):
         """
         deleted_id = ""
         user_doc = dbu.user_exists(username)
+        if user_doc is None:
+            raise wz.NotFound(username)
+
         if user_doc and '_id' in user_doc:
             deleted_id = str(user_doc['_id'])
             dbu.ban(username)
 
         response = {
-            'deleted_id': deleted_id if deleted_id
-            else None,
-            'deleted_username': username if deleted_id
-            else None,
-            'message': 'Delete Successful' if deleted_id
-            else f"User {username} doesn't exist.",
+            'deleted_id': deleted_id,
+            'deleted_username': username,
+            'message': 'Delete Successful',
         }
-
-        return response
+        return response, HTTPStatus.OK
 
 
 @api.route(f'{DEACTIVATE_SELF_URL}/<string:username>/<string:password>')
