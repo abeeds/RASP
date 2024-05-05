@@ -127,9 +127,9 @@ def test_write_msg(temp_chatroom, temp_user, temp_msg):
     assert "Status" in resp_json
 
 
-@pytest.mark.skip("REWRITE")
+@patch('db.db_messages.message_exists', autospec=True)
 @patch('db.db_messages.edit_message', autospec=True)
-def test_edit_msg(mock_update):
+def test_edit_msg(mock_msg, mock_update):
     resp = TEST_CLIENT.put(f'{ep.MSG_URL}', json={
         dbm.ID: MOCK_ID,
         dbm.CONTENT: TESTUPDATEDCONTENT
