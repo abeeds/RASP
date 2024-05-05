@@ -84,14 +84,13 @@ def test_get_messages(temp_chatroom, temp_user, temp_msg):
     assert isinstance(resp_json, dict)
 
 
-@pytest.mark.skip("REWRITE")
-@patch('db.db_users.deactivate', autospec=True)
-def test_deactivate(mock_del):
+@patch('db.db_users.ban', autospec=True)
+@patch('db.db_users.user_exists', autospec=True)
+def test_deactivate(mock_del, mock_user):
     resp = TEST_CLIENT.delete(f'{ep.DEACTIVATE_URL}/tstusrname')
     assert resp.status_code == OK
     resp_json = resp.get_json()
     assert 'message' in resp_json
-    assert dbu.user_exists('tstusrname') is None
 
 
 @patch('db.db_chatrooms.insert_chatroom', autospec=True)
