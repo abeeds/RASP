@@ -284,17 +284,16 @@ class UpdatePw(Resource):
             This endpoint will return a failure if an account with
             username does not exist.
         """
-        updateStatus = False
 
         if dbu.user_exists(username):
-            updateStatus = True
             dbu.update_password(username, new_password)
+        else:
+            raise wz.NotFound(username)
 
         response = {
-            'Status': "Updated Successfully" if updateStatus
-            else f"User {username} doesn't exist."
+            'Status': "Updated Successfully"
         }
-        return response
+        return response, HTTPStatus.OK
 
 
 # -------- MESSAGE RELATED ENDPOINTS --------
@@ -330,18 +329,14 @@ class Messages(Resource):
         username = request.json[dbm.USERNAME]
         content = request.json[dbm.CONTENT]
         if not dbch.room_exists(room):
-            return {
-                "Status": f"Chatroom {room} doesn't exist"
-            }
+            raise wz.NotFound(room)
         if not dbu.user_exists(username):
-            return {
-                "Status": f"User {username} doesn't exist."
-            }
+            raise wz.NotFound(username)
 
         dbm.insert_message(username, room, content)
         return {
             "Status": "message written successfully."
-        }
+        }, HTTPStatus.OK
 
     @api.expect(edit_message_fields)
     @api.response(HTTPStatus.OK, 'Success')
@@ -356,14 +351,12 @@ class Messages(Resource):
         content = request.json[dbm.CONTENT]
 
         if not dbm.message_exists(id):
-            return {
-                "Status": f"A message with id {id} was not found."
-            }
+            raise wz.NotFound(id)
 
         dbm.edit_message(id, content)
         return {
                 "Status": "Message updated successfully."
-            }
+            }, HTTPStatus.OK
 
 
 @api.route(f'{MSG_URL}/<string:room_name>')
@@ -382,9 +375,7 @@ class GetMsgs(Resource):
         }
         """
         if not dbch.room_exists(room_name):
-            return {
-                "Status": f"Chatroom {room_name} doesn't exist"
-            }
+            raise wz.NotFound(room_name)
 
         messages = dbm.get_chatroom_messages(room_name)
         return messages
@@ -407,9 +398,7 @@ class GetMsgsLim(Resource):
         }
         """
         if not dbch.room_exists(room_name):
-            return {
-                "Status": f"Chatroom {room_name} doesn't exist"
-            }
+            raise wz.NotFound(room_name)
 
         messages = dbm.get_chatroom_messages(room_name, pages)
         return messages
@@ -434,7 +423,7 @@ class GetMsgsTestVer(Resource):
         """
 
         messages = dbm.get_chatroom_messages(room_name)
-        return messages
+        return messages, HTTPStatus.OK
 
 
 @api.route(f'{MSG_URL}/<string:msg_id>')
@@ -448,14 +437,12 @@ class DeleteMsg(Resource):
         They are the keys in the response to that endpoint.
         """
         if not dbm.message_exists(msg_id):
-            return {
-                "Status": f"A message with id {msg_id} was not found."
-            }
+            raise wz.NotFound(msg_id)
 
         dbm.delete_message(msg_id)
         return {
             "Status": "Message deleted successfully."
-        }
+        }, HTTPStatus.OK
 
 
 # --------- CHATROOM RELATED ENDPOINTS ---------
