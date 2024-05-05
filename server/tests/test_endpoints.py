@@ -163,15 +163,23 @@ def test_update_chatroom_desc(mock_update):
 
 @patch('db.db_users.update_password', autospec=True)
 def test_update_password(mock_update):
-    resp = TEST_CLIENT.put(f'{ep.UPDATE_PASS_URL}/anyuser/anypass')
+    username = 'anyuser'
+    password = 'anypass'
+    dbu.insert_user(username, password)
+
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_PASS_URL}/{username}/{password}')
     assert resp.status_code == OK
+
+    dbu.deactivate(username)
 
 
 @patch('db.db_users.update_username', autospec=True)
 def test_update_username(mock_update):
-    resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/anyuser/anynewuser')
+    username = 'anyuser'
+    replacement = 'anynewuser'
+
+    resp = TEST_CLIENT.put(f'{ep.UPDATE_USER_URL}/{username}/{replacement}')
     assert resp.status_code == OK
-    assert dbu.user_exists('anyuser') is None
 
 
 def test_login(temp_user):

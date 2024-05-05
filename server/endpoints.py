@@ -274,15 +274,15 @@ class UpdateUser(Resource):
             "Status": ""
         }
         if not dbu.user_exists(curr_username):
-            response["Status"] = f"User {curr_username} doesn't exist."
+            raise wz.NotFound(curr_username)
 
         elif dbu.user_exists(new_username):
-            response["Status"] = f"{new_username} is already taken."
+            raise wz.Conflict(new_username)
 
         else:
             dbu.update_username(curr_username, new_username)
             response['Status'] = "Updated Successfully"
-        return response
+            return response, HTTPStatus.OK
 
 
 @api.route(f'{UPDATE_PASS_URL}/<string:username>/<string:new_password>')
