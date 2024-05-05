@@ -154,35 +154,28 @@ class LogInPost(Resource):
         token = ""
 
         if dbu.USERNAME in data and dbu.PASSWORD not in data:
-            return {
-                    "status":
-                    f"{dbu.USERNAME} was entered but not {dbu.PASSWORD}"
-                   }, HTTPStatus.BAD_REQUEST
+            raise wz.BadRequest(description=f"{dbu.USERNAME} was entered"
+                                + f" but not {dbu.PASSWORD}")
 
         if dbu.PASSWORD in data and dbu.USERNAME not in data:
-            return {
-                    "status":
-                    f"{dbu.PASSWORD} was entered but not {dbu.USERNAME}"
-                   }, HTTPStatus.BAD_REQUEST
+            raise wz.BadRequest(description=f"{dbu.PASSWORD} was entered"
+                                + f" but not {dbu.USERNAME}")
 
         if dbu.USERNAME in data and dbu.PASSWORD in data:
             token = dbu.create_login_token(data[dbu.USERNAME],
                                            data[dbu.PASSWORD])
             if token is None:
-                return {
-                    "status":
-                        "The username and password do not match"
-                        }, HTTPStatus.NOT_ACCEPTABLE
+                raise wz.NotAcceptable(description="The username and"
+                                       + " password don't match")
             return {"status": "success",
                     "token": token}, HTTPStatus.OK
 
         if dbu.LOGIN_TOKEN in data:
             if dbu.verify_login_token(data[dbu.LOGIN_TOKEN]):
                 return {"status": "success"}, HTTPStatus.OK
-            return {"status":
-                    "the login token is not valid"}, HTTPStatus.BAD_REQUEST
+            raise wz.BadRequest(description="The login token is not valid")
 
-        return {"status": "no valid fields entered"}, HTTPStatus.BAD_REQUEST
+        raise wz.BadRequest("No valid fields entered")
 
 
 @api.route(f'{LOGIN_URL}/<string:username>/<string:password>')
@@ -204,8 +197,8 @@ class LogIn(Resource):
 
         # make sure there aren't spaces in the username
         else:
-            response['message'] = "false"
-            return response, HTTPStatus.BAD_REQUEST
+            raise wz.BadRequest(
+                description="Username and password do not match.")
 
 
 @api.route(f'{DEACTIVATE_URL}/<string:username>')
