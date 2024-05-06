@@ -272,8 +272,8 @@ class UpdateUser(Resource):
         new_user = request.json['newUser']
         password = request.json['pwd']
         if curr_user == new_user:
-            raise wz.BadRequest(description="")
-        if not dbu.user_exists(curr_user):
+            raise wz.BadRequest(description="same username entered twice")
+        if dbu.user_exists(curr_user) is None:
             raise wz.NotFound(curr_user,
                               description=f'{curr_user} does not exist')
         elif not dbu.userpass_check(curr_user, password):
