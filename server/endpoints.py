@@ -612,7 +612,7 @@ class UpdatePassword(Resource):
             response['Status'] = 'User/Pass combo confirmed.'
             if newpwd == newpwdConfirm:
                 dbu.update_password(user, newpwd)
-                response['Status'] = 'Password update attempted.'
+                response['Status'] = 'Password updated.'
             else:
                 raise wz.BadRequest(description='New passwords do not match.')
         else:
