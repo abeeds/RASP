@@ -58,6 +58,23 @@ FORM_FLDS = [
 
 
 FORMS = {
+    "UpdateUsername": [
+        {
+            FIELDNM: 'user',
+            TYPE: 'text',
+            LABEL: 'Current Username'
+        },
+        {
+            FIELDNM: 'newUser',
+            TYPE: 'text',
+            LABEL: 'New User'
+        },
+        {
+            FIELDNM: 'pwd',
+            TYPE: 'password',
+            LABEL: 'Password'
+        }
+    ],
     "UpdatePass": [
         {
             FIELDNM: 'user',
