@@ -90,6 +90,12 @@ login_fields = api.model('login', {
     dbu.PASSWORD: fields.String,
 })
 
+update_username_fields = api.model('update_username', {
+    'user': fields.String,
+    'newUser': fields.String,
+    'pwd': fields.String
+})
+
 
 @api.route(f'{GET_USERS_URL}')
 class GetUsers(Resource):
@@ -253,26 +259,34 @@ class DeactivateSelf(Resource):
         return response
 
 
-@api.route(f'{UPDATE_USER_URL}/<string:curr_username>/<string:new_username>')
+@api.route(f'{UPDATE_USER_URL}')
+@api.expect(update_username_fields)
 class UpdateUser(Resource):
-    def put(Resource, curr_username, new_username):
+    def put(Resource):
         """
             Updates a username from curr_username to new_username.
             First checks that the curr_username exists, and the new
             username is not taken.
         """
-        response = {
-            "Status": ""
-        }
-        if not dbu.user_exists(curr_username):
-            raise wz.NotFound(curr_username)
+        curr_user = request.json['user']
+        new_user = request.json['newUser']
+        password = request.json['pwd']
 
-        elif dbu.user_exists(new_username):
-            raise wz.Conflict(new_username)
+        if not dbu.user_exists(curr_user):
+            raise wz.NotFound(curr_user,
+                              description=f'{curr_user} does not exist')
+        if not dbu.userpass_check(curr_user, password):
+            raise wz.Unauthorized(
+                description="Username and password don't match our records")
+        if dbu.user_exists(new_user):
+            raise wz.Conflict(new_user,
+                              description=f'{new_user} is already taken')
 
         else:
-            dbu.update_username(curr_username, new_username)
-            response['Status'] = "Updated Successfully"
+            dbu.update_username(curr_user, new_user)
+            response = {
+                "status": "Updated Successfully"
+                }
             return response, HTTPStatus.OK
 
 
@@ -600,8 +614,6 @@ class UpdatePassword(Resource):
         oldpwd = request.json['oldpwd']
         newpwd = request.json['newpwd']
         newpwdConfirm = request.json['newpwdConfirm']
-
-        print(f'returned: {user}, {oldpwd}, {newpwd}, {newpwdConfirm}')
 
         response = {
             "Status": ""
