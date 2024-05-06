@@ -274,15 +274,13 @@ class UpdateUser(Resource):
         if curr_user == new_user:
             raise wz.BadRequest(description="same username entered twice")
         if dbu.user_exists(curr_user) is None:
-            raise wz.NotFound(curr_user,
+            raise wz.NotFound(
                               description=f'{curr_user} does not exist')
         elif not dbu.userpass_check(curr_user, password):
-            raise wz.Unauthorized(curr_user,
-                                  description="Username and password don't"
+            raise wz.Unauthorized(description="Username and password don't"
                                   + " match our records")
         elif dbu.user_exists(new_user):
-            raise wz.Conflict(new_user,
-                              description=f'{new_user} is already taken')
+            raise wz.Conflict(description=f'{new_user} is already taken')
 
         else:
             dbu.update_username(curr_user, new_user)
