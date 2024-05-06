@@ -167,8 +167,12 @@ def test_update_chatroom_desc(mock_ch, mock_update):
 def test_update_password(mock_update):
     username = 'anyuser'
     password = 'anypass'
+    dbu.insert_user(username, password)
+
     resp = TEST_CLIENT.put(f'{ep.UPDATE_PASS_URL}/{username}/{password}')
     assert resp.status_code == OK
+
+    dbu.deactivate(username)
 
 
 @pytest.mark.skip("false negative")
