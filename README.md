@@ -30,6 +30,9 @@ See the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 - Install requirements with `pip install -r requirements.txt`
 - To build production, type `make prod`.
 - To create the env for a new developer, run `make dev_env`.
+- run `export CLOUD_MONGO=0` to configure for a local database
+- run `export CLOUD_MONGO=1` to configure for a local database
+  - this will require you to also set `GAME_MONGO_PW`
 - To run the server type `./local.sh`
 
 ## Backup and Restore
