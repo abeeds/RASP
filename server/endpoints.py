@@ -275,10 +275,10 @@ class UpdateUser(Resource):
         if not dbu.user_exists(curr_user):
             raise wz.NotFound(curr_user,
                               description=f'{curr_user} does not exist')
-        if not dbu.userpass_check(curr_user, password):
+        elif not dbu.userpass_check(curr_user, password):
             raise wz.Unauthorized(
                 description="Username and password don't match our records")
-        if dbu.user_exists(new_user):
+        elif dbu.user_exists(new_user):
             raise wz.Conflict(new_user,
                               description=f'{new_user} is already taken')
 
