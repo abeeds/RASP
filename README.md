@@ -1,33 +1,33 @@
 # RASP
 RASP is a messaging application. This repository contains the source code for our Flask-RestX backend, which interacts with a MongoDB database. You can find the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 
-## Endpoints Available
-### Chatrooms
-#### GET - `/chatrooms`
+# Endpoints Available
+## Chatrooms
+### GET - `/chatrooms`
 - Returns the rooms as a list of objects.
 - Does not take any request body.
 - Sample return: `Room_name: { description: ________ }`
 
-#### POST - `/chatrooms`
+### POST - `/chatrooms`
 - Creates a chatroom.
 - Takes the following fields in the JSON request body:
   - "chatroom_name": "string"
   - "description": "string"
   - "owner": "string"
 
-#### PUT - `/chatrooms`
+### PUT - `/chatrooms`
 - Updates the description of an existing chatroom.
 - Takes the following fields in the JSON request body:
   - "chatroom_name": "string"
   - "description": "string"
 
-#### DELETE - `/chatrooms/{room_name}`
+### DELETE - `/chatrooms/{room_name}`
 - Deletes the specified chatroom.
 
-### Messages
-#### GET - `/messages/{room_name}`
+## Messages
+### GET - `/messages/{room_name}`
 - Returns all messages from the specified chatroom.
-- Sample return body:
+- Sample return:
   -  `id: {
 "Chatroom": ______,<
 "User": ______,
@@ -35,25 +35,52 @@ RASP is a messaging application. This repository contains the source code for ou
 "Content": ______
 }`
 
-#### POST - `/messages`
+### POST - `/messages`
 - Posts a message to a specific chatroom.
 - Takes the following fields in the JSON request body:
   - "chatroom_name": "string"
   - "username": "string"
   - "content": "string"
 
-#### PUT - `/messages`
+### PUT - `/messages`
 - Updates a specific message, specified by its "_id".
 - Takes the following fields in the JSON request body:
   - "_id": "string"
   - "content": "string"
 
-#### DELETE - `/messages/{msg_id}`
+### DELETE - `/messages/{msg_id}`
 - Deletes a message by its specified id.
 
-### Users
+## Users
+### GET - `/users`
+- Returns all users accounts.
+- Sample return: `{"Username": {"_id": id}}`
 
-## Build
+### GET - `/users/login/{username}/{password}`
+- Verifies the users login with a username and password.
+- A proper post version of this is implemented but not integrated into the project.
+
+### POST - `/users/register/{username}/{password}`
+- Creates an account with the specified username and password.
+
+### PUT - `/users/update_password`
+- Takes the following fields in the JSON request body:
+  - "user": "string"
+  - "newUser": "string"
+  - "pwd": "string"
+
+### PUT - `/users/update_username`
+- Takes the following fields in the JSON request body:
+  - "user": "string"
+  - "oldpwd": "string"
+  - "newpwd": "string"
+  - "newpwdConfirm": "string"
+
+## Forms
+### GET - `/forms/{form_name}`
+- This is used to implement HATEOAS into the project. A form will be generated based on the whichever form is requested.
+
+# Build
 - Install requirements with `pip install -r requirements.txt`
 - To build production, type `make prod`.
 - To create the env for a new developer, run `make dev_env`.
