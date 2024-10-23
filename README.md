@@ -76,6 +76,12 @@ RASP is a messaging application. This repository contains the source code for ou
   - "newpwd": "string"
   - "newpwdConfirm": "string"
 
+### DELETE - `/users/ban/{username}`
+- Bans/Deletes the specified user's account.
+
+### DELETE - `/users/deactivate/{username}/{password}`
+- Deletes the user's account.
+
 ## Forms
 ### GET - `/forms/{form_name}`
 - This is used to implement HATEOAS into the project. A form will be generated based on the whichever form is requested.
