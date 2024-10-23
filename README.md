@@ -1,27 +1,57 @@
-# RASP - A Messaging App Server
-Our project is an API server for a messaging app. It uses Flask-RESTX
-to interface with a MongoDB database. The server is tested through Swagger.<br>
-
-## Front-End
-See the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
+# RASP
+RASP is a messaging application. This repository contains the source code for our Flask-RestX backend, which interacts with a MongoDB database. You can find the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 
 ## Endpoints Available
-<ul>
- <li><strong> deactivate </strong> - deletes a user account</li>
- <li><strong> delete_chatroom </strong> - deletes a chatroom and its associated messages</li>
- <li><strong> delete_msg </strong> - deletes a message by id</li>
- <li><strong> get_chatrooms </strong> - displays all chatrooms</li>
- <li><strong> get_msgs </strong> - displays all messages from a specific room</li>
- <li><strong> get_msgs_test_version </strong> - same as above, but doesn't check for a valid room name to allow for testing</li>
- <li><strong> get_users </strong> - displays all users and their ids</li>
- <li><strong> insert_chatroom </strong> - creates a new chatroom</li>
- <li><strong> register </strong> - creates a new user</li>
- <li><strong> update_chatroom_desc </strong> - updates the chatroom's description</li>
- <li><strong> update_password </strong> - updates a user's password</li>
- <li><strong> update_username </strong> - updates a user's username</li>
- <li><strong> write_message </strong> - inserts a user's message to a specific chatroom</li>
-</ul>
+### Chatrooms
+#### GET - `/chatrooms`
+- Returns the rooms as a list of objects.
+- Does not take any request body.
+- Sample return: `Room_name: { description: ________ }`
 
+#### POST - `/chatrooms`
+- Creates a chatroom.
+- Takes the following fields in the JSON request body:
+  - "chatroom_name": "string"
+  - "description": "string"
+  - "owner": "string"
+
+#### PUT - `/chatrooms`
+- Updates the description of an existing chatroom.
+- Takes the following fields in the JSON request body:
+  - "chatroom_name": "string"
+  - "description": "string"
+
+#### DELETE - `/chatrooms/{room_name}`
+- Deletes the specified chatroom.
+
+### Messages
+#### GET - `/messages/{room_name}`
+- Returns all messages from the specified chatroom.
+- Sample return body:
+  -  `id: {
+"Chatroom": ______,<
+"User": ______,
+"Timestamp: ______,
+"Content": ______
+}`
+
+#### POST - `/messages`
+- Posts a message to a specific chatroom.
+- Takes the following fields in the JSON request body:
+  - "chatroom_name": "string"
+  - "username": "string"
+  - "content": "string"
+
+#### PUT - `/messages`
+- Updates a specific message, specified by its "_id".
+- Takes the following fields in the JSON request body:
+  - "_id": "string"
+  - "content": "string"
+
+#### DELETE - `/messages/{msg_id}`
+- Deletes a message by its specified id.
+
+### Users
 
 ## Build
 - Install requirements with `pip install -r requirements.txt`
