@@ -95,7 +95,7 @@ RASP is a messaging application. This repository contains the source code for ou
   - this will require you to also set `GAME_MONGO_PW`
 - To run the server type `./local.sh`
 
-## Backup and Restore
-To backup the cloud database type `./bkup.sh` <br>
-To restore the backup into the local datbaase type `./restore.sh` <br>
-Backups are found in db/bkup. This requires the cloud database password.
+# Backup and Restore
+- To backup the cloud database type `./bkup.sh` <br>
+- To restore the backup into the local database type `./restore.sh` <br>
+- Backups are found in db/bkup. This requires the cloud database password.
