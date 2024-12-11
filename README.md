@@ -1,5 +1,8 @@
 # RASP
-RASP is a messaging application. This repository contains the source code for our Flask-RestX backend, which interacts with a MongoDB database. You can find the front-end repository [here](https://github.com/abeeds/RASP_Front_End).
+RASP is a messaging application. This repository contains the source code for our Flask-RestX backend, which interacts with a MongoDB database. 
+
+# Frontend Repository
+You can find the React front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 
 # Endpoints Available
 ## Chatrooms
