@@ -4,6 +4,12 @@ RASP is a messaging application. This repository contains the source code for ou
 # Frontend Repository
 You can find the React front-end repository [here](https://github.com/abeeds/RASP_Front_End).
 
+## Frontend Previews
+<img src="https://i.imgur.com/z7e8Lzu.png">
+<img src="https://i.imgur.com/stJVK9k.png">
+<img src="https://i.imgur.com/17fPzfm.png">
+<img src="https://i.imgur.com/kGYvSlB.png">
+
 # Endpoints Available
 ## Chatrooms
 ### GET - `/chatrooms`
